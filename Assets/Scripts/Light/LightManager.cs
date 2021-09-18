@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class LightManager : MonoBehaviour
 {
-    public GameObject[] lights;
+    private GameObject[] lights;
     void Start()
     {
-        
+        lights = GameObject.FindGameObjectsWithTag("Light");
+    }
+
+    public GameObject[] GetLights()
+    {
+        return lights;
     }
 }
