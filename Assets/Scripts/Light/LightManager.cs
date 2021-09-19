@@ -8,6 +8,7 @@ public class LightManager : MonoBehaviour
     void Start()
     {
         lights = GameObject.FindGameObjectsWithTag("Light");
+        
     }
 
     public GameObject[] GetLights()
