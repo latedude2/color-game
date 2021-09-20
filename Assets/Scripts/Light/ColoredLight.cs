@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ColorGame;
 
 public class ColoredLight : MonoBehaviour
 {
@@ -46,5 +45,10 @@ public class ColoredLight : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public ColorCode GetColorCode()
+    {
+        return color;
     }
 }

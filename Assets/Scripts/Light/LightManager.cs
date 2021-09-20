@@ -15,19 +15,23 @@ public class LightManager : MonoBehaviour
         return lights;
     }
     
-    public GameObject[] GetPointingLights(Vector3 point)
+    public GameObject[] GetPointingLights(Vector3 point, ColorCode color)
     {
         List<GameObject> pointingLights = new List<GameObject>();
-        //Optimization: Create list of lights that are on and pointing towards the points, so we don't waste computations. 
         foreach( GameObject light in lights)
         {
+            //If the colored object cannot reflect the light
+            if(!color.HasFlag(light.GetComponent<ColoredLight>().GetColorCode()))
+            {
+                continue;
+            }
             //If the light is pointing towards the point
-            if  ( Vector3.Angle(light.transform.forward, point - light.transform.position) < light.GetComponent<Light>().spotAngle) 
+            if  ( Vector3.Angle(light.transform.forward, point - light.transform.position) < light.GetComponent<Light>().spotAngle/2) 
             {
                 pointingLights.Add(light); 
             }
         }
-        //Optimization: Based on the normal vectors, only three sides of a box should be lit by the same light at once. 
+        //Possible Optimization: Based on the normal vectors, only three sides of a box should be lit by the same light at once. 
         return pointingLights.ToArray();
     }
 }

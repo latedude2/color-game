@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using ColorGame;
 
 public class VisibleObject : MonoBehaviour
 {
@@ -11,16 +10,30 @@ public class VisibleObject : MonoBehaviour
     void Start()
     {
         lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
-        shinePoints = FindShinePoints();
     }
 
     void FixedUpdate()
     {
-        //TODO: Create list of points of the cube where we check if the light is shining. 
-
-        //TODO: Raycast from the lights to the points and check if any of them reach the points without being occluded. 
-
         shinePoints = FindShinePoints();
+        if(isShinedOn())
+        {
+            Debug.Log("Visible");
+        }
+    }
+
+    private bool isShinedOn()
+    {
+        foreach(Vector3 point in shinePoints)
+        {
+            foreach(GameObject light in lightManager.GetPointingLights(point, color))
+            {
+                if(pointReached(point, light))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     Vector3[] FindShinePoints()
