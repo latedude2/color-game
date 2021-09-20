@@ -56,11 +56,4 @@ public class VisibleObject : MonoBehaviour
             new UnityException();
         }
     }
-
-    GameObject[] FindPointingLights()
-    {
-        //TODO: Create list of lights that are on and pointing towards the points, so we don't waste computations. 
-        //Based on the normal vectors, only three sides of a box should be lit by the same light at once. 
-        return lightManager.GetLights();
-    }
 }
