@@ -7,6 +7,8 @@ public class VisibleObject : MonoBehaviour
     public ColorCode color = ColorCode.Black;
     private Vector3[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
+    [Tooltip("Draw the gizmos for the shine points at runtime. Used for debugging.")]
+    public bool DisplayShinePoints = false;
 
     void Start()
     {
@@ -45,16 +47,20 @@ public class VisibleObject : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        try
+        if (DisplayShinePoints)
         {
-            // Draw spheres for ShinePoints for debugging
-            foreach (Vector3 point in shinePoints)
-                Gizmos.DrawSphere(point, .05f);
-        }
-        catch
-        {
-            new UnityException();
+
+            Gizmos.color = Color.green;
+            try
+            {
+                // Draw spheres for ShinePoints for debugging
+                foreach (Vector3 point in shinePoints)
+                    Gizmos.DrawSphere(point, .05f);
+            }
+            catch
+            {
+                new UnityException();
+            }
         }
     }
 
