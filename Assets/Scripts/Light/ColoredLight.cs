@@ -1,45 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ColorGame;
 
 public class ColoredLight : MonoBehaviour
 {
     
-    [SerializeField] private Color color = Color.White;
+    [SerializeField] private ColorCode color = ColorCode.White;
     // Start is called before the first frame update
     void Start()
     {
         SetColor(color);
     }
 
-    public void SetColor(Color newColor)
+    public void SetColor(ColorCode newColor)
     {
         color = newColor;
         Light light = gameObject.GetComponent<Light>();
         switch (newColor)
         {
-            case Color.Black:
+            case ColorCode.Black:
                 light.color = UnityEngine.Color.black;
                 break;
-            case Color.Red:
+            case ColorCode.Red:
                 light.color = UnityEngine.Color.red;
                 break;
-            case Color.Green:
+            case ColorCode.Green:
                 light.color = UnityEngine.Color.green;
                 break;
-            case Color.Blue:
+            case ColorCode.Blue:
                 light.color = UnityEngine.Color.blue;
                 break;
-            case Color.Yellow:
+            case ColorCode.Yellow:
                 light.color = new UnityEngine.Color(1,1,0,1);
                 break;
-            case Color.Magenta:
+            case ColorCode.Magenta:
                 light.color = UnityEngine.Color.magenta;
                 break;
-            case Color.Cyan:
+            case ColorCode.Cyan:
                 light.color = UnityEngine.Color.cyan;
                 break;
-            case Color.White:
+            case ColorCode.White:
                 light.color = UnityEngine.Color.white;
                 break;
             default:

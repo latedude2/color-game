@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
-using ColorGame;
 
 public class VisibleObject : MonoBehaviour
 {
-    public ColorCode color = ColorCode.Black;
+<<<<<<< HEAD
+    public Color color = Color.Black;
+    private Transform[] shinePoints;    //A list of points of the box where we check if the box is hit by light
+=======
     private Vector3[] shinePoints;    //A list of points of the box where we check if the box is hit by light
+>>>>>>> main
     private LightManager lightManager;
 
     void Start()
