@@ -57,4 +57,12 @@ public class VisibleObject : MonoBehaviour
             new UnityException();
         }
     }
+
+    public bool pointReached(Vector3 point, GameObject pointingLight) {
+        Vector3 lightPos = pointingLight.transform.position;
+        Vector3 direction = lightPos - point; //direction from point to the light
+        float dist = Vector3.Distance(lightPos, point);
+        return Physics.Raycast(point, direction, dist);
+    }
+
 }
