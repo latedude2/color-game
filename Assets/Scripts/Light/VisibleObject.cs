@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VisibleObject : MonoBehaviour
 {
-    private Transform[] shinePoints;
+    private Transform[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
 
     void Start()
@@ -24,6 +24,7 @@ public class VisibleObject : MonoBehaviour
     Transform[] FindShinePoints()
     {
         List<Transform> shinepoints = new List<Transform>();
+        
         //TODO: Create a list of points for the visible object that we will be checking for shine.
         return shinepoints.ToArray(); 
     }
