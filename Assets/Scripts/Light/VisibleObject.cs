@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class VisibleObject : MonoBehaviour
 {
     public ColorCode color = ColorCode.Black;
@@ -17,19 +18,34 @@ public class VisibleObject : MonoBehaviour
     void FixedUpdate()
     {
         shinePoints = FindShinePoints();
-        if(isShinedOn())
+        // When object becomes lit and interactable
+        if (isShinedOn())
         {
-            Debug.Log("Visible");
+            // If layer is not "Default", set to "Default"
+            if (gameObject.layer != 0)
+            {
+                Debug.Log(gameObject + " is Visible");
+                gameObject.layer = 0;
+            }
+        }
+        else
+        {
+            // If layer is not "Non-interactable", set to "Non-interactable"
+            if (gameObject.layer != 7)
+            {
+                Debug.Log("Not visible");
+                gameObject.layer = 7;
+            }
         }
     }
 
     private bool isShinedOn()
     {
-        foreach(Vector3 point in shinePoints)
+        foreach (Vector3 point in shinePoints)
         {
-            foreach(GameObject light in lightManager.GetPointingLights(point, color))
+            foreach (GameObject light in lightManager.GetPointingLights(point, color))
             {
-                if(pointReached(point, light))
+                if (pointReached(point, light))
                 {
                     return true;
                 }
@@ -77,7 +93,8 @@ public class VisibleObject : MonoBehaviour
         }
     }
 
-    public bool pointReached(Vector3 point, GameObject pointingLight) {
+    public bool pointReached(Vector3 point, GameObject pointingLight)
+    {
         Vector3 lightPos = pointingLight.transform.position;
         Vector3 direction = lightPos - point; //direction from point to the light
         float dist = Vector3.Distance(lightPos, point);
