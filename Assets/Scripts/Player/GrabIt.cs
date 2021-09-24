@@ -116,7 +116,6 @@ public class GrabIt : MonoBehaviour {
 		}
 		else
 		{
-
 			if(Input.GetMouseButtonDown(0))
 			{
 				RaycastHit hitInfo;
@@ -226,6 +225,11 @@ public class GrabIt : MonoBehaviour {
 			m_applyImpulse = false;
 		}
 		
+	}
+
+	public float GetGrabDistance()
+	{
+		return m_grabMaxDistance;
 	}
 
 }

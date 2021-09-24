@@ -22,7 +22,6 @@ public class MouseInteraction : MonoBehaviour
         RaycastHit hitInfo;
         if(Physics.Raycast(transform.position , transform.forward , out hitInfo , gameObject.GetComponentInParent<GrabIt>().GetGrabDistance()))
         {
-            Debug.Log(hitInfo.collider);
             Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
             if(interactable != null){							
                 interactable.interact();
