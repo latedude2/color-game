@@ -3,7 +3,7 @@
 namespace Lightbug.GrabIt
 {
 
-    [System.Serializable]
+[System.Serializable]
     public class GrabObjectProperties
     {
 
@@ -251,6 +251,10 @@ namespace Lightbug.GrabIt
 
         }
 
-    }
+		public float GetGrabDistance()
+		{
+			return m_grabMaxDistance;
+		}
 
+    }
 }
