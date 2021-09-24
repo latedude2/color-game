@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Lightbug.GrabIt;
 
 public class VisibleObject : MonoBehaviour
 {
     public ColorCode color = ColorCode.Black;
     private Vector3[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
-    private Lightbug.GrabIt.GrabIt grabIt;
+    private GrabIt grabIt;
     [Tooltip("Draw the gizmos for the shine points at runtime. Used for debugging.")]
     public bool DisplayShinePoints = false;
 
@@ -25,7 +26,6 @@ public class VisibleObject : MonoBehaviour
             // If layer is not "Default", set to "Default"
             if (gameObject.layer != 0)
             {
-                Debug.Log(gameObject + " is Visible");
                 gameObject.layer = 0;
             }
         }
@@ -34,7 +34,6 @@ public class VisibleObject : MonoBehaviour
             // If layer is not "Non-interactable", set to "Non-interactable"
             if (gameObject.layer != 7)
             {
-                Debug.Log("Not visible");
                 gameObject.layer = 7;
                 grabIt.Drop();
             }
