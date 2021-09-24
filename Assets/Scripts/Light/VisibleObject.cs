@@ -14,7 +14,7 @@ public class VisibleObject : MonoBehaviour
     void Start()
     {
         lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
-        grabIt = GameObject.Find("Hero_Prefab").GetComponent<Lightbug.GrabIt.GrabIt>();
+        grabIt = GameObject.Find("Hero_Prefab").GetComponent<GrabIt>();
     }
 
     void FixedUpdate()
