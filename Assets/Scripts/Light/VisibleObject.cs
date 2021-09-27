@@ -83,15 +83,17 @@ public class VisibleObject : MonoBehaviour
 
         BoxCollider b = GetComponent<BoxCollider>();
 
-        // Add points for each corner of the box collider to the list
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x, -b.size.y, b.size.z) * 0.51f));
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(-b.size.x, -b.size.y, b.size.z) * 0.51f));
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(-b.size.x, -b.size.y, -b.size.z) * 0.51f));
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x, -b.size.y, -b.size.z) * 0.51f));
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x, b.size.y, b.size.z) * 0.51f));
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(-b.size.x, b.size.y, b.size.z) * 0.51f));
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(-b.size.x, b.size.y, -b.size.z) * 0.51f));
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x, b.size.y, -b.size.z) * 0.51f));
+        // Add 27 points on the box collider to the list
+        for (int z = -1; z < 2; z++)
+        {
+            for (int y = -1; y < 2; y++)
+            {
+                for (int x = -1; x < 2; x++)
+                {
+                    shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x * x, b.size.y * y, b.size.z * z) * 0.50f));
+                }
+            }
+        }
 
         return shinepoints.ToArray();
     }
@@ -101,7 +103,7 @@ public class VisibleObject : MonoBehaviour
         if (DisplayGizmos)
         {
 
-            Gizmos.color = Color.green;
+            Gizmos.color = Color.yellow;
             try
             {
                 // Draw spheres for ShinePoints for debugging
@@ -122,7 +124,7 @@ public class VisibleObject : MonoBehaviour
         {
             Debug.DrawLine(point, lightPos, Color.red);
         }
-        return !Physics.Linecast(point, lightPos);
+        return !Physics.Linecast(point, lightPos, 0);
     }
 
 }
