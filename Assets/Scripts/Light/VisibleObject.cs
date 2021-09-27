@@ -12,7 +12,7 @@ public class VisibleObject : MonoBehaviour
     private LightManager lightManager;
     private GrabIt grabIt;
     [Tooltip("Draw the gizmos for the shine points at runtime. Used for debugging.")]
-    public bool DisplayShinePoints = false;
+    public bool DisplayGizmos = false;
 
     Vector3 velocity;
 
@@ -79,21 +79,21 @@ public class VisibleObject : MonoBehaviour
         BoxCollider b = GetComponent<BoxCollider>();
 
         // Add points for each corner of the box collider to the list
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x, -b.size.y, b.size.z) * 0.5f));
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(-b.size.x, -b.size.y, b.size.z) * 0.5f));
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(-b.size.x, -b.size.y, -b.size.z) * 0.5f));
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x, -b.size.y, -b.size.z) * 0.5f));
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x, b.size.y, b.size.z) * 0.5f));
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(-b.size.x, b.size.y, b.size.z) * 0.5f));
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(-b.size.x, b.size.y, -b.size.z) * 0.5f));
-        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x, b.size.y, -b.size.z) * 0.5f));
+        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x, -b.size.y, b.size.z) * 0.51f));
+        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(-b.size.x, -b.size.y, b.size.z) * 0.51f));
+        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(-b.size.x, -b.size.y, -b.size.z) * 0.51f));
+        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x, -b.size.y, -b.size.z) * 0.51f));
+        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x, b.size.y, b.size.z) * 0.51f));
+        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(-b.size.x, b.size.y, b.size.z) * 0.51f));
+        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(-b.size.x, b.size.y, -b.size.z) * 0.51f));
+        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x, b.size.y, -b.size.z) * 0.51f));
 
         return shinepoints.ToArray();
     }
 
     void OnDrawGizmos()
     {
-        if (DisplayShinePoints)
+        if (DisplayGizmos)
         {
 
             Gizmos.color = Color.green;
@@ -113,9 +113,11 @@ public class VisibleObject : MonoBehaviour
     public bool pointReached(Vector3 point, GameObject pointingLight)
     {
         Vector3 lightPos = pointingLight.transform.position;
-        Vector3 direction = lightPos - point; //direction from point to the light
-        float dist = Vector3.Distance(lightPos, point);
-        return Physics.Raycast(point, direction, dist);
+        if (DisplayGizmos)
+        {
+            Debug.DrawLine(point, lightPos, Color.red);
+        }
+        return !Physics.Linecast(point, lightPos);
     }
 
 }
