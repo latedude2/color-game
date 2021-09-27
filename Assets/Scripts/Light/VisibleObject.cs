@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Lightbug.GrabIt;
+using ColorGame;
+
 
 public class VisibleObject : MonoBehaviour
 {
@@ -77,9 +79,8 @@ public class VisibleObject : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (DisplayShinePoints)
+        if (ColorGame.Debug.debugMode)
         {
-
             Gizmos.color = Color.green;
             try
             {
