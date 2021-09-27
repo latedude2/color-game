@@ -8,11 +8,13 @@ public class VisibleObject : MonoBehaviour
     private Renderer _renderer;
     private Material colorMat;
     private Material blackMat;
+    private Collider _collider;
     private Vector3[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
     private GrabIt grabIt;
     [Tooltip("Draw the gizmos for the shine points at runtime. Used for debugging.")]
     public bool DisplayGizmos = false;
+    private bool visible;
 
     Vector3 velocity;
 
@@ -23,6 +25,7 @@ public class VisibleObject : MonoBehaviour
         _renderer = GetComponent<Renderer>();
         colorMat = Resources.Load<Material>("Materials/" + color.ToString());
         blackMat = Resources.Load<Material>("Materials/Black");
+        _collider = GetComponent<Collider>();
     }
 
     void FixedUpdate()
@@ -31,27 +34,29 @@ public class VisibleObject : MonoBehaviour
         // When object becomes lit and interactable
         if (isShinedOn())
         {
-            // If layer is not "Default", set to "Default"
-            if (gameObject.layer != 0)
+            // If object is not visible, make visible
+            if (!visible)
             {
                 gameObject.GetComponent<Rigidbody>().isKinematic = false;
                 gameObject.GetComponent<Rigidbody>().velocity = velocity;
                 _renderer.material = colorMat;
-                gameObject.layer = 0;
+                _collider.enabled = true;
+                visible = true;
             }
         }
         else
         {
-            // If layer is not "Non-interactable", set to "Non-interactable"
-            if (gameObject.layer != 7)
+            // If object is visible, make invisible
+            if (visible)
             {
-                if(grabIt.m_targetRB != null && gameObject == grabIt.m_targetRB.gameObject)
+                if (grabIt.m_targetRB != null && gameObject == grabIt.m_targetRB.gameObject)
                     grabIt.Drop();
                 _renderer.material = blackMat;
                 velocity = gameObject.GetComponent<Rigidbody>().velocity;
                 gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                gameObject.layer = 7;
+                _collider.enabled = false;
+                visible = false;
             }
         }
     }
