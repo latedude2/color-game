@@ -73,6 +73,7 @@ namespace Lightbug.GrabIt
         bool m_grabbing = false;
         bool m_applyImpulse = false;
         bool m_isHingeJoint = false;
+        bool m_isCharacterJoint = false;
 
         //Debug
         LineRenderer m_lineRenderer;
@@ -98,7 +99,7 @@ namespace Lightbug.GrabIt
 
                 m_targetPos = m_transform.position + m_transform.forward * m_targetDistance;
 
-                if (!m_isHingeJoint)
+                if (!m_isHingeJoint && !m_isCharacterJoint)
                 {
                     if (Input.GetKey(m_rotatePitchPosKey) || Input.GetKey(m_rotatePitchNegKey) || Input.GetKey(m_rotateYawPosKey) || Input.GetKey(m_rotateYawNegKey))
                     {
@@ -147,6 +148,7 @@ namespace Lightbug.GrabIt
         {
             m_targetRB = target;
             m_isHingeJoint = target.GetComponent<HingeJoint>() != null;
+            m_isCharacterJoint = target.GetComponent<CharacterJoint>() != null;
 
             //Rigidbody default properties	
             m_defaultProperties.m_useGravity = m_targetRB.useGravity;
@@ -158,8 +160,13 @@ namespace Lightbug.GrabIt
             m_targetRB.useGravity = m_grabProperties.m_useGravity;
             m_targetRB.drag = m_grabProperties.m_drag;
             m_targetRB.angularDrag = m_grabProperties.m_angularDrag;
-            m_targetRB.constraints = m_isHingeJoint ? RigidbodyConstraints.None : m_grabProperties.m_constraints;
-
+            if(m_isHingeJoint || m_isCharacterJoint)
+            {
+                m_targetRB.constraints = RigidbodyConstraints.None;
+            }
+            else {
+                m_targetRB.constraints = m_grabProperties.m_constraints;
+            }
 
             m_hitPointObject.transform.SetParent(target.transform);
 
@@ -192,7 +199,7 @@ namespace Lightbug.GrabIt
             Vector3 hitPointPos = m_hitPointObject.transform.position;
             Vector3 dif = m_targetPos - hitPointPos;
 
-            if (m_isHingeJoint)
+            if (m_isHingeJoint || m_isCharacterJoint)
                 m_targetRB.AddForceAtPosition(m_grabSpeed * dif * 100, hitPointPos, ForceMode.Force);
             else
                 m_targetRB.velocity = m_grabSpeed * dif;
@@ -236,7 +243,7 @@ namespace Lightbug.GrabIt
             if (!m_grabbing)
                 return;
 
-            if (!m_isHingeJoint)
+            if (!m_isHingeJoint && !m_isCharacterJoint)
                 Rotate();
 
             Grab();
