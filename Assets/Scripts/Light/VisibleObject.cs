@@ -5,6 +5,9 @@ using Lightbug.GrabIt;
 public class VisibleObject : MonoBehaviour
 {
     public ColorCode color = ColorCode.Black;
+    private Renderer _renderer;
+    private Material colorMat;
+    private Material blackMat;
     private Vector3[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
     private GrabIt grabIt;
@@ -15,6 +18,9 @@ public class VisibleObject : MonoBehaviour
     {
         lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         grabIt = GameObject.Find("Main Camera").GetComponent<GrabIt>();
+        _renderer = GetComponent<Renderer>();
+        colorMat = Resources.Load<Material>("Materials/" + color.ToString());
+        blackMat = Resources.Load<Material>("Materials/Black");
     }
 
     void FixedUpdate()
@@ -26,6 +32,7 @@ public class VisibleObject : MonoBehaviour
             // If layer is not "Default", set to "Default"
             if (gameObject.layer != 0)
             {
+                _renderer.material = colorMat;
                 gameObject.layer = 0;
             }
         }
@@ -34,8 +41,9 @@ public class VisibleObject : MonoBehaviour
             // If layer is not "Non-interactable", set to "Non-interactable"
             if (gameObject.layer != 7)
             {
-                gameObject.layer = 7;
                 grabIt.Drop();
+                _renderer.material = blackMat;
+                gameObject.layer = 7;
             }
         }
     }
