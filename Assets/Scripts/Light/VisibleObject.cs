@@ -14,6 +14,8 @@ public class VisibleObject : MonoBehaviour
     [Tooltip("Draw the gizmos for the shine points at runtime. Used for debugging.")]
     public bool DisplayShinePoints = false;
 
+    Vector3 velocity;
+
     void Start()
     {
         lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
@@ -32,6 +34,8 @@ public class VisibleObject : MonoBehaviour
             // If layer is not "Default", set to "Default"
             if (gameObject.layer != 0)
             {
+                gameObject.GetComponent<Rigidbody>().isKinematic = false;
+                gameObject.GetComponent<Rigidbody>().velocity = velocity;
                 _renderer.material = colorMat;
                 gameObject.layer = 0;
             }
@@ -41,8 +45,12 @@ public class VisibleObject : MonoBehaviour
             // If layer is not "Non-interactable", set to "Non-interactable"
             if (gameObject.layer != 7)
             {
-                grabIt.Drop();
+                if(grabIt.m_targetRB != null && gameObject == grabIt.m_targetRB.gameObject)
+                    grabIt.Drop();
                 _renderer.material = blackMat;
+                velocity = gameObject.GetComponent<Rigidbody>().velocity;
+                gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                gameObject.GetComponent<Rigidbody>().isKinematic = true;
                 gameObject.layer = 7;
             }
         }
