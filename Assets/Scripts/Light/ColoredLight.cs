@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ColoredLight : MonoBehaviour
 {
-
+    
     [SerializeField] private ColorCode color = ColorCode.White;
     // Start is called before the first frame update
     void Start()
@@ -31,7 +31,7 @@ public class ColoredLight : MonoBehaviour
                 light.color = UnityEngine.Color.blue;
                 break;
             case ColorCode.Yellow:
-                light.color = new UnityEngine.Color(1, 1, 0, 1);
+                light.color = new UnityEngine.Color(1,1,0,1);
                 break;
             case ColorCode.Magenta:
                 light.color = UnityEngine.Color.magenta;
