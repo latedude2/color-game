@@ -14,7 +14,7 @@ public class VisibleObject : MonoBehaviour
     private GrabIt grabIt;
     [Tooltip("Draw the gizmos for the shine points at runtime. Used for debugging.")]
     public bool DisplayGizmos = false;
-    private bool visible;
+    private bool visible = false;
 
     Vector3 velocity;
 
@@ -25,7 +25,10 @@ public class VisibleObject : MonoBehaviour
         _renderer = GetComponent<Renderer>();
         colorMat = Resources.Load<Material>("Materials/" + color.ToString());
         blackMat = Resources.Load<Material>("Materials/Black");
+        _renderer.material = blackMat;
         _collider = GetComponent<Collider>();
+        gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        _collider.enabled = true;
     }
 
     void FixedUpdate()
