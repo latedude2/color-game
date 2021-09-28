@@ -1,22 +1,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Lightbug.GrabIt;
-using ColorGame;
-
 
 public class VisibleObject : MonoBehaviour
 {
     public ColorCode color = ColorCode.Black;
+    private Renderer _renderer;
+    private Material colorMat;
+    private Material blackMat;
+    private Collider _collider;
     private Vector3[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
     private GrabIt grabIt;
     [Tooltip("Draw the gizmos for the shine points at runtime. Used for debugging.")]
-    public bool DisplayShinePoints = false;
+    public bool DisplayGizmos = false;
+    private bool visible = false;
+
+    Vector3 velocity;
 
     void Start()
     {
         lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         grabIt = GameObject.Find("Main Camera").GetComponent<GrabIt>();
+        _renderer = GetComponent<Renderer>();
+        colorMat = Resources.Load<Material>("Materials/" + color.ToString());
+        blackMat = Resources.Load<Material>("Materials/Black");
+        _renderer.material = blackMat;
+        _collider = GetComponent<Collider>();
+        gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        _collider.enabled = true;
     }
 
     void FixedUpdate()

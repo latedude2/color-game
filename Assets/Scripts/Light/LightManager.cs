@@ -26,7 +26,7 @@ public class LightManager : MonoBehaviour
                 continue;
             }
             //If the light is pointing towards the point
-            if (Vector3.Angle(light.transform.forward, point - light.transform.position) < light.GetComponent<Light>().spotAngle / 2 - 1)
+            if (Vector3.Angle(light.transform.forward, point - light.transform.position) < light.GetComponent<Light>().spotAngle / 2)
             {
                 pointingLights.Add(light);
             }
