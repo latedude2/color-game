@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Lightbug.GrabIt;
+using ColorGame;
 
 public class VisibleObject : MonoBehaviour
 {
@@ -106,9 +107,8 @@ public class VisibleObject : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (DisplayGizmos)
+        if (ColorGame.Debug.debugMode)
         {
-
             Gizmos.color = Color.yellow;
             try
             {
@@ -126,9 +126,9 @@ public class VisibleObject : MonoBehaviour
     public bool pointReached(Vector3 point, GameObject pointingLight)
     {
         Vector3 lightPos = pointingLight.transform.position;
-        if (DisplayGizmos)
+        if (ColorGame.Debug.debugMode)
         {
-            Debug.DrawLine(point, lightPos, Color.red);
+            UnityEngine.Debug.DrawLine(point, lightPos, Color.red);
         }
         return !Physics.Linecast(point, lightPos, 0);
     }
