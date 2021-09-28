@@ -63,7 +63,7 @@ namespace Lightbug.GrabIt
 
 
 
-        Rigidbody m_targetRB = null;
+        public Rigidbody m_targetRB = null;
         Transform m_transform;
 
         Vector3 m_targetPos;
@@ -214,7 +214,12 @@ namespace Lightbug.GrabIt
 
         public void Drop()
         {
-            m_grabbing = false;
+            if(m_grabbing)
+            {
+                Reset();
+                m_grabbing = false;
+                m_applyImpulse = false;  
+            }          
         }
 
         void Rotate()

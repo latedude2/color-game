@@ -14,13 +14,13 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 1
-  m_FogColor: {r: 0, g: 0, b: 0, a: 1}
+  m_Fog: 0
+  m_FogColor: {r: 0.3262727, g: 0.37139758, b: 0.49056602, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.025
+  m_FogDensity: 0.33
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
+  m_AmbientSkyColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -235,6 +235,7 @@ MonoBehaviour:
   m_collisionMask:
     serializedVersion: 2
     m_Bits: 1
+  m_targetRB: {fileID: 0}
 --- !u!1001 &1227747303
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -621,6 +622,10 @@ PrefabInstance:
     - target: {fileID: 2592335975717713422, guid: a6e60557ebfe1504db46bd7b1ddf7ca5, type: 3}
       propertyPath: m_Name
       value: GreenBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 6179078771998550340, guid: a6e60557ebfe1504db46bd7b1ddf7ca5, type: 3}
+      propertyPath: DisplayGizmos
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6304451894335775729, guid: a6e60557ebfe1504db46bd7b1ddf7ca5, type: 3}
       propertyPath: m_RootOrder
