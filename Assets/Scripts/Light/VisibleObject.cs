@@ -83,13 +83,16 @@ public class VisibleObject : MonoBehaviour
 
         BoxCollider b = GetComponent<BoxCollider>();
 
-        // Add 27 points on the box collider to the list
+        // Add 26 points on the box collider to the list
         for (int z = -1; z < 2; z++)
         {
             for (int y = -1; y < 2; y++)
             {
                 for (int x = -1; x < 2; x++)
                 {
+                    // skip the center of the box
+                    if (x == 0 && y == 0 && z == 0)
+                        continue;
                     shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x * x, b.size.y * y, b.size.z * z) * 0.50f));
                 }
             }
