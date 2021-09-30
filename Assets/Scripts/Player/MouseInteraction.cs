@@ -19,17 +19,20 @@ public class MouseInteraction : MonoBehaviour
     {
         pointingAt = PointingAt.nothing;
         GameObject target = FindTargetedGameObject();
-        if(target.GetComponent<Interactable>() != null)
+        if(target != null)
         {
-            pointingAt = PointingAt.interactable;
-            if(Input.GetMouseButtonDown(0))
+            if(target.GetComponent<Interactable>() != null)
             {
-                target.GetComponent<Interactable>().interact();
+                pointingAt = PointingAt.interactable;
+                if(Input.GetMouseButtonDown(0))
+                {
+                    target.GetComponent<Interactable>().interact();
+                }
             }
-        }
-        else if(target.GetComponent<Rigidbody>() != null)
-        {
-            pointingAt = PointingAt.grabbable;
+            else if(target.GetComponent<Rigidbody>() != null)
+            {
+                pointingAt = PointingAt.grabbable;
+            }
         }
         PointedAt?.Invoke(pointingAt);
     }
