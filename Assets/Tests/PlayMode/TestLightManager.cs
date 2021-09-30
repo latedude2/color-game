@@ -13,7 +13,7 @@ public class TestLightManager
     public IEnumerator LightManagerWithEnumeratorPasses()
     {
         //Setup test
-        SceneManager.LoadScene("PlayGround");
+        SceneManager.LoadScene("TestScene");
         yield return null; //Pass one frame
         LightManager lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         
@@ -24,7 +24,7 @@ public class TestLightManager
     [UnityTest]
     public IEnumerator GetPointingLightsWithEnumeratorPasses()
     {
-        SceneManager.LoadScene("PlayGround");
+        SceneManager.LoadScene("TestScene");
         yield return null; //Pass one frame
         LightManager lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         Transform lightTransform = lightManager.gameObject.GetComponentInChildren<Light>().transform;
