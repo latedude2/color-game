@@ -21,7 +21,7 @@ public class LightManager : MonoBehaviour
         foreach (GameObject light in lights)
         {
             //If the colored object cannot reflect the light
-            if (!color.HasFlag(light.GetComponent<ColoredLight>().GetColorCode()))
+            if (!color.HasFlag(light.GetComponent<ColoredLight>().GetColorCode()) || !light.GetComponent<Light>().enabled)
             {
                 continue;
             }
