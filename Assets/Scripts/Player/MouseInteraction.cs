@@ -18,42 +18,28 @@ public class MouseInteraction : MonoBehaviour
     void Update()
     {
         pointingAt = PointingAt.nothing;
-        Interactable interactableObject = FindInteractable();
-        if(interactableObject != null)
+        GameObject target = FindTargetedGameObject();
+        if(target.GetComponent<Interactable>() != null)
         {
             pointingAt = PointingAt.interactable;
             if(Input.GetMouseButtonDown(0))
             {
-                interactableObject.interact();
+                target.GetComponent<Interactable>().interact();
             }
         }
-        if(FindGrabbable() != null)
+        else if(target.GetComponent<Rigidbody>() != null)
         {
             pointingAt = PointingAt.grabbable;
         }
         PointedAt?.Invoke(pointingAt);
     }
 
-    Interactable FindInteractable()
+    GameObject FindTargetedGameObject()
     {
         RaycastHit hitInfo;
         if(Physics.Raycast(transform.position , transform.forward , out hitInfo , gameObject.GetComponentInParent<GrabIt>().GetGrabDistance()))
         {
-            Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
-            return interactable;
-        }
-        return null;
-    }
-
-    GameObject FindGrabbable()
-    {
-        RaycastHit hitInfo;
-        if(Physics.Raycast(transform.position , transform.forward , out hitInfo , gameObject.GetComponentInParent<GrabIt>().GetGrabDistance()))
-        {
-            Rigidbody grabbable = hitInfo.collider.GetComponent<Rigidbody>();
-            if(grabbable != null)
-                return grabbable.gameObject;
-            else return null;
+            return hitInfo.collider.gameObject;
         }
         return null;
     }
