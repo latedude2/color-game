@@ -28,9 +28,9 @@ public class VisibleObject : MonoBehaviour
         blackMat = Resources.Load<Material>("Materials/Black");
         _renderer.material = blackMat;
         _collider = GetComponent<Collider>();
-        _collider.enabled = true;
+        _collider.enabled = false;
         if (gameObject.GetComponent<Rigidbody>() != null)
-            gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            gameObject.GetComponent<Rigidbody>().isKinematic = true;
     }
 
     void FixedUpdate()
