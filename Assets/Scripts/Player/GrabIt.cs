@@ -114,7 +114,7 @@ namespace Lightbug.GrabIt
 
                 if (Input.GetMouseButtonUp(0))
                 {
-                    Reset();
+                    ResetHold();
                     m_grabbing = false;
                 }
                 else if (Input.GetMouseButtonDown(1))
@@ -178,7 +178,7 @@ namespace Lightbug.GrabIt
 
         }
 
-        void Reset()
+        void ResetHold()
         {
             //Grab Properties	
             m_targetRB.useGravity = m_defaultProperties.m_useGravity;
@@ -216,7 +216,7 @@ namespace Lightbug.GrabIt
         {
             if(m_grabbing)
             {
-                Reset();
+                ResetHold();
                 m_grabbing = false;
                 m_applyImpulse = false;  
             }          
@@ -256,7 +256,7 @@ namespace Lightbug.GrabIt
             if (m_applyImpulse)
             {
                 m_targetRB.velocity = m_transform.forward * m_impulseMagnitude;
-                Reset();
+                ResetHold();
                 m_grabbing = false;
                 m_applyImpulse = false;
             }
