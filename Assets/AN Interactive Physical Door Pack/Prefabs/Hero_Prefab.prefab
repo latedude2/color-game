@@ -42,7 +42,8 @@ GameObject:
   - component: {fileID: 2189870818962198997}
   - component: {fileID: 2189870818962198996}
   - component: {fileID: 2214142238354633568}
-  - component: {fileID: 1507306748}
+  - component: {fileID: 6309346235543115876}
+  - component: {fileID: 8403398552598257590}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -128,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90bdbaae3ee2e4747b726cb18cff3e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1507306748
+--- !u!114 &6309346235543115876
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,7 +138,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2189870818962198999}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b29f76ba65079cc46a13edeb3f8e20bf, type: 3}
+  m_Script: {fileID: 11500000, guid: ec0bb0baa12364743867d51708052565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_rotatePitchPosKey: 105
@@ -151,13 +152,26 @@ MonoBehaviour:
   m_angularSpeed: 300
   m_impulseMagnitude: 25
   m_grabProperties:
-    m_useGravity: 1
+    m_useGravity: 0
     m_drag: 10
     m_angularDrag: 10
-    m_constraints: 0
+    m_constraints: 112
   m_collisionMask:
     serializedVersion: 2
     m_Bits: 1
+  m_targetRB: {fileID: 0}
+--- !u!114 &8403398552598257590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2189870818962198999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b715e5c62f90cbb44b1330f9ea52f9cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2189870819492480555
 GameObject:
   m_ObjectHideFlags: 0
