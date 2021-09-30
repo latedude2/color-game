@@ -200,42 +200,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ecf6aa2a2182cf4c843c0d565e94cd0, type: 3}
---- !u!1 &806333506 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2189870818962198999, guid: a53b80592d7404d498fb05550c9144d6, type: 3}
-  m_PrefabInstance: {fileID: 1227747303}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &806333507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 806333506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec0bb0baa12364743867d51708052565, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_rotatePitchPosKey: 105
-  m_rotatePitchNegKey: 107
-  m_rotateYawPosKey: 108
-  m_rotateYawNegKey: 106
-  m_grabSpeed: 7
-  m_grabMinDistance: 1
-  m_grabMaxDistance: 10
-  m_scrollWheelSpeed: 5
-  m_angularSpeed: 300
-  m_impulseMagnitude: 25
-  m_grabProperties:
-    m_useGravity: 0
-    m_drag: 10
-    m_angularDrag: 10
-    m_constraints: 112
-  m_collisionMask:
-    serializedVersion: 2
-    m_Bits: 1
-  m_targetRB: {fileID: 0}
 --- !u!1001 &1227747303
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -303,9 +267,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1136562672, guid: a53b80592d7404d498fb05550c9144d6, type: 3}
-    - {fileID: 1507306748, guid: a53b80592d7404d498fb05550c9144d6, type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_collisionMask.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a53b80592d7404d498fb05550c9144d6, type: 3}
 --- !u!1001 &2084445384
 PrefabInstance:
@@ -853,7 +819,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6178411063666957589, guid: 6de30019c01afde40882c6e208aee572, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6178411063666957589, guid: 6de30019c01afde40882c6e208aee572, type: 3}
       propertyPath: m_LocalPosition.x
