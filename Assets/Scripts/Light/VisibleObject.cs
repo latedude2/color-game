@@ -28,8 +28,9 @@ public class VisibleObject : MonoBehaviour
         blackMat = Resources.Load<Material>("Materials/Black");
         _renderer.material = blackMat;
         _collider = GetComponent<Collider>();
-        gameObject.GetComponent<Rigidbody>().isKinematic = false;
-        _collider.enabled = true;
+        _collider.enabled = false;
+        if (gameObject.GetComponent<Rigidbody>() != null)
+            gameObject.GetComponent<Rigidbody>().isKinematic = true;
     }
 
     void FixedUpdate()
@@ -41,8 +42,11 @@ public class VisibleObject : MonoBehaviour
             // If object is not visible, make visible
             if (!visible)
             {
-                gameObject.GetComponent<Rigidbody>().isKinematic = false;
-                gameObject.GetComponent<Rigidbody>().velocity = velocity;
+                if (gameObject.GetComponent<Rigidbody>() != null)
+                {
+                    gameObject.GetComponent<Rigidbody>().isKinematic = false;
+                    gameObject.GetComponent<Rigidbody>().velocity = velocity;
+                }
                 _renderer.material = colorMat;
                 _collider.enabled = true;
                 visible = true;
@@ -56,9 +60,12 @@ public class VisibleObject : MonoBehaviour
                 if (grabIt.m_targetRB != null && gameObject == grabIt.m_targetRB.gameObject)
                     grabIt.Drop();
                 _renderer.material = blackMat;
-                velocity = gameObject.GetComponent<Rigidbody>().velocity;
-                gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                if (gameObject.GetComponent<Rigidbody>() != null)
+                {
+                    velocity = gameObject.GetComponent<Rigidbody>().velocity;
+                    gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                }
                 _collider.enabled = false;
                 visible = false;
             }
