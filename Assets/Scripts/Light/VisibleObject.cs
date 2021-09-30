@@ -17,6 +17,9 @@ public class VisibleObject : MonoBehaviour
     public bool DisplayGizmos = false;
     private bool visible = false;
 
+    [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
+    
+
     Vector3 velocity;
 
     void Start()
@@ -93,23 +96,33 @@ public class VisibleObject : MonoBehaviour
         List<Vector3> shinepoints = new List<Vector3>();
 
         BoxCollider b = GetComponent<BoxCollider>();
-
-        // Add 26 points on the box collider to the list
-        for (int z = -1; z < 2; z++)
+        
+        // Add points on the box collider to the list
+        for (int z = -shinePointMultiplier; z <= shinePointMultiplier; z++)
         {
-            for (int y = -1; y < 2; y++)
+            for (int y = -shinePointMultiplier; y <= shinePointMultiplier; y++)
             {
-                for (int x = -1; x < 2; x++)
+                for (int x = -shinePointMultiplier; x <= shinePointMultiplier; x++)
                 {
-                    // skip the center of the box
-                    if (x == 0 && y == 0 && z == 0)
-                        continue;
-                    shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x * x, b.size.y * y, b.size.z * z) * 0.50f));
+                    // skip the middle of the box
+                    if (!IsPointInMiddle(x, y, z, shinePointMultiplier))
+                        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x * x / shinePointMultiplier, b.size.y * y / shinePointMultiplier, b.size.z * z / shinePointMultiplier) * 0.50f));
                 }
             }
         }
 
         return shinepoints.ToArray();
+    }
+
+    bool IsPointInMiddle(int x, int y, int z, int shinePointMultiplier)
+    {
+        if(x == shinePointMultiplier || x == -shinePointMultiplier)
+            return false;
+        if(y == shinePointMultiplier || y == -shinePointMultiplier)
+            return false;
+        if(z == shinePointMultiplier || z == -shinePointMultiplier)
+            return false;
+        return true;
     }
 
     void OnDrawGizmos()
