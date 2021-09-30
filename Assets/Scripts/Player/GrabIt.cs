@@ -49,7 +49,9 @@ namespace Lightbug.GrabIt
         [Range(10, 50)]
         float m_impulseMagnitude = 25;
 
-
+        public delegate void GrabObjectHandler();
+        public static event GrabObjectHandler Grabbed;
+        public static event GrabObjectHandler Released;
 
 
         [Header("Affected Rigidbody Properties")]
@@ -115,6 +117,7 @@ namespace Lightbug.GrabIt
                 if (Input.GetMouseButtonUp(0))
                 {
                     ResetHold();
+                    Released?.Invoke();
                     m_grabbing = false;
                 }
                 else if (Input.GetMouseButtonDown(1))
@@ -137,6 +140,7 @@ namespace Lightbug.GrabIt
                         {
                             Set(rb, hitInfo.distance);
                             m_grabbing = true;
+                            Grabbed?.Invoke();
                         }
                     }
                 }
@@ -216,6 +220,7 @@ namespace Lightbug.GrabIt
         {
             if(m_grabbing)
             {
+                Released?.Invoke();
                 ResetHold();
                 m_grabbing = false;
                 m_applyImpulse = false;  
@@ -267,6 +272,5 @@ namespace Lightbug.GrabIt
 		{
 			return m_grabMaxDistance;
 		}
-
     }
 }
