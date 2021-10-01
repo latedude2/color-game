@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Lightbug.GrabIt;
-using ColorGame;
 
 public class VisibleObject : MonoBehaviour
 {
-    public ColorCode color = ColorCode.Black;
+    private ColorCode color = ColorCode.Black;
+    [SerializeField] private ColorCode trueColor = ColorCode.Black;
     private Renderer _renderer;
     private Material colorMat;
     private Material blackMat;
@@ -13,8 +13,6 @@ public class VisibleObject : MonoBehaviour
     private Vector3[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
     private GrabIt grabIt;
-    [Tooltip("Draw the gizmos for the shine points at runtime. Used for debugging.")]
-    public bool DisplayGizmos = false;
     private bool visible = false;
 
     Vector3 velocity;
@@ -24,7 +22,6 @@ public class VisibleObject : MonoBehaviour
         lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         grabIt = GameObject.Find("Main Camera").GetComponent<GrabIt>();
         _renderer = GetComponent<Renderer>();
-        colorMat = Resources.Load<Material>("Materials/" + color.ToString());
         blackMat = Resources.Load<Material>("Materials/Black");
         _renderer.material = blackMat;
         _collider = GetComponent<Collider>();
@@ -37,19 +34,16 @@ public class VisibleObject : MonoBehaviour
     {
         shinePoints = FindShinePoints();
         // When object becomes lit and interactable
-        if (isShinedOn())
+        ColorCode objectFinalColor = FindShownColor();
+        //If object should be visible
+        if (objectFinalColor != ColorCode.Black)
         {
+            if(objectFinalColor != color)
+                SetColor(objectFinalColor);
             // If object is not visible, make visible
             if (!visible)
             {
-                if (gameObject.GetComponent<Rigidbody>() != null)
-                {
-                    gameObject.GetComponent<Rigidbody>().isKinematic = false;
-                    gameObject.GetComponent<Rigidbody>().velocity = velocity;
-                }
-                _renderer.material = colorMat;
-                _collider.enabled = true;
-                visible = true;
+                SetToVisible();
             }
         }
         else
@@ -57,22 +51,63 @@ public class VisibleObject : MonoBehaviour
             // If object is visible, make invisible
             if (visible)
             {
-                if (grabIt.m_targetRB != null && gameObject == grabIt.m_targetRB.gameObject)
-                    grabIt.Drop();
-                _renderer.material = blackMat;
-                if (gameObject.GetComponent<Rigidbody>() != null)
-                {
-                    velocity = gameObject.GetComponent<Rigidbody>().velocity;
-                    gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                }
-                _collider.enabled = false;
-                visible = false;
+                SetToInvisible();
             }
         }
     }
 
-    private bool isShinedOn()
+    private void SetToVisible()
+    {
+        if (gameObject.GetComponent<Rigidbody>() != null)
+        {
+            gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            gameObject.GetComponent<Rigidbody>().velocity = velocity;
+        }
+        _collider.enabled = true;
+        visible = true;
+    }
+
+    private void SetToInvisible()
+    {
+        if (grabIt.m_targetRB != null && gameObject == grabIt.m_targetRB.gameObject)
+            grabIt.Drop();
+        SetColor(ColorCode.Black);
+        if (gameObject.GetComponent<Rigidbody>() != null)
+        {
+            velocity = gameObject.GetComponent<Rigidbody>().velocity;
+            gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        }
+        _collider.enabled = false;
+        visible = false;
+    }
+
+
+    private void SetColor(ColorCode color)
+    {
+        colorMat = Resources.Load<Material>("Materials/" + color.ToString());
+        _renderer.material = colorMat;
+    }
+
+    private ColorCode FindShownColor()
+    {
+        ColorCode finalColor = ColorCode.Black;
+        if(trueColor.HasFlag(ColorCode.Green) && isShinedOn(ColorCode.Green))
+        {
+            finalColor = finalColor | ColorCode.Green;
+        }
+        if(trueColor.HasFlag(ColorCode.Red) && isShinedOn(ColorCode.Red))
+        {
+            finalColor = finalColor | ColorCode.Red;
+        }
+        if(trueColor.HasFlag(ColorCode.Blue) && isShinedOn(ColorCode.Blue))
+        {
+            finalColor = finalColor | ColorCode.Blue;
+        }
+        return finalColor;
+    }
+
+    private bool isShinedOn(ColorCode color)
     {
         foreach (Vector3 point in shinePoints)
         {
@@ -130,7 +165,7 @@ public class VisibleObject : MonoBehaviour
         }
     }
 
-    public bool pointReached(Vector3 point, GameObject pointingLight)
+    bool pointReached(Vector3 point, GameObject pointingLight)
     {
         Vector3 lightPos = pointingLight.transform.position;
         if (ColorGame.Debug.debugMode)
