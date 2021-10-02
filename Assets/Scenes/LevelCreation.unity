@@ -123,42 +123,23 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &348365544 stripped
+--- !u!1 &237283200 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 2189870818962198999, guid: a53b80592d7404d498fb05550c9144d6, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2189870819492480555, guid: a53b80592d7404d498fb05550c9144d6, type: 3}
   m_PrefabInstance: {fileID: 652472242}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &348365546
+--- !u!114 &237283208
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 348365544}
+  m_GameObject: {fileID: 237283200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec0bb0baa12364743867d51708052565, type: 3}
+  m_Script: {fileID: 11500000, guid: d2d991324559f4e24aaaba1401780f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_rotatePitchPosKey: 105
-  m_rotatePitchNegKey: 107
-  m_rotateYawPosKey: 108
-  m_rotateYawNegKey: 106
-  m_grabSpeed: 7
-  m_grabMinDistance: 1
-  m_grabMaxDistance: 10
-  m_scrollWheelSpeed: 5
-  m_angularSpeed: 300
-  m_impulseMagnitude: 25
-  m_grabProperties:
-    m_useGravity: 0
-    m_drag: 10
-    m_angularDrag: 10
-    m_constraints: 112
-  m_collisionMask:
-    serializedVersion: 2
-    m_Bits: 1
-  m_targetRB: {fileID: 0}
 --- !u!1001 &479946467
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -331,23 +312,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 1507306748, guid: a53b80592d7404d498fb05550c9144d6, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a53b80592d7404d498fb05550c9144d6, type: 3}
---- !u!1 &1201362309 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1376860103452382920, guid: fbff51be1f4e5fc4f958e56b6b5181de, type: 3}
-  m_PrefabInstance: {fileID: 1376860104770480955}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1201362310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1201362309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 090c7b63d84df45bfa372629e7d889a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1376860104770480955
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -355,6 +319,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1376860103452382920, guid: fbff51be1f4e5fc4f958e56b6b5181de, type: 3}
+      propertyPath: m_TagString
+      value: Respawn
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376860104186797098, guid: fbff51be1f4e5fc4f958e56b6b5181de, type: 3}
+      propertyPath: m_TagString
+      value: Respawn
+      objectReference: {fileID: 0}
     - target: {fileID: 2210790934444956941, guid: fbff51be1f4e5fc4f958e56b6b5181de, type: 3}
       propertyPath: m_Name
       value: Level1
@@ -405,20 +377,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbff51be1f4e5fc4f958e56b6b5181de, type: 3}
---- !u!1 &1376860104770480956 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1376860104186797098, guid: fbff51be1f4e5fc4f958e56b6b5181de, type: 3}
-  m_PrefabInstance: {fileID: 1376860104770480955}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1376860104770480957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1376860104770480956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 090c7b63d84df45bfa372629e7d889a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

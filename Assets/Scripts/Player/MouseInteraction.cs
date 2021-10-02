@@ -27,6 +27,10 @@ public class MouseInteraction : MonoBehaviour
                 if(Input.GetMouseButtonDown(0))
                 {
                     target.GetComponent<Interactable>().interact();
+                    if (GetComponentInParent<Respawner>() != null)
+                    {
+                        GetComponentInParent<Respawner>().SaveSpawnPoint();
+                    }
                 }
             }
             else if(target.GetComponent<Rigidbody>() != null)
