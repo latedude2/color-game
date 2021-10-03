@@ -20,8 +20,10 @@ public class LightManager : MonoBehaviour
         List<GameObject> pointingLights = new List<GameObject>();
         foreach (GameObject light in lights)
         {
-            //If the colored object cannot reflect the light
-            if (!color.HasFlag(light.GetComponent<ColoredLight>().GetColorCode()) || !light.GetComponent<Light>().enabled)
+            if( !light.GetComponent<Light>().enabled)
+                continue;
+            //If the colored object cannot reflect the light. We check for bitwise overlap here.
+            if((color & light.GetComponent<ColoredLight>().GetColorCode()) == 0)
             {
                 continue;
             }
