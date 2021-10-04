@@ -75,10 +75,14 @@ public class VisibleObject : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         VisibleObject visibleObject = collision.collider.GetComponent<VisibleObject>();
-        if(visibleObject != null && visibleObject.justMadeVisible)
+        if(visibleObject != null && visibleObject.GetComponent<Rigidbody>() & GetComponent<Rigidbody>() != null)
         {
-            AddJoint(visibleObject);
-            visibleObject.AddJoint(this);
+            if (justMadeVisible)
+            {
+                AddJoint(visibleObject.GetComponent<Rigidbody>());
+                if (!visibleObject.justMadeVisible)
+                    visibleObject.AddJoint(GetComponent<Rigidbody>());
+            }
         }
     }
 
@@ -104,35 +108,41 @@ public class VisibleObject : MonoBehaviour
             velocity = gameObject.GetComponent<Rigidbody>().velocity;
             gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            RemoveAllJoints();
         }
         _collider.enabled = false;
         visible = false;
 
-        gameObject.GetComponent<FixedJoint>().connectedBody.gameObject.GetComponent<VisibleObject>().RemoveJoints();
-        RemoveJoints();
     }
 
-    public void AddJoint(VisibleObject visibleObject)
+    public void AddJoint(Rigidbody body)
     {
-        if(visibleObject.gameObject.GetComponent<Rigidbody>() != null && gameObject.GetComponent<Rigidbody>() != null)
-            {
-                FixedJoint joint = gameObject.AddComponent<FixedJoint>();
-                joint.connectedBody = visibleObject.gameObject.GetComponent<Rigidbody>();
-            }
+        FixedJoint joint = gameObject.AddComponent<FixedJoint>();
+        joint.connectedBody = body;
     }
 
-    public void RemoveJoints()
+    public void RemoveJoint(Rigidbody body)
+    {
+        if (gameObject.GetComponent<FixedJoint>() != null)
+        {
+            foreach (var joint in GetComponents<FixedJoint>())
+            {
+                if (joint.connectedBody == body)
+                {
+                    Destroy(joint);
+                }
+            }
+        }
+    }
+
+    public void RemoveAllJoints()
     {
         if(gameObject.GetComponent<FixedJoint>() != null)
             {
-                FixedJoint[] joints = GetComponents<FixedJoint>();
-                foreach (var joint in joints)
+                foreach (var joint in GetComponents<FixedJoint>())
                 {
-                    Rigidbody connectedBody = joint.connectedBody;
-                    
-                    
-                    Destroy(gameObject.GetComponent<FixedJoint>());
-                    return;
+                    joint.connectedBody.GetComponent<VisibleObject>().RemoveJoint(GetComponent<Rigidbody>());
+                    Destroy(joint);
                 }
             }
     }
