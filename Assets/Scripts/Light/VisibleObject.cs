@@ -22,6 +22,8 @@ public class VisibleObject : MonoBehaviour
     //Used for keeping the velocity of a non-visible object
     Vector3 velocity;
 
+    bool justMadeVisible = false;
+
     void Start()
     {
         blockingLayers = 0b_0000_1001; //Block rays with default and static layers
@@ -43,6 +45,8 @@ public class VisibleObject : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(visible)
+            justMadeVisible = false;
         gameObject.GetComponent<Rigidbody>().WakeUp();
         shinePoints = FindShinePoints();
         // When object becomes lit and interactable
@@ -68,6 +72,19 @@ public class VisibleObject : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        VisibleObject visibleObject = collision.collider.GetComponent<VisibleObject>();
+        if(visibleObject != null && visibleObject.justMadeVisible)
+        {
+            if(visibleObject.gameObject.GetComponent<Rigidbody>() != null && gameObject.GetComponent<Rigidbody>() != null)
+            {
+                FixedJoint joint = gameObject.AddComponent<FixedJoint>();
+                joint.connectedBody = visibleObject.gameObject.GetComponent<Rigidbody>();
+            }
+        }
+    }
+
     private void SetToVisible()
     {
         if (gameObject.GetComponent<Rigidbody>() != null)
@@ -77,6 +94,7 @@ public class VisibleObject : MonoBehaviour
         }
         _collider.enabled = true;
         visible = true;
+        justMadeVisible = true;
     }
 
     private void SetToInvisible()
