@@ -77,11 +77,8 @@ public class VisibleObject : MonoBehaviour
         VisibleObject visibleObject = collision.collider.GetComponent<VisibleObject>();
         if(visibleObject != null && visibleObject.justMadeVisible)
         {
-            if(visibleObject.gameObject.GetComponent<Rigidbody>() != null && gameObject.GetComponent<Rigidbody>() != null)
-            {
-                FixedJoint joint = gameObject.AddComponent<FixedJoint>();
-                joint.connectedBody = visibleObject.gameObject.GetComponent<Rigidbody>();
-            }
+            AddJoint(visibleObject);
+            visibleObject.AddJoint(this);
         }
     }
 
@@ -110,6 +107,34 @@ public class VisibleObject : MonoBehaviour
         }
         _collider.enabled = false;
         visible = false;
+
+        gameObject.GetComponent<FixedJoint>().connectedBody.gameObject.GetComponent<VisibleObject>().RemoveJoints();
+        RemoveJoints();
+    }
+
+    public void AddJoint(VisibleObject visibleObject)
+    {
+        if(visibleObject.gameObject.GetComponent<Rigidbody>() != null && gameObject.GetComponent<Rigidbody>() != null)
+            {
+                FixedJoint joint = gameObject.AddComponent<FixedJoint>();
+                joint.connectedBody = visibleObject.gameObject.GetComponent<Rigidbody>();
+            }
+    }
+
+    public void RemoveJoints()
+    {
+        if(gameObject.GetComponent<FixedJoint>() != null)
+            {
+                FixedJoint[] joints = GetComponents<FixedJoint>();
+                foreach (var joint in joints)
+                {
+                    Rigidbody connectedBody = joint.connectedBody;
+                    
+                    
+                    Destroy(gameObject.GetComponent<FixedJoint>());
+                    return;
+                }
+            }
     }
 
 
