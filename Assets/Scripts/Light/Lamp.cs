@@ -5,7 +5,7 @@ using UnityEngine;
 public class Lamp : MonoBehaviour
 {
     [SerializeField]
-    float turnSpeed = 50.0f;
+    float turnSpeed = 80.0f;
 
     public float GetTurnSpeed()
     {

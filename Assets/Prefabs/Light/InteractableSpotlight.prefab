@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 3446058014356249260}
   - component: {fileID: 134109528789570200}
   - component: {fileID: 6711570098032760964}
-  - component: {fileID: 6948572517531057598}
+  - component: {fileID: 4817720990808454284}
   m_Layer: 0
   m_Name: InteractableSpotlight
   m_TagString: Untagged
@@ -222,7 +222,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1786087970112810122}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 20
   m_Drag: 0
   m_AngularDrag: 15
   m_UseGravity: 0
@@ -266,7 +266,7 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
---- !u!114 &6948572517531057598
+--- !u!114 &4817720990808454284
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -278,6 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abe1d09100fdb4c8aafb0d9945e3be83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnSpeed: 80
 --- !u!1 &7949275480017003054
 GameObject:
   m_ObjectHideFlags: 0
