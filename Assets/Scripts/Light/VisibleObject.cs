@@ -43,6 +43,7 @@ public class VisibleObject : MonoBehaviour
 
     void FixedUpdate()
     {
+        gameObject.GetComponent<Rigidbody>().WakeUp();
         shinePoints = FindShinePoints();
         // When object becomes lit and interactable
         ColorCode objectFinalColor = FindShownColor();
