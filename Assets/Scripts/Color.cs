@@ -12,6 +12,3 @@ public enum ColorCode
     Cyan    = 0b_0000_0110,
     White   = 0b_0000_0111
 }
-
-
-
