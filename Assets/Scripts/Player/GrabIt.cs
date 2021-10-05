@@ -205,8 +205,17 @@ namespace Lightbug.GrabIt
             Vector3 hitPointPos = m_hitPointObject.transform.position;
             Vector3 dif = m_targetPos - hitPointPos;
 
-            if (m_isHingeJoint || m_isCharacterJoint)
-                m_targetRB.AddForceAtPosition(m_grabSpeed * dif * 100, hitPointPos, ForceMode.Force);
+            if (m_isHingeJoint || m_isCharacterJoint){
+                if (m_targetRB.GetComponent<Lamp>() != null)
+                {
+                    Vector3 targetDirection = m_transform.transform.forward;
+                    Quaternion targetrotation = Quaternion.LookRotation(targetDirection);
+                    float turnspeed = m_targetRB.GetComponent<Lamp>().GetTurnSpeed();
+                    m_targetRB.transform.rotation = Quaternion.RotateTowards(m_targetRB.transform.rotation, targetrotation, Time.fixedDeltaTime * turnspeed);
+                }
+                else
+                    m_targetRB.AddForceAtPosition(m_grabSpeed * dif * 100, hitPointPos, ForceMode.Force);
+            }
             else
                 m_targetRB.velocity = m_grabSpeed * dif;
 
