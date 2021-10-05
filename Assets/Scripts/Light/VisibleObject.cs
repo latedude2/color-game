@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Lightbug.GrabIt;
 
@@ -16,17 +17,26 @@ public class VisibleObject : MonoBehaviour
     private bool visible = false;
 
     [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
+    LayerMask blockingLayers;
     
-
+    //Used for keeping the velocity of a non-visible object
     Vector3 velocity;
+
+    bool justMadeVisible = false;
 
     void Start()
     {
+        blockingLayers = 0b_0000_1001; //Block rays with default and static layers
         lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         grabIt = GameObject.Find("Main Camera").GetComponent<GrabIt>();
         _renderer = GetComponent<Renderer>();
+        if(trueColor == ColorCode.Black)
+        {
+            trueColor = (ColorCode) Enum.Parse(typeof(ColorCode), _renderer.material.name.Replace("(Instance)",""));
+        }
         blackMat = Resources.Load<Material>("Materials/Black");
         _renderer.material = blackMat;
+        
         _collider = GetComponent<Collider>();
         _collider.enabled = false;
         if (gameObject.GetComponent<Rigidbody>() != null)
@@ -35,6 +45,9 @@ public class VisibleObject : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(visible)
+            justMadeVisible = false;
+        gameObject.GetComponent<Rigidbody>().WakeUp();
         shinePoints = FindShinePoints();
         // When object becomes lit and interactable
         ColorCode objectFinalColor = FindShownColor();
@@ -59,6 +72,19 @@ public class VisibleObject : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        VisibleObject visibleObject = collision.collider.GetComponent<VisibleObject>();
+        if(visibleObject != null && visibleObject.justMadeVisible)
+        {
+            if(visibleObject.gameObject.GetComponent<Rigidbody>() != null && gameObject.GetComponent<Rigidbody>() != null)
+            {
+                FixedJoint joint = gameObject.AddComponent<FixedJoint>();
+                joint.connectedBody = visibleObject.gameObject.GetComponent<Rigidbody>();
+            }
+        }
+    }
+
     private void SetToVisible()
     {
         if (gameObject.GetComponent<Rigidbody>() != null)
@@ -68,6 +94,7 @@ public class VisibleObject : MonoBehaviour
         }
         _collider.enabled = true;
         visible = true;
+        justMadeVisible = true;
     }
 
     private void SetToInvisible()
@@ -116,6 +143,7 @@ public class VisibleObject : MonoBehaviour
         {
             foreach (GameObject light in lightManager.GetPointingLights(point, color))
             {
+                
                 if (pointReached(point, light))
                 {
                     return true;
@@ -181,11 +209,15 @@ public class VisibleObject : MonoBehaviour
     bool pointReached(Vector3 point, GameObject pointingLight)
     {
         Vector3 lightPos = pointingLight.transform.position;
+        var gameObjectLayer = gameObject.layer;
+        gameObject.layer = 0b_0000_0010;    //We ignore the object itself since we assume the visible object will always be concave
         if (ColorGame.Debug.debugMode)
         {
             UnityEngine.Debug.DrawLine(point, lightPos, Color.red);
         }
-        return !Physics.Linecast(point, lightPos, 0);
+        bool nothingIsBlockingLight = !Physics.Linecast(point, lightPos, blockingLayers);
+        gameObject.layer = gameObjectLayer; //set back the original layer
+        return nothingIsBlockingLight;
     }
 
 }
