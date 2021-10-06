@@ -151,7 +151,6 @@ public class VisibleObject : MonoBehaviour
             }
     }
 
-
     private void SetColor(ColorCode color)
     {
         colorMat = Resources.Load<Material>("Materials/" + color.ToString());
@@ -163,15 +162,15 @@ public class VisibleObject : MonoBehaviour
         ColorCode finalColor = ColorCode.Black;
         var gameObjectLayer = gameObject.layer;
         gameObject.layer = 0b_0000_0010;    //We ignore the object itself since we assume the visible object will always be concave
-        if(trueColor.HasFlag(ColorCode.Green) && isShinedOn(ColorCode.Green))
+        if(trueColor.HasFlag(ColorCode.Green) && IsShinedByColor(ColorCode.Green))
         {
             finalColor = finalColor | ColorCode.Green;
         }
-        if(trueColor.HasFlag(ColorCode.Red) && isShinedOn(ColorCode.Red))
+        if(trueColor.HasFlag(ColorCode.Red) && IsShinedByColor(ColorCode.Red))
         {
             finalColor = finalColor | ColorCode.Red;
         }
-        if(trueColor.HasFlag(ColorCode.Blue) && isShinedOn(ColorCode.Blue))
+        if(trueColor.HasFlag(ColorCode.Blue) && IsShinedByColor(ColorCode.Blue))
         {
             finalColor = finalColor | ColorCode.Blue;
         }
@@ -179,13 +178,13 @@ public class VisibleObject : MonoBehaviour
         return finalColor;
     }
 
-    private bool isShinedOn(ColorCode color)
+    private bool IsShinedByColor(ColorCode color)
     {
-        foreach (ShinePoint point in shinePoints)
+        foreach (ShinePoint shinePoint in shinePoints)
         {
-            foreach (GameObject light in LightManager.GetPointingLights(point.GetPosition(), color))
+            foreach (GameObject light in LightManager.GetPointingLights(shinePoint.GetPosition(), color))
             {
-                if (point.Reached(light))
+                if (shinePoint.Reached(light))
                 {
                     return true;
                 }
