@@ -51,7 +51,8 @@ public class VisibleObject : MonoBehaviour
     {
         if(visible)
             justMadeVisible = false;
-        _rigidbody.WakeUp();
+        if (_rigidbody != null)
+            _rigidbody.WakeUp();
         shinePoints = FindShinePoints();
         // When object becomes lit and interactable
         ColorCode objectFinalColor = FindShownColor();
