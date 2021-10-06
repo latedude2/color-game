@@ -32,9 +32,9 @@ public class TestLightManager
         Vector3 testPointBehind = lightTransform.position - lightTransform.forward; 
 
         //Check if at least 1 light sees the point
-        Assert.AreNotEqual(lightManager.GetPointingLights(testPoint, ColorCode.White).Length, 0);  
+        Assert.AreNotEqual(LightManager.GetPointingLights(testPoint, ColorCode.White).Length, 0);  
         //Check that no light sees the point
-        Assert.AreEqual(lightManager.GetPointingLights(testPointBehind, ColorCode.White).Length, 0);  
+        Assert.AreEqual(LightManager.GetPointingLights(testPointBehind, ColorCode.White).Length, 0);  
 
         yield return null;
     }
