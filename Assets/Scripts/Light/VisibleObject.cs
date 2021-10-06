@@ -84,9 +84,9 @@ public class VisibleObject : MonoBehaviour
         {
             if (justMadeVisible)
             {
-                AddJoint(visibleObject._rigidbody);
+                AddFixedJoint(visibleObject._rigidbody);
                 if (!visibleObject.justMadeVisible)
-                    visibleObject.AddJoint(_rigidbody);
+                    visibleObject.AddFixedJoint(_rigidbody);
             }
         }
     }
@@ -113,26 +113,26 @@ public class VisibleObject : MonoBehaviour
             velocity = _rigidbody.velocity;
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.isKinematic = true;
-            RemoveAllJoints();
+            RemoveAllFixedJoints();
         }
         _collider.enabled = false;
         visible = false;
 
     }
 
-    public void AddJoint(Rigidbody body)
+    public void AddFixedJoint(Rigidbody connectedbody)
     {
         FixedJoint joint = gameObject.AddComponent<FixedJoint>();
-        joint.connectedBody = body;
+        joint.connectedBody = connectedbody;
     }
 
-    public void RemoveJoint(Rigidbody body)
+    public void RemoveFixedJoint(Rigidbody connectedbody)
     {
         if (gameObject.GetComponent<FixedJoint>() != null)
         {
             foreach (var joint in GetComponents<FixedJoint>())
             {
-                if (joint.connectedBody == body)
+                if (joint.connectedBody == connectedbody)
                 {
                     Destroy(joint);
                 }
@@ -140,13 +140,13 @@ public class VisibleObject : MonoBehaviour
         }
     }
 
-    public void RemoveAllJoints()
+    public void RemoveAllFixedJoints()
     {
         if(gameObject.GetComponent<FixedJoint>() != null)
             {
                 foreach (var joint in GetComponents<FixedJoint>())
                 {
-                    joint.connectedBody.GetComponent<VisibleObject>().RemoveJoint(_rigidbody);
+                    joint.connectedBody.GetComponent<VisibleObject>().RemoveFixedJoint(_rigidbody);
                     Destroy(joint);
                 }
             }
@@ -184,7 +184,7 @@ public class VisibleObject : MonoBehaviour
             foreach (GameObject light in lightManager.GetPointingLights(point, color))
             {
                 
-                if (pointReached(point, light))
+                if (ShinePointReached(point, light))
                 {
                     return true;
                 }
@@ -208,7 +208,7 @@ public class VisibleObject : MonoBehaviour
                 for (int x = -shinePointMultiplier; x <= shinePointMultiplier; x++)
                 {
                     // skip the middle of the box
-                    if (!IsPointInMiddle(x, y, z, shinePointMultiplier))
+                    if (!IsShinePointInMiddle(x, y, z, shinePointMultiplier))
                         shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x * x / shinePointMultiplier, b.size.y * y / shinePointMultiplier, b.size.z * z / shinePointMultiplier) * 0.50f));
                 }
             }
@@ -217,7 +217,7 @@ public class VisibleObject : MonoBehaviour
         return shinepoints.ToArray();
     }
 
-    bool IsPointInMiddle(int x, int y, int z, int shinePointMultiplier)
+    bool IsShinePointInMiddle(int x, int y, int z, int shinePointMultiplier)
     {
         if(x == shinePointMultiplier || x == -shinePointMultiplier)
             return false;
@@ -246,7 +246,7 @@ public class VisibleObject : MonoBehaviour
         }
     }
 
-    bool pointReached(Vector3 point, GameObject pointingLight)
+    bool ShinePointReached(Vector3 point, GameObject pointingLight)
     {
         Vector3 lightPos = pointingLight.transform.position;
         var gameObjectLayer = gameObject.layer;
