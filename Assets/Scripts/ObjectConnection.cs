@@ -36,5 +36,4 @@ public class ObjectConnection
             connectorObject.UnfreezeMotion();
         }
     }
-
 }
