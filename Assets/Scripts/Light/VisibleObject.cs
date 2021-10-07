@@ -15,6 +15,7 @@ public class VisibleObject : MonoBehaviour
     private ShinePoint[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
     private GrabIt grabIt;
+    public List<ObjectConnection> objectConnections = new List<ObjectConnection>();
     private bool visible = false;
 
     [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
@@ -79,13 +80,13 @@ public class VisibleObject : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         VisibleObject visibleObject = collision.collider.GetComponent<VisibleObject>();
-        if(visibleObject != null && visibleObject._rigidbody & _rigidbody != null)
+        if(visibleObject != null)
         {
             if (justMadeVisible)
             {
-                AddFixedJoint(visibleObject._rigidbody);
+                AddObjectConnection(visibleObject);
                 if (!visibleObject.justMadeVisible)
-                    visibleObject.AddFixedJoint(_rigidbody);
+                    visibleObject.AddObjectConnection(this);
             }
         }
     }
@@ -94,8 +95,7 @@ public class VisibleObject : MonoBehaviour
     {
         if (_rigidbody != null)
         {
-            _rigidbody.isKinematic = false;
-            _rigidbody.velocity = velocity;
+            UnfreezeMotion();
         }
         _collider.enabled = true;
         visible = true;
@@ -108,48 +108,53 @@ public class VisibleObject : MonoBehaviour
             grabIt.Drop();
         SetColor(ColorCode.Black);
         if (_rigidbody != null)
-        {
-            velocity = _rigidbody.velocity;
-            _rigidbody.velocity = Vector3.zero;
-            _rigidbody.isKinematic = true;
-            RemoveAllFixedJoints();
-        }
+            FreezeMotion();
+        RemoveAllObjectConnections();
         _collider.enabled = false;
         visible = false;
-
     }
 
-    public void AddFixedJoint(Rigidbody connectedbody)
+    public void FreezeMotion(bool resetVelocity = false)
     {
-        FixedJoint joint = gameObject.AddComponent<FixedJoint>();
-        joint.connectedBody = connectedbody;
+        velocity = resetVelocity ? Vector3.zero : _rigidbody.velocity;
+        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.isKinematic = true;
     }
 
-    public void RemoveFixedJoint(Rigidbody connectedbody)
+    public void UnfreezeMotion()
     {
-        if (gameObject.GetComponent<FixedJoint>() != null)
+        _rigidbody.isKinematic = false;
+        _rigidbody.velocity = velocity;
+    }
+
+    public void AddObjectConnection(VisibleObject other)
+    {
+        objectConnections.Add(new ObjectConnection(this, other));
+    }
+
+    public void RemoveObjectConnection(VisibleObject other)
+    {
+        for (int i = objectConnections.Count - 1; i >= 0; i--)
         {
-            foreach (var joint in GetComponents<FixedJoint>())
+            if (objectConnections[i].connectedObject == other)
             {
-                if (joint.connectedBody == connectedbody)
-                {
-                    Destroy(joint);
-                }
+                objectConnections[i].RemoveFixedJoint();
+                objectConnections.RemoveAt(i);
             }
         }
     }
 
-    public void RemoveAllFixedJoints()
+    public void RemoveAllObjectConnections()
     {
-        if(gameObject.GetComponent<FixedJoint>() != null)
-            {
-                foreach (var joint in GetComponents<FixedJoint>())
-                {
-                    joint.connectedBody.GetComponent<VisibleObject>().RemoveFixedJoint(_rigidbody);
-                    Destroy(joint);
-                }
-            }
+        for (int i = objectConnections.Count - 1; i >= 0; i--)
+        {
+            objectConnections[i].connectedObject.RemoveObjectConnection(this);
+            objectConnections[i].RemoveFixedJoint();
+            objectConnections.RemoveAt(i);
+        }
     }
+
+
 
     private void SetColor(ColorCode color)
     {
