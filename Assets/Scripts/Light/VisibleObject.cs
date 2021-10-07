@@ -12,13 +12,14 @@ public class VisibleObject : MonoBehaviour
     private Material blackMat;
     private Collider _collider;
     private Rigidbody _rigidbody;
-    private Vector3[] shinePoints;    //A list of points of the box where we check if the box is hit by light
+    private ShinePoint[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
     private GrabIt grabIt;
+    public List<ObjectConnection> objectConnections = new List<ObjectConnection>();
     private bool visible = false;
 
     [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
-    LayerMask blockingLayers;
+    
     
     //Used for keeping the velocity of a non-visible object
     Vector3 velocity;
@@ -27,7 +28,6 @@ public class VisibleObject : MonoBehaviour
 
     void Start()
     {
-        blockingLayers = 0b_0000_1001; //Block rays with default and static layers
         lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         grabIt = GameObject.Find("Main Camera").GetComponent<GrabIt>();
         _renderer = GetComponent<Renderer>();
@@ -80,13 +80,13 @@ public class VisibleObject : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         VisibleObject visibleObject = collision.collider.GetComponent<VisibleObject>();
-        if(visibleObject != null && visibleObject._rigidbody & _rigidbody != null)
+        if(visibleObject != null)
         {
             if (justMadeVisible)
             {
-                AddFixedJoint(visibleObject._rigidbody);
+                AddObjectConnection(visibleObject);
                 if (!visibleObject.justMadeVisible)
-                    visibleObject.AddFixedJoint(_rigidbody);
+                    visibleObject.AddObjectConnection(this);
             }
         }
     }
@@ -95,8 +95,7 @@ public class VisibleObject : MonoBehaviour
     {
         if (_rigidbody != null)
         {
-            _rigidbody.isKinematic = false;
-            _rigidbody.velocity = velocity;
+            UnfreezeMotion();
         }
         _collider.enabled = true;
         visible = true;
@@ -109,48 +108,52 @@ public class VisibleObject : MonoBehaviour
             grabIt.Drop();
         SetColor(ColorCode.Black);
         if (_rigidbody != null)
-        {
-            velocity = _rigidbody.velocity;
-            _rigidbody.velocity = Vector3.zero;
-            _rigidbody.isKinematic = true;
-            RemoveAllFixedJoints();
-        }
+            FreezeMotion();
+        RemoveAllObjectConnections();
         _collider.enabled = false;
         visible = false;
-
     }
 
-    public void AddFixedJoint(Rigidbody connectedbody)
+    public void FreezeMotion(bool resetVelocity = false)
     {
-        FixedJoint joint = gameObject.AddComponent<FixedJoint>();
-        joint.connectedBody = connectedbody;
+        velocity = resetVelocity ? Vector3.zero : _rigidbody.velocity;
+        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.isKinematic = true;
     }
 
-    public void RemoveFixedJoint(Rigidbody connectedbody)
+    public void UnfreezeMotion()
     {
-        if (gameObject.GetComponent<FixedJoint>() != null)
+        _rigidbody.isKinematic = false;
+        _rigidbody.velocity = velocity;
+    }
+
+    public void AddObjectConnection(VisibleObject other)
+    {
+        objectConnections.Add(new ObjectConnection(this, other));
+    }
+
+    public void RemoveObjectConnection(VisibleObject other)
+    {
+        for (int i = objectConnections.Count - 1; i >= 0; i--)
         {
-            foreach (var joint in GetComponents<FixedJoint>())
+            if (objectConnections[i].connectedObject == other)
             {
-                if (joint.connectedBody == connectedbody)
-                {
-                    Destroy(joint);
-                }
+                objectConnections[i].RemoveFixedJoint();
+                objectConnections.RemoveAt(i);
             }
         }
     }
 
-    public void RemoveAllFixedJoints()
+    public void RemoveAllObjectConnections()
     {
-        if(gameObject.GetComponent<FixedJoint>() != null)
-            {
-                foreach (var joint in GetComponents<FixedJoint>())
-                {
-                    joint.connectedBody.GetComponent<VisibleObject>().RemoveFixedJoint(_rigidbody);
-                    Destroy(joint);
-                }
-            }
+        for (int i = objectConnections.Count - 1; i >= 0; i--)
+        {
+            objectConnections[i].connectedObject.RemoveObjectConnection(this);
+            objectConnections[i].RemoveFixedJoint();
+            objectConnections.RemoveAt(i);
+        }
     }
+
 
 
     private void SetColor(ColorCode color)
@@ -162,29 +165,31 @@ public class VisibleObject : MonoBehaviour
     private ColorCode FindShownColor()
     {
         ColorCode finalColor = ColorCode.Black;
-        if(trueColor.HasFlag(ColorCode.Green) && isShinedOn(ColorCode.Green))
+        var gameObjectLayer = gameObject.layer;
+        gameObject.layer = 0b_0000_0010;    //We ignore the object itself since we assume the visible object will always be concave
+        if(trueColor.HasFlag(ColorCode.Green) && IsShinedByColor(ColorCode.Green))
         {
             finalColor = finalColor | ColorCode.Green;
         }
-        if(trueColor.HasFlag(ColorCode.Red) && isShinedOn(ColorCode.Red))
+        if(trueColor.HasFlag(ColorCode.Red) && IsShinedByColor(ColorCode.Red))
         {
             finalColor = finalColor | ColorCode.Red;
         }
-        if(trueColor.HasFlag(ColorCode.Blue) && isShinedOn(ColorCode.Blue))
+        if(trueColor.HasFlag(ColorCode.Blue) && IsShinedByColor(ColorCode.Blue))
         {
             finalColor = finalColor | ColorCode.Blue;
         }
+        gameObject.layer = gameObjectLayer; //set back the original layer
         return finalColor;
     }
 
-    private bool isShinedOn(ColorCode color)
+    private bool IsShinedByColor(ColorCode color)
     {
-        foreach (Vector3 point in shinePoints)
+        foreach (ShinePoint shinePoint in shinePoints)
         {
-            foreach (GameObject light in lightManager.GetPointingLights(point, color))
+            foreach (GameObject light in LightManager.GetPointingLights(shinePoint.GetPosition(), color))
             {
-                
-                if (ShinePointReached(point, light))
+                if (shinePoint.Reached(light))
                 {
                     return true;
                 }
@@ -193,10 +198,10 @@ public class VisibleObject : MonoBehaviour
         return false;
     }
 
-    Vector3[] FindShinePoints()
+    ShinePoint[] FindShinePoints()
     {
         //Create a list of points for the visible object that we will be checking for shine.
-        List<Vector3> shinepoints = new List<Vector3>();
+        List<ShinePoint> shinepoints = new List<ShinePoint>();
 
         BoxCollider b = GetComponent<BoxCollider>();
         
@@ -209,7 +214,7 @@ public class VisibleObject : MonoBehaviour
                 {
                     // skip the middle of the box
                     if (!IsShinePointInMiddle(x, y, z, shinePointMultiplier))
-                        shinepoints.Add(transform.TransformPoint(b.center + new Vector3(b.size.x * x / shinePointMultiplier, b.size.y * y / shinePointMultiplier, b.size.z * z / shinePointMultiplier) * 0.50f));
+                        shinepoints.Add(new ShinePoint(transform.TransformPoint(b.center + new Vector3(b.size.x * x / shinePointMultiplier, b.size.y * y / shinePointMultiplier, b.size.z * z / shinePointMultiplier) * 0.50f)));
                 }
             }
         }
@@ -236,8 +241,10 @@ public class VisibleObject : MonoBehaviour
             try
             {
                 // Draw spheres for ShinePoints for debugging
-                foreach (Vector3 point in shinePoints)
-                    Gizmos.DrawSphere(point, .05f);
+                foreach (ShinePoint point in shinePoints)
+                {
+                    Gizmos.DrawSphere(point.GetPosition(), .05f);
+                }
             }
             catch
             {
@@ -246,18 +253,5 @@ public class VisibleObject : MonoBehaviour
         }
     }
 
-    bool ShinePointReached(Vector3 point, GameObject pointingLight)
-    {
-        Vector3 lightPos = pointingLight.transform.position;
-        var gameObjectLayer = gameObject.layer;
-        gameObject.layer = 0b_0000_0010;    //We ignore the object itself since we assume the visible object will always be concave
-        if (ColorGame.Debug.debugMode)
-        {
-            UnityEngine.Debug.DrawLine(point, lightPos, Color.red);
-        }
-        bool nothingIsBlockingLight = !Physics.Linecast(point, lightPos, blockingLayers);
-        gameObject.layer = gameObjectLayer; //set back the original layer
-        return nothingIsBlockingLight;
-    }
 
 }
