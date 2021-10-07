@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 2189870818962198996}
   - component: {fileID: 2214142238354633568}
   - component: {fileID: 6309346235543115876}
-  - component: {fileID: 8403398552598257590}
   m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -160,18 +159,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_targetRB: {fileID: 0}
---- !u!114 &8403398552598257590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2189870818962198999}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b715e5c62f90cbb44b1330f9ea52f9cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2189870819492480555
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,6 +174,7 @@ GameObject:
   - component: {fileID: 2189870819492480556}
   - component: {fileID: 2189870819492480547}
   - component: {fileID: 2189870819492480557}
+  - component: {fileID: 9066918659283960317}
   m_Layer: 6
   m_Name: Hero_Prefab
   m_TagString: Player
@@ -317,3 +305,15 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.4
   m_Center: {x: 0, y: -0.73, z: 0}
+--- !u!114 &9066918659283960317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2189870819492480555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2d991324559f4e24aaaba1401780f76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
