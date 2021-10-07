@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Outline
+  m_Name: Outlines
   m_Shader: {fileID: -6465566751694194690, guid: 208597041365c47488acbb7bb77f9dbb, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -77,6 +77,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - AcuteDepthStartDot: 1
+    - AcuteDepthThresholdMult: 1
+    - DepthStrength: 11.71
+    - DepthThreshold: 1.77
+    - DepthTightening: 0.22
+    - FarDepthStart: 1.33
+    - FarDepthThreshold: 10.7
+    - FarNormalStartDepth: 0.09
+    - FarNormalThresholdMult: 1
+    - NormalStrength: 2.61
+    - NormalThreshold: 1
+    - NormalTightening: 1
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -107,6 +119,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - OutlineColor: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
