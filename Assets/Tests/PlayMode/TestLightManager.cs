@@ -13,7 +13,7 @@ public class TestLightManager
     public IEnumerator LightManagerWithEnumeratorPasses()
     {
         //Setup test
-        SceneManager.LoadScene("PlayGround");
+        SceneManager.LoadScene("TestScene");
         yield return null; //Pass one frame
         LightManager lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         
@@ -24,7 +24,7 @@ public class TestLightManager
     [UnityTest]
     public IEnumerator GetPointingLightsWithEnumeratorPasses()
     {
-        SceneManager.LoadScene("PlayGround");
+        SceneManager.LoadScene("TestScene");
         yield return null; //Pass one frame
         LightManager lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         Transform lightTransform = lightManager.gameObject.GetComponentInChildren<Light>().transform;
@@ -32,9 +32,9 @@ public class TestLightManager
         Vector3 testPointBehind = lightTransform.position - lightTransform.forward; 
 
         //Check if at least 1 light sees the point
-        Assert.AreNotEqual(lightManager.GetPointingLights(testPoint, ColorCode.White).Length, 0);  
+        Assert.AreNotEqual(LightManager.GetPointingLights(testPoint, ColorCode.White).Length, 0);  
         //Check that no light sees the point
-        Assert.AreEqual(lightManager.GetPointingLights(testPointBehind, ColorCode.White).Length, 0);  
+        Assert.AreEqual(LightManager.GetPointingLights(testPointBehind, ColorCode.White).Length, 0);  
 
         yield return null;
     }
