@@ -128,13 +128,7 @@ public class VisibleObject : MonoBehaviour
     private void SetBoundBox(bool show)
     {
         if (boundBox != null)
-        {
-            foreach (var line in GetComponentsInChildren<LineRenderer>())
-            {
-                line.gameObject.layer = show ? LayerMask.NameToLayer("Non-interactable") : LayerMask.NameToLayer("Default");
-            }
             boundBox.enabled = show;
-        }
     }
 
     public void FreezeMotion(bool resetVelocity = false)
