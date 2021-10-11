@@ -48,12 +48,11 @@ public class VisibleObject : MonoBehaviour
             _rigidbody.isKinematic = true;
         }
         boundBox = GetComponent<BoundBox>();
-        if (boundBox != null && ColorUtility.TryParseHtmlString(trueColor.ToString().ToLower(), out Color newCol))
+        if (boundBox != null)
         {
-            boundBox.lineColor = newCol;
+            boundBox.lineColor = ColorHelper.GetColor(trueColor);
             boundBox.SetLineRenderers();
         }
-        SetBoundBox(true);
     }
 
     void FixedUpdate()
@@ -109,7 +108,6 @@ public class VisibleObject : MonoBehaviour
         _collider.enabled = true;
         visible = true;
         justMadeVisible = true;
-        SetBoundBox(false);
     }
 
     private void SetToInvisible()
@@ -122,13 +120,6 @@ public class VisibleObject : MonoBehaviour
         RemoveAllObjectConnections();
         _collider.enabled = false;
         visible = false;
-        SetBoundBox(true);
-    }
-
-    private void SetBoundBox(bool show)
-    {
-        if (boundBox != null)
-            boundBox.enabled = show;
     }
 
     public void FreezeMotion(bool resetVelocity = false)
