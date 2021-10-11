@@ -48,11 +48,8 @@ public class VisibleObject : MonoBehaviour
             _rigidbody.isKinematic = true;
         }
         boundBox = GetComponent<BoundBox>();
-        if (boundBox != null)
-        {
-            boundBox.lineColor = ColorHelper.GetColor(trueColor);
-            boundBox.SetLineRenderers();
-        }
+        boundBox.lineColor = ColorHelper.GetColor(trueColor);
+        boundBox.SetLineRenderers();
     }
 
     void FixedUpdate()
