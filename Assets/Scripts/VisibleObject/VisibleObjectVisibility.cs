@@ -4,7 +4,7 @@ using UnityEngine;
 using Lightbug.GrabIt;
 using DimBoxes;
 
-public class VisibleObject : MonoBehaviour
+public class VisibleObjectVisibility : MonoBehaviour
 {
     private ColorCode color = ColorCode.Black;
     [SerializeField] private ColorCode trueColor = ColorCode.Black;
@@ -12,26 +12,18 @@ public class VisibleObject : MonoBehaviour
     private Material colorMat;
     private Material blackMat;
     private BoundBox boundBox;
-    private Collider _collider;
-    private Rigidbody _rigidbody;
     private ShinePoint[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
-    private GrabIt grabIt;
-    private List<ObjectConnection> objectConnections = new List<ObjectConnection>();
     private bool visible = false;
 
     [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
-    
-    
-    //Used for keeping the velocity of a non-visible object
-    Vector3 velocity;
 
-    bool justMadeVisible = false;
-
+    VisibleObjectPhysics _physics;
+    
     void Start()
     {
+        _physics = GetComponent<VisibleObjectPhysics>();
         lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
-        grabIt = GameObject.Find("Main Camera").GetComponent<GrabIt>();
         _renderer = GetComponent<Renderer>();
         if(trueColor == ColorCode.Black)
         {
@@ -39,14 +31,6 @@ public class VisibleObject : MonoBehaviour
         }
         blackMat = Resources.Load<Material>("Materials/Black");
         _renderer.material = blackMat;
-        
-        _collider = GetComponent<Collider>();
-        _collider.enabled = false;
-        if (TryGetComponent(out Rigidbody rb))
-        {
-            _rigidbody = rb;
-            _rigidbody.isKinematic = true;
-        }
         boundBox = GetComponent<BoundBox>();
         boundBox.lineColor = ColorHelper.GetColor(trueColor);
         boundBox.SetLineRenderers();
@@ -54,10 +38,6 @@ public class VisibleObject : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(visible)
-            justMadeVisible = false;
-        if (_rigidbody != null)
-            _rigidbody.WakeUp();
         shinePoints = FindShinePoints();
         // When object becomes lit and interactable
         ColorCode objectFinalColor = FindShownColor();
@@ -77,89 +57,23 @@ public class VisibleObject : MonoBehaviour
             // If object is visible, make invisible
             if (visible)
             {
+                SetColor(ColorCode.Black);
                 SetToInvisible();
-            }
-        }
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        VisibleObject visibleObject = collision.collider.GetComponent<VisibleObject>();
-        if(visibleObject != null)
-        {
-            if (justMadeVisible)
-            {
-                AddObjectConnection(visibleObject);
-                if (!visibleObject.justMadeVisible)
-                    visibleObject.AddObjectConnection(this);
             }
         }
     }
 
     private void SetToVisible()
     {
-        if (_rigidbody != null)
-        {
-            UnfreezeMotion();
-        }
-        _collider.enabled = true;
+        _physics.SetToVisible();
         visible = true;
-        justMadeVisible = true;
     }
 
     private void SetToInvisible()
     {
-        if (grabIt.m_targetRB != null && gameObject == grabIt.m_targetRB.gameObject)
-            grabIt.Drop();
-        SetColor(ColorCode.Black);
-        if (_rigidbody != null)
-            FreezeMotion();
-        RemoveAllObjectConnections();
-        _collider.enabled = false;
+        _physics.SetToInvisible();
         visible = false;
     }
-
-    public void FreezeMotion(bool resetVelocity = false)
-    {
-        velocity = resetVelocity ? Vector3.zero : _rigidbody.velocity;
-        _rigidbody.velocity = Vector3.zero;
-        _rigidbody.isKinematic = true;
-    }
-
-    public void UnfreezeMotion()
-    {
-        _rigidbody.isKinematic = false;
-        _rigidbody.velocity = velocity;
-    }
-
-    public void AddObjectConnection(VisibleObject other)
-    {
-        objectConnections.Add(new ObjectConnection(this, other));
-    }
-
-    public void RemoveObjectConnection(VisibleObject other)
-    {
-        for (int i = objectConnections.Count - 1; i >= 0; i--)
-        {
-            if (objectConnections[i].connectedObject == other)
-            {
-                objectConnections[i].RemoveFixedJoint();
-                objectConnections.RemoveAt(i);
-            }
-        }
-    }
-
-    public void RemoveAllObjectConnections()
-    {
-        for (int i = objectConnections.Count - 1; i >= 0; i--)
-        {
-            objectConnections[i].connectedObject.RemoveObjectConnection(this);
-            objectConnections[i].RemoveFixedJoint();
-            objectConnections.RemoveAt(i);
-        }
-    }
-
-
 
     private void SetColor(ColorCode color)
     {
@@ -223,7 +137,6 @@ public class VisibleObject : MonoBehaviour
                 }
             }
         }
-
         return shinepoints.ToArray();
     }
 
@@ -257,6 +170,4 @@ public class VisibleObject : MonoBehaviour
             }
         }
     }
-
-
 }
