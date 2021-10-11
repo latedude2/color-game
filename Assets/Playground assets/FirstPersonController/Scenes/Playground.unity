@@ -886,7 +886,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8791425977831611135, guid: 6ed8e2e27bbecfd409642a0daaa572e3, type: 3}
       propertyPath: trueColor
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ed8e2e27bbecfd409642a0daaa572e3, type: 3}
@@ -967,42 +967,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ecf6aa2a2182cf4c843c0d565e94cd0, type: 3}
---- !u!1 &806333506 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2189870818962198999, guid: a53b80592d7404d498fb05550c9144d6, type: 3}
-  m_PrefabInstance: {fileID: 1227747303}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &806333507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 806333506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec0bb0baa12364743867d51708052565, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_rotatePitchPosKey: 105
-  m_rotatePitchNegKey: 107
-  m_rotateYawPosKey: 108
-  m_rotateYawNegKey: 106
-  m_grabSpeed: 7
-  m_grabMinDistance: 1
-  m_grabMaxDistance: 10
-  m_scrollWheelSpeed: 5
-  m_angularSpeed: 300
-  m_impulseMagnitude: 25
-  m_grabProperties:
-    m_useGravity: 1
-    m_drag: 10
-    m_angularDrag: 10
-    m_constraints: 112
-  m_collisionMask:
-    serializedVersion: 2
-    m_Bits: 1
-  m_targetRB: {fileID: 0}
 --- !u!1001 &1227747303
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1069,6 +1033,10 @@ PrefabInstance:
     - target: {fileID: 2189870819492480559, guid: a53b80592d7404d498fb05550c9144d6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6309346235543115876, guid: a53b80592d7404d498fb05550c9144d6, type: 3}
+      propertyPath: m_grabProperties.m_useGravity
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1136562672, guid: a53b80592d7404d498fb05550c9144d6, type: 3}
@@ -1527,7 +1495,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6179078771998550340, guid: a6e60557ebfe1504db46bd7b1ddf7ca5, type: 3}
       propertyPath: trueColor
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6304451894335775729, guid: a6e60557ebfe1504db46bd7b1ddf7ca5, type: 3}
       propertyPath: m_RootOrder
@@ -2513,7 +2481,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7945263513035447707, guid: ae8431a0ebce48f4eaf7dd8dc01b58d4, type: 3}
       propertyPath: trueColor
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8357180416119902424, guid: ae8431a0ebce48f4eaf7dd8dc01b58d4, type: 3}
       propertyPath: m_Positions.Array.data[0].x
