@@ -22,6 +22,18 @@ public class Respawner : MonoBehaviour
         }
     }
 
+    private void FixedUpdate() {
+        CheckOutOfBounds();
+    }
+
+    private void CheckOutOfBounds()
+    {
+        if (gameObject.transform.position.y < -5.0f)
+        {
+            this.gameObject.transform.position = spawnPoint;
+        }
+    }
+
     private void OnDestroy() {
         GrabIt.Released -= SaveSpawnPoint;
     }
