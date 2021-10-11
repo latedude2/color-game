@@ -6,10 +6,10 @@ using UnityEngine;
 public class ObjectConnection
 {
     FixedJoint fixedJoint;
-    public VisibleObject connectedObject { get; }
-    public VisibleObject connectorObject { get; }
+    public VisibleObjectPhysics connectedObject { get; }
+    public VisibleObjectPhysics connectorObject { get; }
 
-    public ObjectConnection(VisibleObject connector, VisibleObject connected)
+    public ObjectConnection(VisibleObjectPhysics connector, VisibleObjectPhysics connected)
     {
         this.connectorObject = connector;
         this.connectedObject = connected;
