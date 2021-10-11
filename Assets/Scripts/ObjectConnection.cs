@@ -33,7 +33,6 @@ public class ObjectConnection
         if (fixedJoint != null)
         {
             Object.Destroy(fixedJoint);
-            connectorObject.UnfreezeMotion();
         }
     }
 }

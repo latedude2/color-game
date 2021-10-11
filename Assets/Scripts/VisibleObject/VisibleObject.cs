@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using Lightbug.GrabIt;
+using DimBoxes;
 
 public class VisibleObject : MonoBehaviour
 {
@@ -10,12 +11,13 @@ public class VisibleObject : MonoBehaviour
     private Renderer _renderer;
     private Material colorMat;
     private Material blackMat;
+    private BoundBox boundBox;
     private Collider _collider;
     private Rigidbody _rigidbody;
     private ShinePoint[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
     private GrabIt grabIt;
-    public List<ObjectConnection> objectConnections = new List<ObjectConnection>();
+    private List<ObjectConnection> objectConnections = new List<ObjectConnection>();
     private bool visible = false;
 
     [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
@@ -45,6 +47,9 @@ public class VisibleObject : MonoBehaviour
             _rigidbody = rb;
             _rigidbody.isKinematic = true;
         }
+        boundBox = GetComponent<BoundBox>();
+        boundBox.lineColor = ColorHelper.GetColor(trueColor);
+        boundBox.SetLineRenderers();
     }
 
     void FixedUpdate()
