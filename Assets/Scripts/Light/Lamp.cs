@@ -8,7 +8,8 @@ public class Lamp : MonoBehaviour
     float turnSpeed = 80.0f;
 
     private void Start() {
-        DisableCollisionWithPlayer();
+        if(GetComponent<Rigidbody>() != null)
+            DisableCollisionWithPlayer();
     }
 
     private void DisableCollisionWithPlayer()
