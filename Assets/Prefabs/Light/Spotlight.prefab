@@ -48,8 +48,8 @@ Light:
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_Intensity: 100000000
   m_Range: 100
-  m_SpotAngle: 26
-  m_InnerSpotAngle: 26
+  m_SpotAngle: 50
+  m_InnerSpotAngle: 50
   m_CookieSize: 10
   m_Shadows:
     m_Type: 1
@@ -145,9 +145,9 @@ MonoBehaviour:
   intensityInside: 0.5
   intensityOutside: 0.5
   blendingMode: 0
-  spotAngleFromLight: 1
-  spotAngle: 26
-  coneRadiusStart: 0.1
+  spotAngleFromLight: 0
+  spotAngle: 60
+  coneRadiusStart: 0.15
   shaderAccuracy: 0
   geomMeshType: 0
   geomCustomSides: 18
@@ -191,6 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4aa0ae1d251d1b468acdcec5b281f46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enabledAtStart: 0
   color: 7
 --- !u!114 &3031358790518933142
 MonoBehaviour:
