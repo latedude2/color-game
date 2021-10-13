@@ -136,11 +136,11 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -20
+    limit: -18.91793
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 70
+    limit: 22.864286
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
@@ -151,7 +151,7 @@ CharacterJoint:
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
-    limit: 40
+    limit: 3
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 0
@@ -426,6 +426,14 @@ PrefabInstance:
     - target: {fileID: 1211565856426358815, guid: e20b5ca54375e27498d343dbc9a9e0f4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811946338930526754, guid: e20b5ca54375e27498d343dbc9a9e0f4, type: 3}
+      propertyPath: spotAngle
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811946338930526754, guid: e20b5ca54375e27498d343dbc9a9e0f4, type: 3}
+      propertyPath: spotAngleFromLight
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e20b5ca54375e27498d343dbc9a9e0f4, type: 3}
