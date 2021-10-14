@@ -19,7 +19,7 @@ public class ShinePoint
         {
             UnityEngine.Debug.DrawLine(position, lightPos, Color.red);
         }
-        bool nothingIsBlockingLight = !Physics.Linecast(position, lightPos, blockingLayers);
+        bool nothingIsBlockingLight = !Physics.Linecast(lightPos, position, blockingLayers);
         return nothingIsBlockingLight;
     }
 
