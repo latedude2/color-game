@@ -212,6 +212,8 @@ namespace Lightbug.GrabIt
                     Quaternion targetrotation = Quaternion.LookRotation(targetDirection);
                     float turnspeed = m_targetRB.GetComponent<Lamp>().GetTurnSpeed();
                     m_targetRB.transform.rotation = Quaternion.RotateTowards(m_targetRB.transform.rotation, targetrotation, Time.fixedDeltaTime * turnspeed);
+                    if (Vector3.Distance(m_transform.position,m_targetRB.transform.position) > m_grabMaxDistance)
+                        Drop();
                 }
                 else
                     m_targetRB.AddForceAtPosition(m_grabSpeed * dif * 100, hitPointPos, ForceMode.Force);
