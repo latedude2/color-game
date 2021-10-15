@@ -78,6 +78,30 @@ void NormalsAndDepthsSobel_float(float2 UV, float Thickness, out float Normals, 
     Depth = length(sobelDepth);
 }
 
+void TextureSobel_float(UnityTexture2D Texture, UnitySamplerState _sampler, float2 UV, float Thickness, out float Out, out float3 DebugOut) {
+    // We have to run the sobel algorithm over the XYZ channels separately, like color
+    float2 sobelR = 0;
+    float2 sobelG = 0;
+    float2 sobelB = 0;
+    // We can unroll this loop to make it more efficient
+    // The compiler is also smart enough to remove the i=4 iteration, which is always zero
+    [unroll] for (int i = 0; i < 4; i++) {
+        float3 texSample = SAMPLE_TEXTURE2D(Texture, _sampler, UV + sobelSamplePoints[i] * Thickness);
+        // Create the kernel for this iteration
+        float2 kernel = sobelSamplePoints[i];
+        // Accumulate samples for each coordinate
+        sobelR += texSample.x * kernel;
+        sobelG += texSample.y * kernel;
+        sobelB += texSample.z * kernel;
+    }
+    // Get the final sobel value
+    // Combine the XYZ values by taking the one with the largest sobel value
+    // Normals = max(length(sobelX), max(length(sobelY), length(sobelZ)));
+    // Depth = length(sobelDepth);
+    Out = max(length(sobelR), max(length(sobelG), length(sobelB)));
+    DebugOut = SAMPLE_TEXTURE2D(Texture, _sampler, UV);
+}
+
 void ViewDirectionFromScreenUV_float(float2 In, out float3 Out) {
     // Code by Keijiro Takahashi @_kzr and Ben Golus @bgolus
     // Get the perspective projection
