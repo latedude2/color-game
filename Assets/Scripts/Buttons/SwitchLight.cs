@@ -1,16 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SwitchLight : MonoBehaviour, Interactable
 {
-    private Light lightToSwitch;
+    private GameObject lightGameObject;
+    private AudioClip onClip;
+    private AudioClip offClip;
+
+
     private void Start() {
-        lightToSwitch = transform.parent.GetComponentInChildren<Light>();
+        lightGameObject = transform.parent.GetComponentInChildren<Light>().gameObject;
+        onClip = (AudioClip) Resources.Load("Audio/SFX/SwitchOn");
+        offClip = (AudioClip) Resources.Load("Audio/SFX/SwitchOff");
     }
 
     public void interact()
     {
-        lightToSwitch.enabled = !lightToSwitch.enabled;
+        bool isActive = lightGameObject.activeInHierarchy;
+        lightGameObject.SetActive(!isActive);
+        if(isActive) {
+            AudioSource.PlayClipAtPoint(offClip, GetComponent<Transform>().position);
+        } else {
+            AudioSource.PlayClipAtPoint(onClip, GetComponent<Transform>().position);
+        }
+    }
+
+    private void initializeAudio() {
+
     }
 }

@@ -41,8 +41,9 @@ public class AN_HeroController : MonoBehaviour
     void FixedUpdate()
     {
         // body moving
-        moveVector = transform.forward * MoveSpeed * Input.GetAxis("Vertical") +
-            transform.right * MoveSpeed * Input.GetAxis("Horizontal") +
+        moveVector = (transform.forward * Input.GetAxis("Vertical") +
+            transform.right * Input.GetAxis("Horizontal")
+            ).normalized * MoveSpeed +
             transform.up * rb.velocity.y;
         rb.velocity = moveVector;
 

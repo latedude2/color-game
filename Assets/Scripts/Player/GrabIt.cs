@@ -34,7 +34,7 @@ namespace Lightbug.GrabIt
         float m_grabMinDistance = 1;
 
         [SerializeField]
-        [Range(4, 25)]
+        [Range(2, 25)]
         float m_grabMaxDistance = 10;
 
         [SerializeField]
@@ -49,7 +49,9 @@ namespace Lightbug.GrabIt
         [Range(10, 50)]
         float m_impulseMagnitude = 25;
 
-
+        public delegate void GrabObjectHandler();
+        public static event GrabObjectHandler Grabbed;
+        public static event GrabObjectHandler Released;
 
 
         [Header("Affected Rigidbody Properties")]
@@ -70,7 +72,7 @@ namespace Lightbug.GrabIt
         GameObject m_hitPointObject;
         float m_targetDistance;
 
-        bool m_grabbing = false;
+        bool m_holding = false;
         bool m_applyImpulse = false;
         bool m_isHingeJoint = false;
         bool m_isCharacterJoint = false;
@@ -91,7 +93,7 @@ namespace Lightbug.GrabIt
 
         void Update()
         {
-            if (m_grabbing)
+            if (m_holding)
             {
 
                 m_targetDistance += Input.GetAxisRaw("Mouse ScrollWheel") * m_scrollWheelSpeed;
@@ -114,37 +116,41 @@ namespace Lightbug.GrabIt
 
                 if (Input.GetMouseButtonUp(0))
                 {
-                    Reset();
-                    m_grabbing = false;
+                    Release();
+                    Released?.Invoke();
+                    m_holding = false;
                 }
                 else if (Input.GetMouseButtonDown(1))
                 {
                     m_applyImpulse = true;
                 }
-
-
             }
             else
             {
-
                 if (Input.GetMouseButtonDown(0))
                 {
-                    RaycastHit hitInfo;
-                    if (Physics.Raycast(m_transform.position, m_transform.forward, out hitInfo, m_grabMaxDistance, m_collisionMask))
-                    {
-                        Rigidbody rb = hitInfo.collider.GetComponent<Rigidbody>();
-                        if (rb != null)
-                        {
-                            Set(rb, hitInfo.distance);
-                            m_grabbing = true;
-                        }
-                    }
+                    TryToGrab();
                 }
             }
 
         }
 
-        void Set(Rigidbody target, float distance)
+        private void TryToGrab()
+        {
+            RaycastHit hitInfo;
+            if (Physics.Raycast(m_transform.position, m_transform.forward, out hitInfo, m_grabMaxDistance, m_collisionMask))
+            {
+                Rigidbody rb = hitInfo.collider.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    SetHeldObject(rb, hitInfo.distance);
+                    m_holding = true;
+                    Grabbed?.Invoke();
+                }
+            }
+        }
+
+        void SetHeldObject(Rigidbody target, float distance)
         {
             m_targetRB = target;
             m_isHingeJoint = target.GetComponent<HingeJoint>() != null;
@@ -178,7 +184,7 @@ namespace Lightbug.GrabIt
 
         }
 
-        void Reset()
+        void Release()
         {
             //Grab Properties	
             m_targetRB.useGravity = m_defaultProperties.m_useGravity;
@@ -194,13 +200,22 @@ namespace Lightbug.GrabIt
                 m_lineRenderer.enabled = false;
         }
 
-        void Grab()
+        void Hold()
         {
             Vector3 hitPointPos = m_hitPointObject.transform.position;
             Vector3 dif = m_targetPos - hitPointPos;
 
-            if (m_isHingeJoint || m_isCharacterJoint)
-                m_targetRB.AddForceAtPosition(m_grabSpeed * dif * 100, hitPointPos, ForceMode.Force);
+            if (m_isHingeJoint || m_isCharacterJoint){
+                if (m_targetRB.GetComponent<Lamp>() != null)
+                {
+                    Vector3 targetDirection = m_transform.transform.forward;
+                    Quaternion targetrotation = Quaternion.LookRotation(targetDirection);
+                    float turnspeed = m_targetRB.GetComponent<Lamp>().GetTurnSpeed();
+                    m_targetRB.transform.rotation = Quaternion.RotateTowards(m_targetRB.transform.rotation, targetrotation, Time.fixedDeltaTime * turnspeed);
+                }
+                else
+                    m_targetRB.AddForceAtPosition(m_grabSpeed * dif * 100, hitPointPos, ForceMode.Force);
+            }
             else
                 m_targetRB.velocity = m_grabSpeed * dif;
 
@@ -214,10 +229,11 @@ namespace Lightbug.GrabIt
 
         public void Drop()
         {
-            if(m_grabbing)
+            if(m_holding)
             {
-                Reset();
-                m_grabbing = false;
+                Released?.Invoke();
+                Release();
+                m_holding = false;
                 m_applyImpulse = false;  
             }          
         }
@@ -245,28 +261,30 @@ namespace Lightbug.GrabIt
 
         void FixedUpdate()
         {
-            if (!m_grabbing)
+            if (!m_holding)
                 return;
 
             if (!m_isHingeJoint && !m_isCharacterJoint)
                 Rotate();
 
-            Grab();
+            Hold();
+            Throw();
+        }
 
+        private void Throw()
+        {
             if (m_applyImpulse)
             {
                 m_targetRB.velocity = m_transform.forward * m_impulseMagnitude;
-                Reset();
-                m_grabbing = false;
+                Release();
+                m_holding = false;
                 m_applyImpulse = false;
             }
-
         }
 
-		public float GetGrabDistance()
+        public float GetGrabDistance()
 		{
 			return m_grabMaxDistance;
 		}
-
     }
 }

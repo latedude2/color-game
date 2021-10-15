@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LightManager : MonoBehaviour
 {
-    private GameObject[] lights;
+    private static GameObject[] lights;
     void Start()
     {
         lights = GameObject.FindGameObjectsWithTag("Light");
@@ -15,13 +15,15 @@ public class LightManager : MonoBehaviour
         return lights;
     }
 
-    public GameObject[] GetPointingLights(Vector3 point, ColorCode color)
+    public static GameObject[] GetPointingLights(Vector3 point, ColorCode color)
     {
         List<GameObject> pointingLights = new List<GameObject>();
         foreach (GameObject light in lights)
         {
-            //If the colored object cannot reflect the light
-            if (!color.HasFlag(light.GetComponent<ColoredLight>().GetColorCode()))
+            if(!light.activeInHierarchy)
+                continue;
+            //If the colored object cannot reflect the light. We check for bitwise overlap here.
+            if((color & light.GetComponent<ColoredLight>().GetColorCode()) == 0)
             {
                 continue;
             }

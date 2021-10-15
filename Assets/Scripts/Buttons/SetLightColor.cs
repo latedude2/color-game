@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class SetLightColor : MonoBehaviour, Interactable
 {
-    private Light lightToSwitch;
-    [SerializeField]
-    private ColorCode lightColorToSet;
+    private GameObject lightGameObject;
+    [SerializeField] private ColorCode lightColorToSet;
+    private AudioClip onClip;
+
     private void Start() {
-        lightToSwitch = transform.parent.GetComponentInChildren<Light>();
+        lightGameObject = transform.parent.GetComponentInChildren<Light>().gameObject;
+        onClip = (AudioClip) Resources.Load("Audio/SFX/SwitchOn");
     }
 
     public void interact()
     {
-        if(!lightToSwitch.enabled)
-            lightToSwitch.enabled = true;
+        if(!lightGameObject.activeInHierarchy)
+            lightGameObject.SetActive(true);
         transform.parent.GetComponentInChildren<ColoredLight>().SetColor(lightColorToSet);
+        AudioSource.PlayClipAtPoint(onClip, GetComponent<Transform>().position);
     }
 }
