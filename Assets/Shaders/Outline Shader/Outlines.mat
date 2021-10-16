@@ -77,14 +77,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - AcuteDepthStartDot: 1
-    - AcuteDepthThresholdMult: 1
-    - DepthStrength: 104.2
-    - DepthThreshold: 5.97
-    - DepthTightening: 0.36
-    - FarDepthStart: 1.33
-    - FarDepthThreshold: 10.7
-    - FarNormalStartDepth: 0.09
+    - AcuteDepthStartDot: 1000
+    - AcuteDepthThresholdMult: 100
+    - DepthStrength: 1.2e+10
+    - DepthThreshold: 17.52
+    - DepthTightening: 0.7
+    - FarDepthStart: 1
+    - FarDepthThreshold: 9.44
+    - FarNormalStartDepth: 1.29
     - FarNormalThresholdMult: 1
     - NormalStrength: 2.61
     - NormalThreshold: 1
@@ -105,8 +105,8 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OutlineBrightness: 6.9
-    - _OutlineThickness: 0.00095
+    - _OutlineBrightness: 0
+    - _OutlineThickness: 0.001
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
