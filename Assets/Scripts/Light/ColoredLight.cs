@@ -6,6 +6,12 @@ public class ColoredLight : MonoBehaviour
 {
     [SerializeField] private bool enabledAtStart = false;
     [SerializeField] private ColorCode color = ColorCode.White;
+    private LightBulb lightBulb;
+
+    private void OnEnable() {
+        lightBulb = transform.parent.GetComponentInChildren<LightBulb>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +29,7 @@ public class ColoredLight : MonoBehaviour
         color = newColor;
         Light light = gameObject.GetComponent<Light>();
         light.color = ColorHelper.GetColor(newColor);
+        lightBulb.SetColor(newColor);
     }
 
     public ColorCode GetColorCode()

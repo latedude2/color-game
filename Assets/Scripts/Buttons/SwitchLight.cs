@@ -17,6 +17,7 @@ public class SwitchLight : MonoBehaviour, Interactable
     {
         bool isActive = lightGameObject.activeInHierarchy;
         lightGameObject.SetActive(!isActive);
+        transform.parent.GetComponentInChildren<LightBulb>().SetActive(!isActive);
         if(isActive) {
             AudioSource.PlayClipAtPoint(offClip, GetComponent<Transform>().position);
         } else {
