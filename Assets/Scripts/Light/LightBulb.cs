@@ -6,12 +6,9 @@ public class LightBulb : MonoBehaviour
 {
     private Renderer bulbRenderer;
     private Material offMat;
-    [SerializeField] private Material onMat;
+    private Material onMat;
     private ColorCode color = ColorCode.Black;
     bool isActive = false;
-
-    private void OnEnable() {
-    }
 
     private void Start() {
         bulbRenderer = GetComponent<Renderer>();
@@ -20,16 +17,8 @@ public class LightBulb : MonoBehaviour
 
     public void SetActive(bool activate)
     {
-        if (activate)
-        {
-            bulbRenderer.material = onMat;
-            isActive = true;
-        }
-        else
-        {
-            bulbRenderer.material = offMat;
-            isActive = false;
-        }
+        bulbRenderer.material = activate ? onMat : offMat;
+        isActive = activate;
     }
 
     public void SetColor(ColorCode newColor)
