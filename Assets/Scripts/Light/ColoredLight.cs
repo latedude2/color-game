@@ -33,9 +33,4 @@ public class ColoredLight : MonoBehaviour
     {
         return color;
     }
-
-    public bool GetEnabledAtStart()
-    {
-        return enabledAtStart;
-    }
 }
