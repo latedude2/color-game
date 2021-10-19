@@ -95,21 +95,24 @@ namespace Lightbug.GrabIt
         {
             if (m_holding)
             {
-
-                m_targetDistance += Input.GetAxisRaw("Mouse ScrollWheel") * m_scrollWheelSpeed;
+                if (ColorGame.Debug.debugMode)
+                    m_targetDistance += Input.GetAxisRaw("Mouse ScrollWheel") * m_scrollWheelSpeed;
                 m_targetDistance = Mathf.Clamp(m_targetDistance, m_grabMinDistance, m_grabMaxDistance);
 
                 m_targetPos = m_transform.position + m_transform.forward * m_targetDistance;
 
-                if (!m_isHingeJoint && !m_isCharacterJoint)
+                if (ColorGame.Debug.debugMode)
                 {
-                    if (Input.GetKey(m_rotatePitchPosKey) || Input.GetKey(m_rotatePitchNegKey) || Input.GetKey(m_rotateYawPosKey) || Input.GetKey(m_rotateYawNegKey))
+                    if (!m_isHingeJoint && !m_isCharacterJoint)
                     {
-                        m_targetRB.constraints = RigidbodyConstraints.None;
-                    }
-                    else
-                    {
-                        m_targetRB.constraints = m_grabProperties.m_constraints;
+                        if (Input.GetKey(m_rotatePitchPosKey) || Input.GetKey(m_rotatePitchNegKey) || Input.GetKey(m_rotateYawPosKey) || Input.GetKey(m_rotateYawNegKey))
+                        {
+                            m_targetRB.constraints = RigidbodyConstraints.None;
+                        }
+                        else
+                        {
+                            m_targetRB.constraints = m_grabProperties.m_constraints;
+                        }
                     }
                 }
 
@@ -117,10 +120,9 @@ namespace Lightbug.GrabIt
                 if (Input.GetMouseButtonUp(0))
                 {
                     Release();
-                    Released?.Invoke();
                     m_holding = false;
                 }
-                else if (Input.GetMouseButtonDown(1))
+                else if (ColorGame.Debug.debugMode && Input.GetMouseButtonDown(1))
                 {
                     m_applyImpulse = true;
                 }
@@ -198,12 +200,16 @@ namespace Lightbug.GrabIt
 
             if (m_lineRenderer != null)
                 m_lineRenderer.enabled = false;
+
+            Released?.Invoke();
         }
 
         void Hold()
         {
             Vector3 hitPointPos = m_hitPointObject.transform.position;
             Vector3 dif = m_targetPos - hitPointPos;
+            if (!ColorGame.Debug.debugMode)
+                dif.y = 0;  // prevent lifting boxes
 
             if (m_isHingeJoint || m_isCharacterJoint){
                 if (m_targetRB.GetComponent<Lamp>() != null)
@@ -212,8 +218,6 @@ namespace Lightbug.GrabIt
                     Quaternion targetrotation = Quaternion.LookRotation(targetDirection);
                     float turnspeed = m_targetRB.GetComponent<Lamp>().GetTurnSpeed();
                     m_targetRB.transform.rotation = Quaternion.RotateTowards(m_targetRB.transform.rotation, targetrotation, Time.fixedDeltaTime * turnspeed);
-                    if (Vector3.Distance(m_transform.position,m_targetRB.transform.position) > m_grabMaxDistance)
-                        Drop();
                 }
                 else
                     m_targetRB.AddForceAtPosition(m_grabSpeed * dif * 100, hitPointPos, ForceMode.Force);
@@ -221,6 +225,8 @@ namespace Lightbug.GrabIt
             else
                 m_targetRB.velocity = m_grabSpeed * dif;
 
+            if (Vector3.Distance(m_transform.position,m_targetRB.transform.position) > m_grabMaxDistance)
+                Drop();
 
             if (m_lineRenderer != null)
             {
@@ -233,7 +239,6 @@ namespace Lightbug.GrabIt
         {
             if(m_holding)
             {
-                Released?.Invoke();
                 Release();
                 m_holding = false;
                 m_applyImpulse = false;  

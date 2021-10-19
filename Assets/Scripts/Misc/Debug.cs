@@ -14,8 +14,15 @@ namespace ColorGame
             if (UnityEngine.Debug.isDebugBuild && Input.GetKeyDown(KeyCode.F1))
             {
                 debugMode = !debugMode;
-                UnityEngine.Debug.Log("Debug Mode: " + debugMode);
             }
+        }
+        void OnGUI()
+        {
+            GUIStyle guiStyle = new GUIStyle();
+            guiStyle.normal.textColor = Color.white;
+            guiStyle.fontSize = 20;
+            if (debugMode)
+                GUI.Label(new Rect(50, 50, 100, 20), "Debug Mode",guiStyle);
         }
     }
 }
