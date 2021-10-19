@@ -29,6 +29,7 @@ public class LightBulb : MonoBehaviour
             if (isActive)
                 bulbRenderer.material = onMat;
         }
+        
         color = newColor;
     }
 }
