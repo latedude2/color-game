@@ -24,6 +24,7 @@
 #define SOBELOUTLINES_INCLUDED
 
 #include "DecodeDepthNormals.hlsl"
+// #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl" 
 
 TEXTURE2D(_DepthNormalsTexture); SAMPLER(sampler_DepthNormalsTexture);
 
@@ -52,7 +53,7 @@ void CalculateDepthNormal_float(float2 UV, out float Depth, out float3 Normal) {
     Normal = Normal * 2 - 1;
 }
 
-void NormalsAndDepthsSobel_float(float2 UV, float Thickness, out float Normals, out float Depth) {
+void NormalsAndDepthsSobel_float(float2 UV, float Thickness, float depthTweak, float dummyDepth, out float Normals, out float Depth) { 
     // We have to run the sobel algorithm over the XYZ channels separately, like color
     float2 sobelX = 0;
     float2 sobelY = 0;
@@ -61,9 +62,11 @@ void NormalsAndDepthsSobel_float(float2 UV, float Thickness, out float Normals, 
     // We can unroll this loop to make it more efficient
     // The compiler is also smart enough to remove the i=4 iteration, which is always zero
     [unroll] for (int i = 0; i < 4; i++) {
-        float depth;
+        float badDepth;
         float3 normal;
-        GetDepthAndNormal(UV + sobelSamplePoints[i] * Thickness, depth, normal);
+        GetDepthAndNormal(UV + sobelSamplePoints[i] * Thickness, badDepth, normal);
+        float depth = SHADERGRAPH_SAMPLE_SCENE_DEPTH(UV + sobelSamplePoints[i] * Thickness);
+        depth = pow(depth, depthTweak);
         // Create the kernel for this iteration
         float2 kernel = sobelSamplePoints[i];
         // Accumulate samples for each coordinate
