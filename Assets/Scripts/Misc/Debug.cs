@@ -16,11 +16,6 @@ namespace ColorGame
                 debugMode = !debugMode;
                 UnityEngine.Debug.Log("Debug Mode: " + debugMode);
             }
-
-            if (debugMode && Input.GetKeyDown(KeyCode.N))
-            {
-                LevelManager.Instance.LoadNextLevel();
-            }
         }
     }
 }
