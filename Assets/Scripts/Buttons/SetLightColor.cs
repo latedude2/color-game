@@ -22,7 +22,6 @@ public class SetLightColor : MonoBehaviour, Interactable
         lightGameObject.GetComponent<ColoredLight>().SetColor(lightColorToSet);
         lightBulb.SetColor(lightColorToSet);
         AudioSource.PlayClipAtPoint(onClip, GetComponent<Transform>().position);
-        anim["ButtonAnimation"].wrapMode = WrapMode.Once;
         anim.Play("ButtonAnimation");
 
         if (!lightGameObject.activeInHierarchy)

@@ -21,7 +21,6 @@ public class SwitchLight : MonoBehaviour, Interactable
         bool isActive = lightGameObject.activeInHierarchy;
         lightGameObject.SetActive(!isActive);
         lightBulb.SetActive(!isActive);
-        anim["ButtonAnimation"].wrapMode = WrapMode.Once;
         anim.Play("ButtonAnimation");
         if (isActive) {
             AudioSource.PlayClipAtPoint(offClip, GetComponent<Transform>().position);  
