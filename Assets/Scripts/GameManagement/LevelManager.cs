@@ -25,6 +25,10 @@ public class LevelManager : MonoBehaviour
         {
             ReloadScene();
         }
+        if (ColorGame.Debug.debugMode && Input.GetKeyDown(KeyCode.N))
+        {
+            LoadNextLevel();
+        }
     }
 
     public void LoadNextLevel()

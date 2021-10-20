@@ -11,10 +11,18 @@ namespace ColorGame
         // Update is called once per frame
         void Update()
         {
-            if(Input.GetKeyDown(KeyCode.F1))
+            if (UnityEngine.Debug.isDebugBuild && Input.GetKeyDown(KeyCode.F1))
             {
                 debugMode = !debugMode;
             }
+        }
+        void OnGUI()
+        {
+            GUIStyle guiStyle = new GUIStyle();
+            guiStyle.normal.textColor = Color.white;
+            guiStyle.fontSize = 20;
+            if (debugMode)
+                GUI.Label(new Rect(50, 50, 100, 20), "Debug Mode",guiStyle);
         }
     }
 }
