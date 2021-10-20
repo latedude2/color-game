@@ -16,6 +16,10 @@ public class VisibleObjectVisibility : MonoBehaviour
     protected bool visible = false;
     [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
     Activatable[] activatableComponents;
+    private AudioSource _audioSource;
+    private AudioClip _onSFX;
+    private AudioClip _offSFX;
+    [SerializeField] private AudioSource _audioLoop;
     
     void Start()
     {
@@ -31,6 +35,9 @@ public class VisibleObjectVisibility : MonoBehaviour
         boundBox = GetComponent<BoundBox>();
         boundBox.lineColor = ColorHelper.GetColor(trueColor);
         boundBox.SetLineRenderers();
+        _onSFX = (AudioClip)Resources.Load("Audio/SFX/VO ON");
+        _offSFX = (AudioClip)Resources.Load("Audio/SFX/VO OFF");
+        _audioSource = GetComponent<AudioSource>();
     }
 
     void FixedUpdate()
@@ -72,6 +79,9 @@ public class VisibleObjectVisibility : MonoBehaviour
             activatable.Activate();
         }
         visible = true;
+        _audioSource.PlayOneShot(_onSFX);
+        _audioLoop.time = UnityEngine.Random.value;
+        _audioLoop.Play();
     }
 
     protected void SetToInvisible()
@@ -81,6 +91,8 @@ public class VisibleObjectVisibility : MonoBehaviour
             activatable.Deactivate();
         }
         visible = false;
+        _audioSource.PlayOneShot(_offSFX);
+        _audioLoop.Stop();
     }
 
     protected void SetColor(ColorCode color)
