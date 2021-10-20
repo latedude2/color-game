@@ -75,7 +75,7 @@ namespace Lightbug.GrabIt
         bool m_holding = false;
         bool m_applyImpulse = false;
         bool m_isHingeJoint = false;
-        bool m_isCharacterJoint = false;
+        bool m_isConfigurableJoint = false;
 
         //Debug
         LineRenderer m_lineRenderer;
@@ -103,7 +103,7 @@ namespace Lightbug.GrabIt
 
                 if (ColorGame.Debug.debugMode)
                 {
-                    if (!m_isHingeJoint && !m_isCharacterJoint)
+                    if (!m_isHingeJoint && !m_isConfigurableJoint)
                     {
                         if (Input.GetKey(m_rotatePitchPosKey) || Input.GetKey(m_rotatePitchNegKey) || Input.GetKey(m_rotateYawPosKey) || Input.GetKey(m_rotateYawNegKey))
                         {
@@ -156,7 +156,7 @@ namespace Lightbug.GrabIt
         {
             m_targetRB = target;
             m_isHingeJoint = target.GetComponent<HingeJoint>() != null;
-            m_isCharacterJoint = target.GetComponent<CharacterJoint>() != null;
+            m_isConfigurableJoint = target.GetComponent<ConfigurableJoint>() != null;
 
             //Rigidbody default properties	
             m_defaultProperties.m_useGravity = m_targetRB.useGravity;
@@ -168,7 +168,7 @@ namespace Lightbug.GrabIt
             m_targetRB.useGravity = m_grabProperties.m_useGravity;
             m_targetRB.drag = m_grabProperties.m_drag;
             m_targetRB.angularDrag = m_grabProperties.m_angularDrag;
-            if(m_isHingeJoint || m_isCharacterJoint)
+            if(m_isHingeJoint || m_isConfigurableJoint)
             {
                 m_targetRB.constraints = RigidbodyConstraints.None;
             }
@@ -211,7 +211,7 @@ namespace Lightbug.GrabIt
             if (!ColorGame.Debug.debugMode)
                 dif.y = 0;  // prevent lifting boxes
 
-            if (m_isHingeJoint || m_isCharacterJoint){
+            if (m_isHingeJoint || m_isConfigurableJoint){
                 if (m_targetRB.GetComponent<Lamp>() != null)
                 {
                     Vector3 targetDirection = m_transform.transform.forward;
@@ -271,7 +271,7 @@ namespace Lightbug.GrabIt
             if (!m_holding)
                 return;
 
-            if (!m_isHingeJoint && !m_isCharacterJoint)
+            if (!m_isHingeJoint && !m_isConfigurableJoint)
                 Rotate();
 
             Hold();
