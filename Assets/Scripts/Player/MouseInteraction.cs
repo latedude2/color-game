@@ -26,7 +26,7 @@ public class MouseInteraction : MonoBehaviour
                 pointingAt = PointingAt.interactable;
                 if(Input.GetMouseButtonDown(0))
                 {
-                    target.GetComponent<Interactable>().interact();
+                    target.GetComponent<Interactable>().Interact();
                     if (GetComponentInParent<Respawner>() != null)
                     {
                         GetComponentInParent<Respawner>().SaveSpawnPoint();

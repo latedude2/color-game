@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColoredLight : MonoBehaviour
+public class ColoredLight : MonoBehaviour, Activatable
 {
     [SerializeField] private bool enabledAtStart = false;
     [SerializeField] private ColorCode color = ColorCode.White;
     [SerializeField] private GameObject[] signifiers;
 
+    LightBulb lightBulb;
+
     // Start is called before the first frame update
     void Start()
     {
+        lightBulb = transform.parent.GetComponentInChildren<LightBulb>();
         SetColor(color);
         Invoke(nameof(SetInitialEnabled), 0.1f);
     }
@@ -18,7 +21,6 @@ public class ColoredLight : MonoBehaviour
     void SetInitialEnabled()
     {
         gameObject.SetActive(enabledAtStart);
-        LightBulb lightBulb = transform.parent.GetComponentInChildren<LightBulb>();
         lightBulb.SetColor(color);
         lightBulb.SetActive(enabledAtStart);
     }
@@ -37,5 +39,17 @@ public class ColoredLight : MonoBehaviour
     public ColorCode GetColorCode()
     {
         return color;
+    }
+
+    public void Activate()
+    {
+        lightBulb.SetActive(true);
+        gameObject.SetActive(true);
+    }
+
+    public void Deactivate()
+    {
+        lightBulb.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

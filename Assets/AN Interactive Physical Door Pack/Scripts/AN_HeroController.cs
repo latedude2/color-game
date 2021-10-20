@@ -23,6 +23,10 @@ public class AN_HeroController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked; // freeze cursor on screen centre
         Cursor.visible = false; // invisible cursor
+        #if UNITY_EDITOR
+            Sensitivity = Sensitivity * 5;
+        #endif
+        
     }
 
     void Update()
