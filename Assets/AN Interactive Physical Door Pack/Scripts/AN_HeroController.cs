@@ -14,6 +14,7 @@ public class AN_HeroController : MonoBehaviour
 
     Transform Cam;
     float yRotation;
+    bool controlsEnabled = true;
 
     void Start()
     {
@@ -26,20 +27,24 @@ public class AN_HeroController : MonoBehaviour
         #if UNITY_EDITOR
             Sensitivity = Sensitivity * 5;
         #endif
-        
+        Settings.Locked += EnableControls;
+        Settings.Unlocked += DisableControls;
     }
 
     void Update()
     {
-        // camera rotation
-        float xmouse = Input.GetAxis("Mouse X") * Time.deltaTime * Sensitivity;
-        float ymouse = Input.GetAxis("Mouse Y") * Time.deltaTime * Sensitivity;
-        transform.Rotate(Vector3.up * xmouse);
-        yRotation -= ymouse;
-        yRotation = Mathf.Clamp(yRotation, -85f, 60f);
-        Cam.localRotation = Quaternion.Euler(yRotation, 0, 0);
+        if(controlsEnabled)
+        {
+            // camera rotation
+            float xmouse = Input.GetAxis("Mouse X") * Time.deltaTime * Sensitivity * Settings.mouseSensitivityMultiplier;
+            float ymouse = Input.GetAxis("Mouse Y") * Time.deltaTime * Sensitivity * Settings.mouseSensitivityMultiplier;
+            transform.Rotate(Vector3.up * xmouse);
+            yRotation -= ymouse;
+            yRotation = Mathf.Clamp(yRotation, -85f, 60f);
+            Cam.localRotation = Quaternion.Euler(yRotation, 0, 0);
 
-        if (Input.GetButtonDown("Jump") && jumpFlag == true) rb.AddForce(transform.up * JumpForce);
+            if (Input.GetButtonDown("Jump") && jumpFlag == true) rb.AddForce(transform.up * JumpForce);
+        }
     }
 
     void FixedUpdate()
@@ -62,6 +67,16 @@ public class AN_HeroController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         jumpFlag = false;
+    }
+
+    void EnableControls()
+    {
+        controlsEnabled = true;
+    }
+
+    void DisableControls()
+    {
+        controlsEnabled = false;
     }
 
 }
