@@ -1,5 +1,5 @@
 public interface Activatable
 {
-    void activate();
-    void deactivate();
+    void Activate();
+    void Deactivate();
 }

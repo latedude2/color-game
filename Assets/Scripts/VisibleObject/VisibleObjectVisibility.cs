@@ -1,20 +1,19 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using Lightbug.GrabIt;
 using DimBoxes;
 
 public class VisibleObjectVisibility : MonoBehaviour
 {
-    private ColorCode color = ColorCode.Black;
-    [SerializeField] private ColorCode trueColor = ColorCode.Black;
+    protected ColorCode color = ColorCode.Black;
+    [SerializeField] protected ColorCode trueColor = ColorCode.Black;
     private Renderer _renderer;
     private Material colorMat;
     private Material blackMat;
     private BoundBox boundBox;
     private ShinePoint[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
-    private bool visible = false;
+    protected bool visible = false;
     [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
     Activatable[] activatableComponents;
     
@@ -39,10 +38,15 @@ public class VisibleObjectVisibility : MonoBehaviour
         shinePoints = FindShinePoints();
         // When object becomes lit and interactable
         ColorCode objectFinalColor = FindShownColor();
-        //If object should be visible
+        //Check object should be visible
+        SetVisibility(objectFinalColor);
+    }
+
+    protected virtual void SetVisibility(ColorCode objectFinalColor)
+    {
         if (objectFinalColor != ColorCode.Black)
         {
-            if(objectFinalColor != color)
+            if (objectFinalColor != color)
                 SetColor(objectFinalColor);
             // If object is not visible, make visible
             if (!visible)
@@ -61,25 +65,25 @@ public class VisibleObjectVisibility : MonoBehaviour
         }
     }
 
-    private void SetToVisible()
+    protected void SetToVisible()
     {
         foreach (Activatable activatable in activatableComponents)
         {
-            activatable.activate();
+            activatable.Activate();
         }
         visible = true;
     }
 
-    private void SetToInvisible()
+    protected void SetToInvisible()
     {
         foreach (Activatable activatable in activatableComponents)
         {
-            activatable.deactivate();
+            activatable.Deactivate();
         }
         visible = false;
     }
 
-    private void SetColor(ColorCode color)
+    protected void SetColor(ColorCode color)
     {
         colorMat = Resources.Load<Material>("Materials/" + color.ToString());
         _renderer.material = colorMat;

@@ -114,12 +114,12 @@ public class VisibleObjectPhysics : MonoBehaviour, Activatable
         }
     }
 
-    public void activate()
+    public void Activate()
     {
         SetToVisible();
     }
 
-    public void deactivate()
+    public void Deactivate()
     {
         SetToInvisible();
     }

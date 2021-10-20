@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SwitchLight : MonoBehaviour, Interactable
+public class SwitchLightButton : MonoBehaviour, Interactable
 {
     private GameObject lightGameObject;
     private AudioClip onClip;
@@ -8,7 +8,15 @@ public class SwitchLight : MonoBehaviour, Interactable
     private LightBulb lightBulb;
     private Animation anim;
 
+    Activatable[] activatableComponents;
+
     private void Start() {
+        
+        activatableComponents = transform.parent.GetComponentsInChildren<Activatable>();
+        if(activatableComponents == null)
+        {
+            Debug.LogError("Button does not have activatable item connected");
+        }
         lightGameObject = transform.parent.GetComponentInChildren<Light>().gameObject;
         lightBulb = transform.parent.GetComponentInChildren<LightBulb>();
         onClip = (AudioClip) Resources.Load("Audio/SFX/SwitchOn");
@@ -16,11 +24,22 @@ public class SwitchLight : MonoBehaviour, Interactable
         anim = GetComponent<Animation>();
     }
 
-    public void interact()
+    public void Interact()
     {
         bool isActive = lightGameObject.activeInHierarchy;
-        lightGameObject.SetActive(!isActive);
-        lightBulb.SetActive(!isActive);
+        if(isActive)
+        {
+            foreach (Activatable activatable in activatableComponents)
+            {
+                activatable.Deactivate();
+            }
+        }
+        else {
+            foreach (Activatable activatable in activatableComponents)
+            {
+                activatable.Activate();
+            }
+        }
         anim.Play("ButtonAnimation");
         if (isActive) {
             AudioSource.PlayClipAtPoint(offClip, GetComponent<Transform>().position);  

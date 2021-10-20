@@ -4,21 +4,30 @@ using UnityEngine;
 
 public class LightSwitch : MonoBehaviour, Activatable
 {
-    [SerializeField] public Activatable gameObjectToActivate;
+    [Tooltip("GameObject has to have component that implements the Activatable interface (ColoredLight for example).")]
+    [SerializeField] GameObject gameObjectToActivate;
 
     private void Start() {
         if(gameObjectToActivate == null)
         {
-            Debug.LogError("Light not set for light switch: " + this);
+            Debug.LogError("Object that should be activated was not set.");
         }
     }
-    public void activate()
+    public void Activate()
     {
-        gameObjectToActivate.activate();
+        Activatable activatable = gameObjectToActivate.GetComponent<Activatable>();
+        if(activatable != null)
+            activatable.Activate();
+        else
+            Debug.LogError("Object is missing activatable component.");
     }
 
-    public void deactivate()
+    public void Deactivate()
     {
-        gameObjectToActivate.deactivate();
+        Activatable activatable = gameObjectToActivate.GetComponent<Activatable>();
+        if(activatable != null)
+            activatable.Deactivate();
+        else
+            Debug.LogError("Object is missing activatable component.");
     }
 }
