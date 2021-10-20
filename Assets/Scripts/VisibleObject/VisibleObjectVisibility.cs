@@ -15,14 +15,12 @@ public class VisibleObjectVisibility : MonoBehaviour
     private ShinePoint[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
     private bool visible = false;
-
     [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
-
-    VisibleObjectPhysics _physics;
+    Activatable[] activatableComponents;
     
     void Start()
     {
-        _physics = GetComponent<VisibleObjectPhysics>();
+        activatableComponents = GetComponents<Activatable>();
         lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         _renderer = GetComponent<Renderer>();
         if(trueColor == ColorCode.Black)
@@ -65,13 +63,19 @@ public class VisibleObjectVisibility : MonoBehaviour
 
     private void SetToVisible()
     {
-        _physics.SetToVisible();
+        foreach (Activatable activatable in activatableComponents)
+        {
+            activatable.activate();
+        }
         visible = true;
     }
 
     private void SetToInvisible()
     {
-        _physics.SetToInvisible();
+        foreach (Activatable activatable in activatableComponents)
+        {
+            activatable.deactivate();
+        }
         visible = false;
     }
 

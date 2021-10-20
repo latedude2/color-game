@@ -4,7 +4,7 @@ using UnityEngine;
 using Lightbug.GrabIt;
 using DimBoxes;
 
-public class VisibleObjectPhysics : MonoBehaviour
+public class VisibleObjectPhysics : MonoBehaviour, Activatable
 {
     private Collider _collider;
     private Rigidbody _rigidbody;
@@ -112,5 +112,15 @@ public class VisibleObjectPhysics : MonoBehaviour
             objectConnections[i].RemoveFixedJoint();
             objectConnections.RemoveAt(i);
         }
+    }
+
+    public void activate()
+    {
+        SetToVisible();
+    }
+
+    public void deactivate()
+    {
+        SetToInvisible();
     }
 }
