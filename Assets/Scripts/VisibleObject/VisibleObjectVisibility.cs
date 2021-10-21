@@ -6,7 +6,7 @@ using DimBoxes;
 public class VisibleObjectVisibility : MonoBehaviour
 {
     protected ColorCode color = ColorCode.Black;
-    [SerializeField] protected ColorCode trueColor = ColorCode.Black;
+    public ColorCode trueColor = ColorCode.Black;
     private Renderer _renderer;
     private Material colorMat;
     private Material blackMat;
