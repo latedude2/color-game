@@ -8,12 +8,12 @@ public class ColoredLight : MonoBehaviour, Activatable
     [SerializeField] private ColorCode color = ColorCode.White;
     [SerializeField] private GameObject[] signifiers;
 
-    LightBulb lightBulb;
+    EmittingSurface lightBulb;
 
     // Start is called before the first frame update
     void Start()
     {
-        lightBulb = transform.parent.GetComponentInChildren<LightBulb>();
+        lightBulb = transform.parent.GetComponentInChildren<EmittingSurface>();
         SetColor(color);
         Invoke(nameof(SetInitialEnabled), 0.1f);
     }
