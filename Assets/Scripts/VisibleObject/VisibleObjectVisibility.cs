@@ -17,6 +17,7 @@ public class VisibleObjectVisibility : MonoBehaviour
     [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
     Activatable[] activatableComponents;
     
+    
     void Start()
     {
         activatableComponents = GetComponents<Activatable>();
@@ -31,6 +32,7 @@ public class VisibleObjectVisibility : MonoBehaviour
         boundBox = GetComponent<BoundBox>();
         boundBox.lineColor = ColorHelper.GetColor(trueColor);
         boundBox.SetLineRenderers();
+        
     }
 
     void FixedUpdate()
