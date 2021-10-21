@@ -53,19 +53,21 @@ void CalculateDepthNormal_float(float2 UV, out float Depth, out float3 Normal) {
     Normal = Normal * 2 - 1;
 }
 
-void NormalsAndDepthsSobel_float(float2 UV, float Thickness, float depthTweak, float dummyDepth, out float Normals, out float Depth) { 
+void NormalsAndDepthsSobel_float(float2 UV, float Thickness, float2 ScreenRes, float depthTweak, float dummyDepth, out float Normals, out float Depth) { 
     // We have to run the sobel algorithm over the XYZ channels separately, like color
     float2 sobelX = 0;
     float2 sobelY = 0;
     float2 sobelZ = 0;
     float2 sobelDepth = 0;
+    float k = 1000;
+    // Thickness = Thickness * (k/ScreenRes);
     // We can unroll this loop to make it more efficient
     // The compiler is also smart enough to remove the i=4 iteration, which is always zero
     [unroll] for (int i = 0; i < 4; i++) {
         float badDepth;
         float3 normal;
-        GetDepthAndNormal(UV + sobelSamplePoints[i] * Thickness, badDepth, normal);
-        float depth = SHADERGRAPH_SAMPLE_SCENE_DEPTH(UV + sobelSamplePoints[i] * Thickness);
+        GetDepthAndNormal(UV + sobelSamplePoints[i] * Thickness * (k/ScreenRes), badDepth, normal);
+        float depth = SHADERGRAPH_SAMPLE_SCENE_DEPTH(UV + sobelSamplePoints[i] * Thickness * (k/ScreenRes));
         depth = pow(depth, depthTweak);
         // Create the kernel for this iteration
         float2 kernel = sobelSamplePoints[i];
@@ -79,6 +81,7 @@ void NormalsAndDepthsSobel_float(float2 UV, float Thickness, float depthTweak, f
     // Combine the XYZ values by taking the one with the largest sobel value
     Normals = max(length(sobelX), max(length(sobelY), length(sobelZ)));
     Depth = length(sobelDepth);
+    // Depth = (k/ScreenRes.y);
 }
 
 void TextureSobel_float(UnityTexture2D Texture, UnitySamplerState _sampler, float2 UV, float Thickness, out float Out, out float3 DebugOut) {
