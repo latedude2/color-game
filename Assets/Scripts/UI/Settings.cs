@@ -10,6 +10,8 @@ public class Settings : MonoBehaviour
 
     private bool settingsOpen = false;
     public static float mouseSensitivityMultiplier = 1f;
+    public static float soundEffectVolumeMultiplier = 1f;
+    public static float musicVolumeMultiplierMultiplier = 1f;
     private GameObject optionsMenu;
 
     private void Start() {
@@ -64,12 +66,12 @@ public class Settings : MonoBehaviour
 
     public void SetMusicVolume(float value)
     {
-        Debug.Log("Music volume changed");
+        musicVolumeMultiplierMultiplier = value;
     }
 
     public void SetSfxVolume(float value)
     {
-        Debug.Log("Sound effect volume changed");
+        soundEffectVolumeMultiplier = value;
     }
 
     public void SetMouseSensitivity(float value)
