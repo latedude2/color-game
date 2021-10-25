@@ -7,7 +7,7 @@ public class SetLightColor : MonoBehaviour, Interactable
     private GameObject lightGameObject;
     [SerializeField] private ColorCode lightColorToSet;
     [SerializeField] private bool enablesLight = true;
-    private AudioClip onClip;
+    private AudioSource _audio;
     private EmittingSurface lightBulb;
     private Animation anim;
     Activatable[] activatableComponents;
@@ -15,7 +15,7 @@ public class SetLightColor : MonoBehaviour, Interactable
     private void Start() {
         lightBulb = transform.parent.GetComponentInChildren<EmittingSurface>();
         lightGameObject = transform.parent.GetComponentInChildren<Light>().gameObject;
-        onClip = (AudioClip) Resources.Load("Audio/SFX/SwitchOn");
+        _audio = GetComponent<AudioSource>();
         anim = GetComponent<Animation>();
         activatableComponents = transform.parent.GetComponentsInChildren<Activatable>();
         if(activatableComponents == null)
@@ -28,7 +28,7 @@ public class SetLightColor : MonoBehaviour, Interactable
     {
         lightGameObject.GetComponent<ColoredLight>().SetColor(lightColorToSet);
         lightBulb.SetColor(lightColorToSet);
-        AudioSource.PlayClipAtPoint(onClip, GetComponent<Transform>().position);
+        _audio.PlayOneShot(_audio.clip);
         anim.Play("ButtonAnimation");
 
         if(enablesLight)
