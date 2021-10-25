@@ -3,8 +3,7 @@ using UnityEngine;
 public class SwitchLightButton : MonoBehaviour, Interactable
 {
     private GameObject lightGameObject;
-    private AudioClip onClip;
-    private AudioClip offClip;
+    private AudioSource _audio;
     private EmittingSurface lightBulb;
     private Animation anim;
 
@@ -19,8 +18,7 @@ public class SwitchLightButton : MonoBehaviour, Interactable
         }
         lightGameObject = transform.parent.GetComponentInChildren<Light>().gameObject;
         lightBulb = transform.parent.GetComponentInChildren<EmittingSurface>();
-        onClip = (AudioClip) Resources.Load("Audio/SFX/SwitchOn");
-        offClip = (AudioClip) Resources.Load("Audio/SFX/SwitchOff");
+        _audio = GetComponent<AudioSource>();
         anim = GetComponent<Animation>();
     }
 
@@ -41,11 +39,7 @@ public class SwitchLightButton : MonoBehaviour, Interactable
             }
         }
         anim.Play("ButtonAnimation");
-        if (isActive) {
-            AudioSource.PlayClipAtPoint(offClip, GetComponent<Transform>().position);  
-        } else {
-            AudioSource.PlayClipAtPoint(onClip, GetComponent<Transform>().position);
-        }
+        _audio.PlayOneShot(_audio.clip);
     }
 
     private void initializeAudio() {
