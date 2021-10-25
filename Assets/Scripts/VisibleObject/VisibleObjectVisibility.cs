@@ -6,7 +6,7 @@ using DimBoxes;
 public class VisibleObjectVisibility : MonoBehaviour
 {
     protected ColorCode color = ColorCode.Black;
-    [SerializeField] protected ColorCode trueColor = ColorCode.Black;
+    public ColorCode trueColor = ColorCode.Black;
     private Renderer _renderer;
     private Material colorMat;
     private Material blackMat;
@@ -16,6 +16,7 @@ public class VisibleObjectVisibility : MonoBehaviour
     protected bool visible = false;
     [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
     Activatable[] activatableComponents;
+    
     
     void Start()
     {
@@ -31,6 +32,7 @@ public class VisibleObjectVisibility : MonoBehaviour
         boundBox = GetComponent<BoundBox>();
         boundBox.lineColor = ColorHelper.GetColor(trueColor);
         boundBox.SetLineRenderers();
+        
     }
 
     void FixedUpdate()

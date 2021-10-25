@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lightColorToSet: 4
+  enablesLight: 1
 --- !u!111 &6726993848780880679
 Animation:
   m_ObjectHideFlags: 0
@@ -353,6 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lightColorToSet: 1
+  enablesLight: 1
 --- !u!111 &8725003525967679490
 Animation:
   m_ObjectHideFlags: 0
@@ -606,6 +608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lightColorToSet: 2
+  enablesLight: 1
 --- !u!111 &7063917199474404848
 Animation:
   m_ObjectHideFlags: 0
@@ -629,6 +632,46 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9064626900170803404}
     m_Modifications:
+    - target: {fileID: 2050242584148413672, guid: d1af6c8760fc03547afb15c280c6020f, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 398923f62fe5d4a689bba2b4f5113e6e, type: 2}
+    - target: {fileID: 4049413323614205094, guid: d1af6c8760fc03547afb15c280c6020f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4049413323614205094, guid: d1af6c8760fc03547afb15c280c6020f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4049413323614205094, guid: d1af6c8760fc03547afb15c280c6020f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4281528655755269395, guid: d1af6c8760fc03547afb15c280c6020f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4281528655755269395, guid: d1af6c8760fc03547afb15c280c6020f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4281528655755269395, guid: d1af6c8760fc03547afb15c280c6020f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800379497025031517, guid: d1af6c8760fc03547afb15c280c6020f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800379497025031517, guid: d1af6c8760fc03547afb15c280c6020f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800379497025031517, guid: d1af6c8760fc03547afb15c280c6020f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 5922387502923960033, guid: d1af6c8760fc03547afb15c280c6020f, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -677,6 +720,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: spotlight_model_static
       objectReference: {fileID: 0}
+    - target: {fileID: 7284399535586418450, guid: d1af6c8760fc03547afb15c280c6020f, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 398923f62fe5d4a689bba2b4f5113e6e, type: 2}
     - target: {fileID: 7847189066274050426, guid: d1af6c8760fc03547afb15c280c6020f, type: 3}
       propertyPath: m_SpotAngle
       value: 50

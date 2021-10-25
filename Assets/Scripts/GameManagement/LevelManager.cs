@@ -33,7 +33,36 @@ public class LevelManager : MonoBehaviour
 
     public void LoadNextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if(SceneManager.GetActiveScene().buildIndex + 1 < SceneManager.sceneCountInBuildSettings)
+        {
+            SaveProgress(SceneManager.GetActiveScene().buildIndex + 1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+        else 
+        {
+            
+            SceneManager.LoadScene(0);
+            Settings.UnlockCursor();
+        }
+        
+    }
+
+    private void SaveProgress(int levelIndex)
+    {
+        PlayerPrefs.SetInt("LastCompletedLevel", levelIndex);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadProgressLevel()
+    {
+        int levelIndex = PlayerPrefs.GetInt("LastCompletedLevel", 1);       //load first level if there is no progress saved
+        Debug.Log("Loading level:" + levelIndex);
+        SceneManager.LoadScene(levelIndex);
+    }
+
+    public void LoadLevel(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 
     void ReloadScene()
