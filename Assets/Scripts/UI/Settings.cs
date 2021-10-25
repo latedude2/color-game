@@ -10,10 +10,14 @@ public class Settings : MonoBehaviour
 
     private bool settingsOpen = false;
     public static float mouseSensitivityMultiplier = 1f;
+    public static float soundEffectVolumeMultiplier = 1f;
+    public static float musicVolumeMultiplierMultiplier = 1f;
     private GameObject optionsMenu;
+    private GameObject targetReticle;
 
     private void Start() {
         optionsMenu = transform.Find("Options").gameObject;
+        targetReticle = transform.Find("TargetReticle").gameObject;
         Locked += LockCursor;
         Unlocked += UnlockCursor;
     }
@@ -24,9 +28,15 @@ public class Settings : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.O))
         {
             if(settingsOpen)
+            {
+                ShowTarget();
                 HideSettings();
+            }
             else
+            {
+                HideTarget();
                 ShowSettings();
+            }
         }
     }
 
@@ -50,13 +60,23 @@ public class Settings : MonoBehaviour
         settingsOpen = false;
     }
 
+    void ShowTarget()
+    {
+        targetReticle.SetActive(true);
+    }
+
+    void HideTarget()
+    {
+        targetReticle.SetActive(false);
+    }
+
     void LockCursor()
     {
         Cursor.lockState = CursorLockMode.Locked; // freeze cursor on screen centre
         Cursor.visible = false; // invisible cursor
     }
 
-    void UnlockCursor()
+    public static void UnlockCursor()
     {
         Cursor.lockState = CursorLockMode.None; // freeze cursor on screen centre
         Cursor.visible = true; // invisible cursor
@@ -64,12 +84,12 @@ public class Settings : MonoBehaviour
 
     public void SetMusicVolume(float value)
     {
-        Debug.Log("Music volume changed");
+        musicVolumeMultiplierMultiplier = value;
     }
 
     public void SetSfxVolume(float value)
     {
-        Debug.Log("Sound effect volume changed");
+        soundEffectVolumeMultiplier = value;
     }
 
     public void SetMouseSensitivity(float value)
