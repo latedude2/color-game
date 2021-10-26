@@ -117,6 +117,8 @@ namespace DimBoxes
 
         void LateUpdate()
         {
+            UpdateLineWidths();
+
             if (transform.localScale != previousScale)
             {
                 SetPoints();
@@ -288,6 +290,17 @@ namespace DimBoxes
                     //depth
                     lineList[i + 8].SetPositions(new Vector3[] { transform.TransformPoint(corners[2 * i]), transform.TransformPoint(corners[2 * i + 3 - 4 * (i % 2)]) });
                 }
+            }
+        }
+
+        public void UpdateLineWidths()
+        {
+            GameObject player = GameObject.Find("Hero_Prefab");
+            foreach (LineRenderer lr in GetComponentsInChildren<LineRenderer>(true))
+            {
+                float dist = Vector3.Distance(player.transform.position, transform.position);
+                lr.startWidth = 0.03f + dist * 0.001f;
+                // lr.widthMultiplier = 1 + dist * 0.5f;
             }
         }
 
