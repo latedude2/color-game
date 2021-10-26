@@ -9,7 +9,7 @@ public class ActivatableSound : MonoBehaviour, Activatable
     [SerializeField] private AudioClip _onSFX;
     [SerializeField] private AudioClip _offSFX;
     [SerializeField] private GameObject LoopPrefab;
-    private AudioSource _audioLoop;
+    [SerializeField] private AudioSource _audioLoop;
 
     bool soundsEnabled = false;
     // Start is called before the first frame update
