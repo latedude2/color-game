@@ -39,7 +39,9 @@ public class MeshLinesEditor : Editor {
         // updateRealTime = GUILayout.Toggle(updateRealTime, "Update Real Time");
         // meshLines.updateRealTime = updateRealTime;
         // updateRealTime = meshLines.updateRealTime;
-
+        if (meshLines.mesh.vertices.Length > 1000) {
+            EditorGUILayout.HelpBox("Lines for " + meshLines.mesh.vertices.Length + " vertices might take a long time to calculate. Consider using a simplified mesh.", MessageType.Warning);
+        }
         if(GUILayout.Button("Generate Mesh Lines")) {
             // Debug.Log(myVar.floatValue);
             // myVar.floatValue += 1;
