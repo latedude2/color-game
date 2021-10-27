@@ -10,6 +10,8 @@ namespace DimBoxes
     [ExecuteInEditMode]
     public class BoundBox : MonoBehaviour
     {
+        public List<MeshLines.Line> meshLines;
+        public Mesh mesh;
         public enum BoundSource
         {
             meshes,
@@ -131,6 +133,11 @@ namespace DimBoxes
                 previousScale = transform.localScale;
             }
             //if(wire_renderer) cameralines.setOutlines(lines, wireColor, new Vector3[0][]);
+            if (mesh == null) {
+                if (TryGetComponent<MeshFilter>(out MeshFilter meshFilter)) {
+                    mesh = meshFilter.sharedMesh;
+                }
+            }
         }
 
         void calculateBounds()
@@ -403,6 +410,14 @@ namespace DimBoxes
  
             GL.End();
             GL.PopMatrix();
+        }
+
+        public void GenerateMeshLines() {
+
+            if (TryGetComponent<MeshFilter>(out MeshFilter meshFilter)) {
+                meshLines = MeshLines.GenerateMeshLines(meshFilter.sharedMesh, false, .01f);
+            }
+
         }
     }
 }

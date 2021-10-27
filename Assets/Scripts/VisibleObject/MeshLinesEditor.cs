@@ -46,7 +46,7 @@ public class MeshLinesEditor : Editor {
             // Debug.Log(myVar.floatValue);
             // myVar.floatValue += 1;
             // meshLines.myVar += 1;
-            meshLines.lines = meshLines.generateMeshLines();
+            meshLines.GenerateMeshLines();
             SceneView.RepaintAll();
             meshLines.refresh();
         }

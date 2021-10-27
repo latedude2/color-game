@@ -5,6 +5,7 @@ using UnityEngine;
 [ExecuteInEditMode] [RequireComponent(typeof(MeshFilter))]
 public class MeshLines : MonoBehaviour {
 
+    public MonoBehaviour saveTo;
     public Mesh mesh;
     [Range(0, 2)] public double normalThreshold = 0;
     public List<Line> lines;
@@ -20,7 +21,11 @@ public class MeshLines : MonoBehaviour {
         }
     }
 
-    public List<Line> generateMeshLines() {
+    public void GenerateMeshLines() {
+        lines = GenerateMeshLines(mesh, softMesh, normalThreshold);
+    }
+
+    public static List<Line> GenerateMeshLines(Mesh mesh, bool softMesh, double normalThreshold) {
         List<Line> lines = new List<Line>();
         Vector3[] verts = mesh.vertices;
         int[] triangles = mesh.triangles;
@@ -37,12 +42,6 @@ public class MeshLines : MonoBehaviour {
                         for (int k = 0; k < 3; k++) {
                             for (int l = 0; l < 3; l++) {
                                 
-                                // Remove quads
-                                if (removeQuads) {
-                                    if (triangles[i+k] == triangles[j+l]) {
-                                        break;
-                                    }
-                                }
                                 // Compare vertices
                                 if (verts[triangles[i+k]] == verts[triangles[j+l]]) {
 
@@ -105,7 +104,6 @@ public class MeshLines : MonoBehaviour {
                 }
             }
         }
-        this.lines = lines;
         return lines;
     }
 
@@ -126,7 +124,7 @@ public class MeshLines : MonoBehaviour {
             // mesh = GetComponent<MeshFilter>().mesh;
         }
         if (updateRealTime) {
-            generateMeshLines();
+            GenerateMeshLines();
         }
     }
 
