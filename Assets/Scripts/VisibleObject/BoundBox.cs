@@ -11,7 +11,7 @@ namespace DimBoxes
     public class BoundBox : MonoBehaviour
     {
         public List<MeshLines.Line> meshLines;
-        public Mesh mesh;
+        private Mesh mesh;
         public enum BoundSource
         {
             meshes,
@@ -32,6 +32,7 @@ namespace DimBoxes
         public Color wireColor = new Color(0f, 1f, 0.4f, 0.74f);
         [HideInInspector]
         public bool line_renderer = true;
+        public bool mesh_line_renderer = true;
         [HideInInspector]
         public Object linePrefab;
         [HideInInspector]
@@ -133,11 +134,6 @@ namespace DimBoxes
                 previousScale = transform.localScale;
             }
             //if(wire_renderer) cameralines.setOutlines(lines, wireColor, new Vector3[0][]);
-            if (mesh == null) {
-                if (TryGetComponent<MeshFilter>(out MeshFilter meshFilter)) {
-                    mesh = meshFilter.sharedMesh;
-                }
-            }
         }
 
         void calculateBounds()
@@ -243,60 +239,50 @@ namespace DimBoxes
             //
             if (line_renderer)
             {
-                lineList = GetComponentsInChildren<LineRenderer>();
-                if (lineList.Length == 0)
+                for (int i = 0; i < lineList.Length; i++)
                 {
-                    lineList = new LineRenderer[12];
-                    for (int i = 0; i < 12; i++)
-                    {
-#if UNITY_EDITOR
-                        GameObject go = PrefabUtility.InstantiatePrefab(linePrefab) as GameObject;
-                        go.transform.SetParent(transform);
-                        go.transform.position = Vector3.zero;
-                        go.transform.rotation = Quaternion.identity;
-#else
-                        GameObject go = (GameObject)Instantiate(linePrefab, transform, false);
-#endif
-                        lineList[i] = go.GetComponent<LineRenderer>();
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < lineList.Length; i++)
-                    {
 
 #if UNITY_EDITOR
-                        if (!Application.isPlaying)
+                    if (!Application.isPlaying)
+                    {
+                        if (PrefabUtility.GetCorrespondingObjectFromSource(lineList[i].gameObject) == linePrefab)
                         {
-                            if (PrefabUtility.GetCorrespondingObjectFromSource(lineList[i].gameObject) == linePrefab)
-                            {
-                                lineList[i].enabled = true;
-                            }
-                            // else
-                            // {
-                            //     lineList[i].gameObject.SetActive(false);
-                            //     Debug.Log("BB");
-                            //     GameObject go = PrefabUtility.InstantiatePrefab(linePrefab) as GameObject;
-                            //     go.transform.SetParent(transform);
-                            //     go.transform.position = Vector3.zero;
-                            //     go.transform.rotation = Quaternion.identity;
-                            //     lineList[i] = go.GetComponent<LineRenderer>();
-                            // }
+                            lineList[i].enabled = true;
                         }
-#endif
-                        lineList[i].enabled = true;
+                        // else
+                        // {
+                        //     lineList[i].gameObject.SetActive(false);
+                        //     Debug.Log("BB");
+                        //     GameObject go = PrefabUtility.InstantiatePrefab(linePrefab) as GameObject;
+                        //     go.transform.SetParent(transform);
+                        //     go.transform.position = Vector3.zero;
+                        //     go.transform.rotation = Quaternion.identity;
+                        //     lineList[i] = go.GetComponent<LineRenderer>();
+                        // }
                     }
+#endif
+                    lineList[i].enabled = true;
                 }
 
-                for (int i = 0; i < 4; i++)
-                {
-                    //width
-                    lineList[i].SetPositions(new Vector3[] { transform.TransformPoint(corners[2 * i]), transform.TransformPoint(corners[2 * i + 1]) });
-                    //height
-                    lineList[i + 4].SetPositions(new Vector3[] { transform.TransformPoint(corners[i]), transform.TransformPoint(corners[i + 4]) });
-                    //depth
-                    lineList[i + 8].SetPositions(new Vector3[] { transform.TransformPoint(corners[2 * i]), transform.TransformPoint(corners[2 * i + 3 - 4 * (i % 2)]) });
+                foreach (var line in lineList) {
+                for (int i = 0; i < lineList.Length; i++)
+                    lineList[i].SetPositions(new Vector3[] {
+                        transform.TransformPoint(meshLines[i].a),
+                        transform.TransformPoint(meshLines[i].b)
+                    });
                 }
+                // TODO: implement a more generic transformation
+                // for (int i = 0; i < 4; i++)
+                // {
+                    // if (meshLines.Count == 12) {
+                        // //width
+                        // lineList[i].SetPositions(new Vector3[] { transform.TransformPoint(corners[2 * i]), transform.TransformPoint(corners[2 * i + 1]) });
+                        // //height
+                        // lineList[i + 4].SetPositions(new Vector3[] { transform.TransformPoint(corners[i]), transform.TransformPoint(corners[i + 4]) });
+                        // //depth
+                        // lineList[i + 8].SetPositions(new Vector3[] { transform.TransformPoint(corners[2 * i]), transform.TransformPoint(corners[2 * i + 3 - 4 * (i % 2)]) });
+                //     }
+                // }
             }
         }
 
@@ -412,12 +398,27 @@ namespace DimBoxes
             GL.PopMatrix();
         }
 
+#if UNITY_EDITOR
         public void GenerateMeshLines() {
-
             if (TryGetComponent<MeshFilter>(out MeshFilter meshFilter)) {
-                meshLines = MeshLines.GenerateMeshLines(meshFilter.sharedMesh, false, .01f);
+                meshLines = MeshLines.GenerateMeshLines(meshFilter.sharedMesh, false, .001f);
+                lineList = new LineRenderer[meshLines.Count];
+                for (int i = 0; i < meshLines.Count; i++)
+                {
+                    GameObject go = PrefabUtility.InstantiatePrefab(linePrefab) as GameObject;
+                    go.transform.SetParent(transform);
+                    go.transform.position = Vector3.zero;
+                    go.transform.rotation = Quaternion.identity;
+                    lineList[i] = go.GetComponent<LineRenderer>();
+                    lineList[i].SetPositions(new Vector3[] {
+                        transform.TransformPoint(meshLines[i].a),
+                        transform.TransformPoint(meshLines[i].b)
+                    });
+                }
+            } else {
+                Debug.LogWarning("Could not find mesh.");
             }
-
         }
+#endif
     }
 }

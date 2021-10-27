@@ -63,6 +63,25 @@ namespace DimBoxes
                     EditorGUI.indentLevel--;
                 }
             }
+
+            BoundBox boundBox = (BoundBox)target;
+
+            if (boundBox.TryGetComponent<MeshFilter>(out MeshFilter meshFilter)) {
+                Mesh mesh = meshFilter.sharedMesh;
+                if (mesh.vertices.Length > 1000) {
+                    EditorGUILayout.HelpBox("Lines for " + mesh.vertices.Length + " vertices might take a long time to calculate. Consider using a simplified mesh.", MessageType.Warning);
+                }
+            }
+            
+            if(GUILayout.Button("Generate Mesh Lines")) {
+                // Debug.Log(myVar.floatValue);
+                // myVar.floatValue += 1;
+                // meshLines.myVar += 1;
+                boundBox.GenerateMeshLines();
+                SceneView.RepaintAll();
+                // boundBox.refresh();
+            }
+
             if (GUI.changed)
             {
                 serializedObject.ApplyModifiedProperties();
