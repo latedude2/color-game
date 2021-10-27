@@ -89,6 +89,17 @@ public class VisibleObjectVisibility : MonoBehaviour
     {
         colorMat = Resources.Load<Material>("Materials/" + color.ToString());
         _renderer.material = colorMat;
+
+        if (color == trueColor)
+        {
+            boundBox.enabled = false;
+            gameObject.layer = LayerMask.NameToLayer("Default");
+        }
+        else
+        {
+            boundBox.enabled = true;
+            gameObject.layer = LayerMask.NameToLayer("Ignore Outline");
+        }
     }
 
     private ColorCode FindShownColor()

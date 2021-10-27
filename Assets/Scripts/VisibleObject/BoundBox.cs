@@ -117,6 +117,8 @@ namespace DimBoxes
 
         void LateUpdate()
         {
+            UpdateLineWidths();
+
             if (transform.localScale != previousScale)
             {
                 SetPoints();
@@ -174,7 +176,7 @@ namespace DimBoxes
                     return;
 
                 }
-                bound = new Bounds(bc.center, bc.size);
+                bound = new Bounds(bc.center, bc.size * 0.5f);
                 boundOffset = bc.center;
             }
 
@@ -186,14 +188,16 @@ namespace DimBoxes
             //bound.size = new Vector3(bound.size.x * transform.localScale.x / startingScale.x, bound.size.y * transform.localScale.y / startingScale.y, bound.size.z * transform.localScale.z / startingScale.z);
             //boundOffset = new Vector3(boundOffset.x * transform.localScale.x / startingScale.x, boundOffset.y * transform.localScale.y / startingScale.y, boundOffset.z * transform.localScale.z / startingScale.z);
 
-            topFrontRight = boundOffset + Vector3.Scale(bound.extents, new Vector3(1, 1, 1));
-            topFrontLeft = boundOffset + Vector3.Scale(bound.extents, new Vector3(-1, 1, 1));
-            topBackLeft = boundOffset + Vector3.Scale(bound.extents, new Vector3(-1, 1, -1));
-            topBackRight = boundOffset + Vector3.Scale(bound.extents, new Vector3(1, 1, -1));
-            bottomFrontRight = boundOffset + Vector3.Scale(bound.extents, new Vector3(1, -1, 1));
-            bottomFrontLeft = boundOffset + Vector3.Scale(bound.extents, new Vector3(-1, -1, 1));
-            bottomBackLeft = boundOffset + Vector3.Scale(bound.extents, new Vector3(-1, -1, -1));
-            bottomBackRight = boundOffset + Vector3.Scale(bound.extents, new Vector3(1, -1, -1));
+            float o = 0.005f;
+
+            topFrontRight = boundOffset + Vector3.Scale(bound.extents, new Vector3((1+o), (1+o), (1+o)));
+            topFrontLeft = boundOffset + Vector3.Scale(bound.extents, new Vector3(-(1+o), (1+o), (1+o)));
+            topBackLeft = boundOffset + Vector3.Scale(bound.extents, new Vector3(-(1+o), (1+o), -(1+o)));
+            topBackRight = boundOffset + Vector3.Scale(bound.extents, new Vector3((1+o), (1+o), -(1+o)));
+            bottomFrontRight = boundOffset + Vector3.Scale(bound.extents, new Vector3((1+o), -(1+o), (1+o)));
+            bottomFrontLeft = boundOffset + Vector3.Scale(bound.extents, new Vector3(-(1+o), -(1+o), (1+o)));
+            bottomBackLeft = boundOffset + Vector3.Scale(bound.extents, new Vector3(-(1+o), -(1+o), -(1+o)));
+            bottomBackRight = boundOffset + Vector3.Scale(bound.extents, new Vector3((1+o), -(1+o), -(1+o)));
 
             corners = new Vector3[] { topFrontRight, topFrontLeft, topBackLeft, topBackRight, bottomFrontRight, bottomFrontLeft, bottomBackLeft, bottomBackRight };
         }
@@ -286,6 +290,17 @@ namespace DimBoxes
                     //depth
                     lineList[i + 8].SetPositions(new Vector3[] { transform.TransformPoint(corners[2 * i]), transform.TransformPoint(corners[2 * i + 3 - 4 * (i % 2)]) });
                 }
+            }
+        }
+
+        public void UpdateLineWidths()
+        {
+            GameObject player = GameObject.Find("Hero_Prefab");
+            foreach (LineRenderer lr in GetComponentsInChildren<LineRenderer>(true))
+            {
+                float dist = Vector3.Distance(player.transform.position, transform.position);
+                lr.startWidth = 0.03f + dist * 0.001f;
+                // lr.widthMultiplier = 1 + dist * 0.5f;
             }
         }
 
