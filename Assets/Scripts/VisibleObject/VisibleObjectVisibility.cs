@@ -7,6 +7,7 @@ public class VisibleObjectVisibility : MonoBehaviour
 {
     protected ColorCode color = ColorCode.Black;
     public ColorCode trueColor = ColorCode.Black;
+    public bool useMesh;
     private Renderer _renderer;
     private Material colorMat;
     private Material blackMat;
@@ -142,19 +143,26 @@ public class VisibleObjectVisibility : MonoBehaviour
     {
         //Create a list of points for the visible object that we will be checking for shine.
         List<ShinePoint> shinepoints = new List<ShinePoint>();
+        if (useMesh) {
+            Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
+            foreach (var vertice in mesh.vertices) {
+                shinepoints.Add(new ShinePoint(transform.TransformPoint(vertice)));
+            }
+        } else {
 
-        BoxCollider b = GetComponent<BoxCollider>();
-        
-        // Add points on the box collider to the list
-        for (int z = -shinePointMultiplier; z <= shinePointMultiplier; z++)
-        {
-            for (int y = -shinePointMultiplier; y <= shinePointMultiplier; y++)
+            BoxCollider b = GetComponent<BoxCollider>();
+            
+            // Add points on the box collider to the list
+            for (int z = -shinePointMultiplier; z <= shinePointMultiplier; z++)
             {
-                for (int x = -shinePointMultiplier; x <= shinePointMultiplier; x++)
+                for (int y = -shinePointMultiplier; y <= shinePointMultiplier; y++)
                 {
-                    // skip the middle of the box
-                    if (!IsShinePointInMiddle(x, y, z, shinePointMultiplier))
-                        shinepoints.Add(new ShinePoint(transform.TransformPoint(b.center + new Vector3(b.size.x * x / shinePointMultiplier, b.size.y * y / shinePointMultiplier, b.size.z * z / shinePointMultiplier) * 0.50f)));
+                    for (int x = -shinePointMultiplier; x <= shinePointMultiplier; x++)
+                    {
+                        // skip the middle of the box
+                        if (!IsShinePointInMiddle(x, y, z, shinePointMultiplier))
+                            shinepoints.Add(new ShinePoint(transform.TransformPoint(b.center + new Vector3(b.size.x * x / shinePointMultiplier, b.size.y * y / shinePointMultiplier, b.size.z * z / shinePointMultiplier) * 0.50f)));
+                    }
                 }
             }
         }
