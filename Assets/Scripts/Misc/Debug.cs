@@ -4,9 +4,16 @@ using UnityEngine;
 
 namespace ColorGame
 {
+    [ExecuteInEditMode]
     public class Debug : MonoBehaviour
     {
         public static bool debugMode = false;
+
+        private void Start() {
+            if (UnityEngine.Debug.isDebugBuild){
+                debugMode = true;
+            }
+        }
 
         // Update is called once per frame
         void Update()
