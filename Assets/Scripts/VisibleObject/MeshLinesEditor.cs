@@ -3,7 +3,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(MeshLines))]
 public class MeshLinesEditor : Editor {
 //     SerializedProperty myVar;
@@ -111,3 +111,4 @@ public class MeshLinesEditor : Editor {
 //         return EditorGUI.GetPropertyHeight(property)*2;
 //     }
 // }
+#endif
