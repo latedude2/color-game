@@ -7,7 +7,6 @@ public class VisibleObjectVisibility : MonoBehaviour
 {
     protected ColorCode color = ColorCode.Black;
     public ColorCode trueColor = ColorCode.Black;
-    public bool useMesh;
     private Renderer _renderer;
     private Material colorMat;
     private Material blackMat;
@@ -143,8 +142,8 @@ public class VisibleObjectVisibility : MonoBehaviour
     {
         //Create a list of points for the visible object that we will be checking for shine.
         List<ShinePoint> shinepoints = new List<ShinePoint>();
-        if (useMesh) {
-            Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
+        if (TryGetComponent<MeshCollider>(out MeshCollider collider)) {
+            Mesh mesh = collider.sharedMesh;
             foreach (var vertice in mesh.vertices) {
                 shinepoints.Add(new ShinePoint(transform.TransformPoint(vertice)));
             }
