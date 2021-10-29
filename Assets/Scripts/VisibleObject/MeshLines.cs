@@ -120,8 +120,6 @@ public class MeshLines : MonoBehaviour {
     public void refresh() {
         if (!mesh) {
             GetComponent<MeshFilter>().sharedMesh = mesh;
-        } else {
-            // mesh = GetComponent<MeshFilter>().mesh;
         }
         if (updateRealTime) {
             GenerateMeshLines();
