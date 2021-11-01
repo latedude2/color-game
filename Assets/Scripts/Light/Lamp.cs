@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Lamp : MonoBehaviour
 {
-    [SerializeField]
-    float turnSpeed = 80.0f;
+    float turnSpeed = 90.0f;
 
     private void Start() {
         if(GetComponent<Rigidbody>() != null)
