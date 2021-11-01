@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class WireSurface : MonoBehaviour, Activatable
 {
-    public float loadingSpeed = .01f;
+    [Min(.001f)] public float loadingSpeed = .01f;
     private Renderer _renderer;
 
     private void Start() {
         _renderer = GetComponent<Renderer>();
-        loadingSpeed *= transform.localScale.x;
+        loadingSpeed /= transform.localScale.x;
     }
 
     public void Activate()
