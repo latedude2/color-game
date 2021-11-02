@@ -49,14 +49,15 @@ public class AN_HeroController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // body moving
-        moveVector = (transform.forward * Input.GetAxis("Vertical") +
-            transform.right * Input.GetAxis("Horizontal")
-            ).normalized * MoveSpeed +
-            transform.up * rb.velocity.y;
-        rb.velocity = moveVector;
-
-        
+        if(controlsEnabled)
+        {
+            // body moving
+            moveVector = (transform.forward * Input.GetAxis("Vertical") +
+                transform.right * Input.GetAxis("Horizontal")
+                ).normalized * MoveSpeed +
+                transform.up * rb.velocity.y;
+            rb.velocity = moveVector;
+        }
     }
     
     private void OnTriggerStay(Collider other)
