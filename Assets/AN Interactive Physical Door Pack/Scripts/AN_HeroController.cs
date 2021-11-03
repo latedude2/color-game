@@ -5,7 +5,7 @@ using UnityEngine;
 public class AN_HeroController : MonoBehaviour
 {
     [Tooltip("Character settings (rigid body)")]
-    public float MoveSpeed = 30f, JumpForce = 200f, Sensitivity = 70f;
+    public float MoveSpeed = 4f, RunSpeed = 8f, JumpForce = 200f, Sensitivity = 70f;
     bool jumpFlag = true; // to jump from surface only
 
     CharacterController character;
@@ -51,11 +51,14 @@ public class AN_HeroController : MonoBehaviour
     {
         if(controlsEnabled)
         {
-            // body moving
-            moveVector = (transform.forward * Input.GetAxis("Vertical") +
-                transform.right * Input.GetAxis("Horizontal")
-                ).normalized * MoveSpeed +
-                transform.up * rb.velocity.y;
+            if(Input.GetKey(KeyCode.LeftShift))
+            {
+                moveVector = (transform.forward * Input.GetAxis("Vertical") + transform.right * Input.GetAxis("Horizontal")).normalized * RunSpeed + transform.up * rb.velocity.y;
+            }
+            else 
+            {
+                moveVector = (transform.forward * Input.GetAxis("Vertical") + transform.right * Input.GetAxis("Horizontal")).normalized * MoveSpeed + transform.up * rb.velocity.y;
+            }            
             rb.velocity = moveVector;
         }
     }
