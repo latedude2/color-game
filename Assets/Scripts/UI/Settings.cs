@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Settings : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Settings : MonoBehaviour
     public static float mouseSensitivityMultiplier = 1f;
     public static float soundEffectVolumeMultiplier = 1f;
     public static float musicVolumeMultiplierMultiplier = 1f;
+    public AudioMixer mixer;
     private GameObject optionsMenu;
     private GameObject targetReticle;
 
@@ -84,11 +86,13 @@ public class Settings : MonoBehaviour
 
     public void SetMusicVolume(float value)
     {
+        mixer.SetFloat("MusicVolume", Mathf.Log10(value)*20);
         musicVolumeMultiplierMultiplier = value;
     }
 
     public void SetSfxVolume(float value)
     {
+        mixer.SetFloat("SFXVolume", Mathf.Log10(value)*20);
         soundEffectVolumeMultiplier = value;
     }
 
