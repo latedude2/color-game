@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 8341371450818810832}
   - component: {fileID: 8341371450818810833}
   - component: {fileID: 8341371450818810834}
-  - component: {fileID: 8341371450818810835}
-  m_Layer: 0
+  - component: {fileID: 7298548557261895281}
+  m_Layer: 8
   m_Name: Wire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 96637f974209647f3b083eb9eda3d804, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,7 +97,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8341371450818810835
+--- !u!114 &7298548557261895281
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,7 +106,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8341371450818810844}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63688cee65dc34ffabbe09ae5f944504, type: 3}
+  m_Script: {fileID: 11500000, guid: a1cc2d6397bdd437d8db252bbee6ec6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offMat: {fileID: 2100000, guid: 60a73ea810df72e4bafd38be3c48293a, type: 2}
+  loadingSpeed: 0.6
+  gameObjectsToActivate: []
+  progress: 0
+  _color: 1
