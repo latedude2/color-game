@@ -25,7 +25,7 @@ public class Settings : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.O))
+        if(Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.M))
         {
             if(settingsOpen)
             {
@@ -60,7 +60,7 @@ public class Settings : MonoBehaviour
         settingsOpen = false;
     }
 
-    void ShowTarget()
+    public void ShowTarget()
     {
         targetReticle.SetActive(true);
     }
