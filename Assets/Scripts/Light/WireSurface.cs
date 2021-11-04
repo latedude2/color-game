@@ -9,11 +9,13 @@ public class WireSurface : MonoBehaviour, Activatable
     [Min(.001f)] public float loadingSpeed = .01f;
     [SerializeField] GameObject[] gameObjectsToActivate;
     private Renderer _renderer;
+    private ParticleSystem sparks;
     public float progress;
     public ColorCode _color;
 
     private void Start() {
         _renderer = GetComponent<Renderer>();
+        sparks = GetComponentInChildren<ParticleSystem>();
         loadingSpeed /= transform.localScale.x;
         _renderer.material.SetColor("LoadedColor", ColorHelper.GetColor(_color));
         _renderer.material.SetFloat("Progress", progress);
@@ -33,6 +35,7 @@ public class WireSurface : MonoBehaviour, Activatable
     {
         if (_renderer.material.GetFloat("Progress") == 1) {
             SetActivatables(false);
+            sparks.Stop();
         }
         StopAllCoroutines();
         StartCoroutine(SetLoad(false, loadingSpeed));
@@ -57,10 +60,14 @@ public class WireSurface : MonoBehaviour, Activatable
         bool loading = true;
         int loadDir = load ? 1 : -1;
         int loadInt = Convert.ToInt16(load);
+        Vector3 sparksPos = sparks.transform.localPosition;
+        sparks.Play();
 
         while (loading) {
             progress = Mathf.Clamp(_renderer.material.GetFloat("Progress") + speed * loadDir, 0, 1);
             _renderer.material.SetFloat("Progress", progress);
+            sparksPos.x = progress - 0.5f;
+            sparks.transform.localPosition = sparksPos;
             if (progress == loadInt) {
                 loading = false;
                 if (load) {
@@ -69,6 +76,7 @@ public class WireSurface : MonoBehaviour, Activatable
             }
             yield return new WaitForSeconds(0.01f);
         }
+        sparks.Stop();
     }
 
     private void SetActivatables(bool activate) {
