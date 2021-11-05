@@ -1,9 +1,9 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
-
 [CustomEditor(typeof(MeshLines))]
 public class MeshLinesEditor : Editor {
 
@@ -23,3 +23,4 @@ public class MeshLinesEditor : Editor {
         meshLines.refresh();
     }
 }
+#endif
