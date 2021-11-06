@@ -6,11 +6,13 @@ public class LightSwitch : MonoBehaviour, Activatable
 {
     [Tooltip("GameObject has to have component that implements the Activatable interface (ColoredLight or EmittingSurface for example).")]
     [SerializeField] GameObject[] gameObjectsToActivate;
+    private ParticleSystem sparks;
     private void Start() {
         if(gameObjectsToActivate.Length == 0)
         {
             Debug.LogError("Objects that should be activated was not set.");
         }
+        sparks = GetComponentInChildren<ParticleSystem>();
     }
     public void Activate()
     {
@@ -27,6 +29,7 @@ public class LightSwitch : MonoBehaviour, Activatable
             else
                 Debug.LogError("Object is missing activatable component.");
         }
+        sparks.Play();
     }
 
     public void Deactivate()
@@ -39,5 +42,6 @@ public class LightSwitch : MonoBehaviour, Activatable
             else
                 Debug.LogError("Object is missing activatable component.");
         }
+        sparks.Stop();
     }
 }
