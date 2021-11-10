@@ -15,9 +15,18 @@ public class AN_HeroController : MonoBehaviour
     Transform Cam;
     float yRotation;
     bool controlsEnabled = true;
+    CapsuleCollider m_Capsule;
+    float groundCheckDistance = 0.6f;
+    float stickToGroundHelperDistance = 0.5f;
+    private Vector3 m_GroundContactNormal;
+
+
+    private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
+
 
     void Start()
     {
+        m_Capsule = GetComponent<CapsuleCollider>();
         character = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
         Cam = Camera.main.GetComponent<Transform>();
@@ -49,6 +58,8 @@ public class AN_HeroController : MonoBehaviour
 
     void FixedUpdate()
     {
+        GroundCheck();
+
         if(controlsEnabled)
         {
             if(Input.GetKey(KeyCode.LeftShift))
@@ -60,6 +71,12 @@ public class AN_HeroController : MonoBehaviour
                 moveVector = (transform.forward * Input.GetAxis("Vertical") + transform.right * Input.GetAxis("Horizontal")).normalized * MoveSpeed + transform.up * rb.velocity.y;
             }            
             rb.velocity = moveVector;
+        }
+        if (!m_IsGrounded)
+        rb.drag = 0f;
+        if (m_PreviouslyGrounded && !m_Jumping)
+        {
+            StickToGroundHelper();
         }
     }
     
@@ -81,6 +98,42 @@ public class AN_HeroController : MonoBehaviour
     void DisableControls()
     {
         controlsEnabled = false;
+    }
+
+    private void StickToGroundHelper()
+    {
+        RaycastHit hitInfo;
+        if (Physics.SphereCast(transform.position, m_Capsule.radius, Vector3.down, out hitInfo,
+                                ((m_Capsule.height/2f) - m_Capsule.radius) +
+                                stickToGroundHelperDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+        {
+            if (Mathf.Abs(Vector3.Angle(hitInfo.normal, Vector3.up)) < 85f)
+            {
+                rb.velocity = Vector3.ProjectOnPlane(rb.velocity, hitInfo.normal);
+            }
+        }
+    }
+
+    /// sphere cast down just beyond the bottom of the capsule to see if the capsule is colliding round the bottom
+    private void GroundCheck()
+    {
+        m_PreviouslyGrounded = m_IsGrounded;
+        RaycastHit hitInfo;
+        if (Physics.SphereCast(transform.position, m_Capsule.radius, Vector3.down, out hitInfo,
+                                ((m_Capsule.height/2f) - m_Capsule.radius) + groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+        {
+            m_IsGrounded = true;
+            m_GroundContactNormal = hitInfo.normal;
+        }
+        else
+        {
+            m_IsGrounded = false;
+            m_GroundContactNormal = Vector3.up;
+        }
+        if (!m_PreviouslyGrounded && m_IsGrounded && m_Jumping)
+        {
+            m_Jumping = false;
+        }
     }
 
 }
