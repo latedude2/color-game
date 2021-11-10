@@ -6,7 +6,6 @@ public class AN_HeroController : MonoBehaviour
 {
     [Tooltip("Character settings (rigid body)")]
     public float MoveSpeed = 4f, RunSpeed = 8f, JumpForce = 200f, Sensitivity = 70f;
-    bool jumpFlag = true; // to jump from surface only
 
     CharacterController character;
     Rigidbody rb;
@@ -52,7 +51,11 @@ public class AN_HeroController : MonoBehaviour
             yRotation = Mathf.Clamp(yRotation, -85f, 60f);
             Cam.localRotation = Quaternion.Euler(yRotation, 0, 0);
 
-            if (Input.GetButtonDown("Jump") && jumpFlag == true) rb.AddForce(transform.up * JumpForce);
+            if (Input.GetButtonDown("Jump") && m_IsGrounded && JumpForce > 0f) 
+            {
+                m_Jumping = true;
+                rb.AddForce(transform.up * JumpForce);
+            }
         }
     }
 
@@ -72,22 +75,13 @@ public class AN_HeroController : MonoBehaviour
             }            
             rb.velocity = moveVector;
         }
+
         if (!m_IsGrounded)
-        rb.drag = 0f;
+            rb.drag = 0f;
         if (m_PreviouslyGrounded && !m_Jumping)
         {
             StickToGroundHelper();
         }
-    }
-    
-    private void OnTriggerStay(Collider other)
-    {
-        jumpFlag = true; // hero can jump
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        jumpFlag = false;
     }
 
     void EnableControls()
