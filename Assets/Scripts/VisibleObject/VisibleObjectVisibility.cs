@@ -32,12 +32,18 @@ public class VisibleObjectVisibility : MonoBehaviour
         boundBox = GetComponent<BoundBox>();
         boundBox.lineColor = ColorHelper.GetColor(trueColor);
         boundBox.SetLineRenderers();
-        
+        if(GetComponent<Rigidbody>() == null)
+        {
+            shinePoints = FindShinePoints();
+        }
     }
 
     void FixedUpdate()
     {
-        shinePoints = FindShinePoints();
+        if(GetComponent<Rigidbody>() != null)
+        {
+            shinePoints = FindShinePoints();
+        }
         // When object becomes lit and interactable
         ColorCode objectFinalColor = FindShownColor();
         //Check object should be visible
