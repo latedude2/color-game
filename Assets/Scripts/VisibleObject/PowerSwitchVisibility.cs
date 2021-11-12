@@ -9,8 +9,10 @@ public class PowerSwitchVisibility : VisibleObjectVisibility
     {
         if (objectFinalColor.HasFlag(trueColor))
         {
-            if (objectFinalColor != color)
+            if (objectFinalColor != objectColor)
+            {
                 SetColor(objectFinalColor);
+            }
             // If object is not visible, make visible
             if (!visible)
             {
