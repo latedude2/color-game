@@ -7,14 +7,20 @@ public class ColoredLight : MonoBehaviour, Activatable
     [SerializeField] private bool enabledAtStart = false;
     [SerializeField] private ColorCode color = ColorCode.White;
     [SerializeField] private GameObject[] signifiers;
+    Light _light;
 
     EmittingSurface lightBulb;
 
     // Start is called before the first frame update
     void Start()
     {
+        _light = gameObject.GetComponent<Light>();
         lightBulb = transform.parent.GetComponentInChildren<EmittingSurface>();
-        SetColor(color);
+        SetLightColor(color);
+        if (enabledAtStart)
+            SetSignifierColor(color);
+        else
+            SetSignifierColor(ColorCode.White);
         Invoke(nameof(SetInitialEnabled), 0.1f);
     }
 
@@ -27,13 +33,21 @@ public class ColoredLight : MonoBehaviour, Activatable
 
     public void SetColor(ColorCode newColor)
     {
-        color = newColor;
-        Light light = gameObject.GetComponent<Light>();
-        light.color = ColorHelper.GetColor(newColor);
+        SetLightColor(newColor);
+        SetSignifierColor(newColor);
+    }
 
+    private void SetSignifierColor(ColorCode newColor)
+    {
         foreach (var signifier in signifiers) {
-            signifier.GetComponent<Renderer>().material.SetColor("_Color", light.color);
+            signifier.GetComponent<Renderer>().material.SetColor("_Color", ColorHelper.GetColor(newColor));
         }
+    }
+
+    private void SetLightColor(ColorCode newColor)
+    {
+        color = newColor;
+        _light.color = ColorHelper.GetColor(newColor);
     }
 
     public ColorCode GetColorCode()
@@ -45,6 +59,7 @@ public class ColoredLight : MonoBehaviour, Activatable
     {
         lightBulb.SetActive(true);
         gameObject.SetActive(true);
+        SetSignifierColor(color);
     }
 
     public void Deactivate()
