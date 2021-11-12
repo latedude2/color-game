@@ -5,7 +5,7 @@ using DimBoxes;
 
 public class VisibleObjectVisibility : MonoBehaviour
 {
-    protected ColorCode color = ColorCode.Black;
+    protected ColorCode objectColor = ColorCode.Black;
     public ColorCode trueColor = ColorCode.Black;
     private Renderer _renderer;
     private Material colorMat;
@@ -48,8 +48,10 @@ public class VisibleObjectVisibility : MonoBehaviour
     {
         if (objectFinalColor != ColorCode.Black)
         {
-            if (objectFinalColor != color)
+            if (objectFinalColor != objectColor)
+            {
                 SetColor(objectFinalColor);
+            }
             // If object is not visible, make visible
             if (!visible)
             {
@@ -87,6 +89,7 @@ public class VisibleObjectVisibility : MonoBehaviour
 
     protected void SetColor(ColorCode color)
     {
+        objectColor = color;
         colorMat = Resources.Load<Material>("Materials/" + color.ToString());
         _renderer.material = colorMat;
 
