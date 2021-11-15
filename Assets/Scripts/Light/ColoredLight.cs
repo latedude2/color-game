@@ -66,5 +66,6 @@ public class ColoredLight : MonoBehaviour, Activatable
     {
         lightBulb.SetActive(false);
         gameObject.SetActive(false);
+        SetSignifierColor(ColorCode.White);
     }
 }
