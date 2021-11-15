@@ -128,6 +128,8 @@ public class VisibleObjectVisibility : MonoBehaviour
         {
             finalColor = finalColor | ColorCode.Blue;
         }
+        if(finalColor == (ColorCode.Green | ColorCode.Red | ColorCode.Blue))
+            finalColor = ColorCode.White;
         gameObject.layer = gameObjectLayer; //set back the original layer
         return finalColor;
     }
