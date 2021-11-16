@@ -10,5 +10,5 @@ public enum ColorCode
     Yellow  = 0b_0000_0011,
     Magenta = 0b_0000_0101,
     Cyan    = 0b_0000_0110,
-    White   = 0b_0000_0111
+    White   = 2147483647
 }
