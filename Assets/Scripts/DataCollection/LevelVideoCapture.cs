@@ -3,7 +3,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine.Windows.WebCam;
 
-public class VideoCaptureExample : MonoBehaviour
+public class LevelVideoCapture : MonoBehaviour
 {
     static readonly float MaxRecordingTime = 5.0f;
 
