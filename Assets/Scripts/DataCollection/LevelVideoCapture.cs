@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Linq;
 using UnityEngine.Windows.WebCam;
@@ -10,7 +11,6 @@ public class LevelVideoCapture : MonoBehaviour
     VideoCapture m_VideoCapture = null;
     float m_stopRecordingTimer = float.MaxValue;
 
-    // Use this for initialization
     void Start() {
         if (SystemInfo.operatingSystem.Contains("Windows")) {
             StartVideoCaptureTest();
@@ -69,8 +69,8 @@ public class LevelVideoCapture : MonoBehaviour
     {
         Debug.Log("Started Video Capture Mode!");
         string timeStamp = Time.time.ToString().Replace(".", "").Replace(":", "");
-        string filename = string.Format("TestVideo_{0}.mp4", timeStamp);
-        string filepath = System.IO.Path.Combine(Application.persistentDataPath, filename);
+        string filename = string.Format("{0}.mp4", SceneManager.GetActiveScene().name);
+        string filepath = System.IO.Path.Combine(Application.persistentDataPath, GameManager.Instance.session.ToString(), "/", filename);
         print(filepath);
         filepath = filepath.Replace("/", @"\");
         m_VideoCapture.StartRecordingAsync(filepath, OnStartedRecordingVideo);

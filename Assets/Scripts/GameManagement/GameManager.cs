@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameManager : MonoBehaviour {
 
     private static GameManager _instance;
-
     public static GameManager Instance { get { return _instance; } }
+
+    public DateTime session;
 
     private void Awake()
     {
@@ -19,4 +21,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    private void Start() {
+        session = DateTime.Now;
+    }
 }
