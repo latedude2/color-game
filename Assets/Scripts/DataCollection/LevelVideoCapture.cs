@@ -11,27 +11,25 @@ public class LevelVideoCapture : MonoBehaviour
     float m_stopRecordingTimer = float.MaxValue;
 
     // Use this for initialization
-    void Start()
-    {
-        StartVideoCaptureTest();
+    void Start() {
+        if (SystemInfo.operatingSystem.Contains("Windows")) {
+            StartVideoCaptureTest();
+        }
     }
 
-    void Update()
-    {
-        if (m_VideoCapture == null || !m_VideoCapture.IsRecording)
-        {
-            return;
-        }
-
-        if (Time.time > m_stopRecordingTimer)
-        {
-            // m_VideoCapture.StopRecordingAsync(OnStoppedRecordingVideo);
+    void Update() {
+        if (SystemInfo.operatingSystem.Contains("Windows")) {
+            if (m_VideoCapture == null || !m_VideoCapture.IsRecording) {
+                return;
+            }
         }
     }
 
     void OnDestroy() {
-        print("Stop recording");
-        m_VideoCapture.StopRecordingAsync(OnStoppedRecordingVideo);
+        if (SystemInfo.operatingSystem.Contains("Windows")) {
+            print("Stop recording");
+            m_VideoCapture.StopRecordingAsync(OnStoppedRecordingVideo);
+        }
     }
 
     void StartVideoCaptureTest()
