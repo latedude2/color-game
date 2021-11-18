@@ -6,6 +6,7 @@ public class LightSwitch : MonoBehaviour, Activatable
 {
     [Tooltip("GameObject has to have component that implements the Activatable interface (ColoredLight or EmittingSurface for example).")]
     [SerializeField] GameObject[] gameObjectsToActivate;
+    public bool active;
     private ParticleSystem sparks;
     private void Start() {
         if(gameObjectsToActivate.Length == 0)
@@ -16,6 +17,7 @@ public class LightSwitch : MonoBehaviour, Activatable
     }
     public void Activate()
     {
+        active = true;
         foreach(GameObject gameObjectToActivate in gameObjectsToActivate)
         {
             EmittingSurface emittingSurface = gameObjectToActivate.GetComponent<EmittingSurface>();
@@ -34,6 +36,7 @@ public class LightSwitch : MonoBehaviour, Activatable
 
     public void Deactivate()
     {
+        active = false;
         foreach(GameObject gameObjectToActivate in gameObjectsToActivate)
         {
             Activatable activatable = gameObjectToActivate.GetComponent<Activatable>();
