@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Linq;
 using UnityEngine.Windows.WebCam;
-using UnityEngine.Windows;
+using System.IO;
 
 public class LevelVideoCapture : MonoBehaviour
 {
