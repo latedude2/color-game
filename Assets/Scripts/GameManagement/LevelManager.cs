@@ -6,6 +6,7 @@ public class LevelManager : MonoBehaviour
 {
     public Animator transition;
     public float transitionTime = 1f;
+    public LevelVideoCapture webCamRecorder;
 
     private static LevelManager _instance;
      public static LevelManager Instance
@@ -77,6 +78,9 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator LoadLevel(int levelIndex)
     {
+        if(webCamRecorder)
+            Destroy(webCamRecorder);
+            
         transition.SetTrigger("Start");
 
         yield return new WaitForSeconds(transitionTime);
