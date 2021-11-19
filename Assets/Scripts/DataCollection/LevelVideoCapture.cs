@@ -69,7 +69,11 @@ public class LevelVideoCapture : MonoBehaviour
     void OnStartedVideoCaptureMode(VideoCapture.VideoCaptureResult result)
     {
         Debug.Log("Started Video Capture Mode!");
-        string filename = string.Format("{0}.mp4", SceneManager.GetActiveScene().name);
+        string filename;
+        if (SceneManager.GetActiveScene().name == "LastLevel")
+            filename = string.Format("{0}.mp4", "Level9999.9");
+        else
+            filename = string.Format("{0}.mp4", SceneManager.GetActiveScene().name);
         string directory = System.IO.Path.Combine(Application.persistentDataPath, GameManager.Instance.session.ToString().Replace("/", "-").Replace(":", "-"));
         if (!Directory.Exists(directory)) {
             //if it doesn't, create it
