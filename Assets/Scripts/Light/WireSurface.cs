@@ -12,6 +12,8 @@ public class WireSurface : MonoBehaviour, Activatable
     private ParticleSystem sparks;
     public float progress;
     public ColorCode _color;
+    private bool loading = false;
+    private int loadDir;
 
     private void Start() {
         _renderer = GetComponent<Renderer>();
@@ -41,6 +43,13 @@ public class WireSurface : MonoBehaviour, Activatable
         StartCoroutine(SetLoad(false, loadingSpeed));
     }
 
+    private void FixedUpdate() {
+        if (loading) {
+            progress = Mathf.Clamp(_renderer.material.GetFloat("Progress") + loadingSpeed * loadDir * Time.deltaTime, 0, 1);
+            _renderer.material.SetFloat("Progress", progress);
+        }
+    }
+
     private IEnumerator SetLoad(bool load, float speed) {
         bool waiting = true;
         if (!load) {
@@ -57,15 +66,13 @@ public class WireSurface : MonoBehaviour, Activatable
                     yield return new WaitForSeconds(0.01f);
             }
         }
-        bool loading = true;
-        int loadDir = load ? 1 : -1;
+        loading = true;
+        loadDir = load ? 1 : -1;
         int loadInt = Convert.ToInt16(load);
         Vector3 sparksPos = sparks.transform.localPosition;
         sparks.Play();
 
         while (loading) {
-            progress = Mathf.Clamp(_renderer.material.GetFloat("Progress") + speed * loadDir, 0, 1);
-            _renderer.material.SetFloat("Progress", progress);
             sparksPos.x = progress - 0.5f;
             sparks.transform.localPosition = sparksPos;
             if (progress == loadInt) {
