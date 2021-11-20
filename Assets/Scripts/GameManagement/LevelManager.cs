@@ -19,7 +19,6 @@ public class LevelManager : MonoBehaviour
     }
 
     private void Awake() {
-        Application.targetFrameRate = 12;
         _instance = this;
     }
 
