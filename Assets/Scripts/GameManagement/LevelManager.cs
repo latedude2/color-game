@@ -49,7 +49,6 @@ public class LevelManager : MonoBehaviour
             SceneManager.LoadScene(0);
             Settings.UnlockCursor();
         }
-        
     }
 
     private void SaveProgress(int levelIndex)

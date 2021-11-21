@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CursorSetup : MonoBehaviour
 {
@@ -11,8 +10,11 @@ public class CursorSetup : MonoBehaviour
     // Start is called before the first frame update
     void Update()
     {
-        Vector2 hotSpot = new Vector2(xspot, yspot);
-        Cursor.SetCursor(cursorTexture, hotSpot, CursorMode.ForceSoftware);
+        if (SceneManager.GetActiveScene().name != "ConationQuestion1" || SceneManager.GetActiveScene().name != "ConationQuestion2" || SceneManager.GetActiveScene().name != "ConationQuestion3")
+        {
+            Vector2 hotSpot = new Vector2(xspot, yspot);
+            Cursor.SetCursor(cursorTexture, hotSpot, CursorMode.ForceSoftware);
+        }
 
 
     }
