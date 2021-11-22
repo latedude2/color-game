@@ -9,6 +9,10 @@ public class PeacockAnimation : MonoBehaviour, Activatable {
     public float loadedBodyValue = 20;
     public float loadSpeed = .01f;
     private Renderer _renderer;
+    private bool loadTail = false;
+    private bool loadBody = false;
+    private float tailProgress;
+    private float bodyProgress;
 
     void Start() {
         _renderer = GetComponent<Renderer>();
@@ -21,6 +25,7 @@ public class PeacockAnimation : MonoBehaviour, Activatable {
     }
 
     public void Activate() {
+        print(switches.All(_switch => _switch.active));
         if (switches.All(_switch => _switch.active)) {
             StopAllCoroutines();
             StartCoroutine(Animate());
@@ -31,24 +36,34 @@ public class PeacockAnimation : MonoBehaviour, Activatable {
         StopAllCoroutines();
         _renderer.material.SetFloat("TailProgress", 0);
         _renderer.material.SetFloat("BodyProgress", 0);
+        loadTail = false;
+        loadBody = false;
+    }
+
+    private void FixedUpdate() {
+        if (loadTail) {
+            tailProgress = Mathf.Clamp(_renderer.material.GetFloat("TailProgress") + loadSpeed * Time.deltaTime, 0, loadedTailValue);
+            _renderer.material.SetFloat("TailProgress", tailProgress);
+        }
+        if (loadBody) {
+            bodyProgress = Mathf.Clamp(_renderer.material.GetFloat("BodyProgress") + loadSpeed * Time.deltaTime, 0, loadedBodyValue);
+            _renderer.material.SetFloat("BodyProgress", bodyProgress);
+        }
     }
 
     private IEnumerator Animate() {
-        bool loadTail = true;
-        float tailProgress = 0;
+        loadTail = true;
+        tailProgress = 0;
         while (loadTail) {
-            tailProgress = Mathf.Clamp(_renderer.material.GetFloat("TailProgress") + loadSpeed, 0, loadedTailValue);
-            _renderer.material.SetFloat("TailProgress", tailProgress);
             if (tailProgress == loadedTailValue) {
                 loadTail = false;
             }
             yield return new WaitForSeconds(0.01f);
         }
-        bool loadBody = true;
-        float bodyProgress = 0;
+        _renderer.material.SetFloat("BodyProgress", 5);
+        loadBody = true;
+        bodyProgress = 5;
         while (loadBody) {
-            bodyProgress = Mathf.Clamp(_renderer.material.GetFloat("BodyProgress") + loadSpeed, 0, loadedBodyValue);
-            _renderer.material.SetFloat("BodyProgress", bodyProgress);
             if (bodyProgress == loadedBodyValue) {
                 loadBody = false;
             }
