@@ -13,15 +13,14 @@ public class PeacockAnimation : MonoBehaviour, Activatable {
     private bool loadBody = false;
     private float tailProgress;
     private float bodyProgress;
+    public ParticleSystem particles;
 
     void Start() {
         _renderer = GetComponent<Renderer>();
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.L)) {
-            Activate();
-        }
+        
     }
 
     public void Activate() {
@@ -38,6 +37,7 @@ public class PeacockAnimation : MonoBehaviour, Activatable {
         _renderer.material.SetFloat("BodyProgress", 0);
         loadTail = false;
         loadBody = false;
+        particles.Stop();
     }
 
     private void FixedUpdate() {
@@ -52,6 +52,7 @@ public class PeacockAnimation : MonoBehaviour, Activatable {
     }
 
     private IEnumerator Animate() {
+        particles.Play();
         loadTail = true;
         tailProgress = 0;
         while (loadTail) {
@@ -69,5 +70,7 @@ public class PeacockAnimation : MonoBehaviour, Activatable {
             }
             yield return new WaitForSeconds(0.01f);
         }
+        yield return new WaitForSeconds(1f);
+        LevelManager.Instance.LoadNextLevel(2.5f);
     }
 }
