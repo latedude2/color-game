@@ -272,11 +272,22 @@ PrefabInstance:
       value: ConationRecorder
       objectReference: {fileID: 0}
     - target: {fileID: 4108685138872915254, guid: b479f28d6b010034d8d32fa3a491bca6, type: 3}
-      propertyPath: filename
-      value: conation.txt
-      objectReference: {fileID: 0}
+      propertyPath: whyConationCanvas
+      value: 
+      objectReference: {fileID: 1157551946}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b479f28d6b010034d8d32fa3a491bca6, type: 3}
+--- !u!114 &1004627975 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4108685138872915254, guid: b479f28d6b010034d8d32fa3a491bca6, type: 3}
+  m_PrefabInstance: {fileID: 757650914}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44dd9a15f196a2d4e86d3a27590d22a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1046401401
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -372,28 +383,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WhyConation
       objectReference: {fileID: 0}
-    - target: {fileID: 1035130918453244774, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3006457688324375242, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
-      propertyPath: m_Color.b
-      value: 0.8867924
-      objectReference: {fileID: 0}
-    - target: {fileID: 3006457688324375242, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
-      propertyPath: m_Color.g
-      value: 0.8867924
-      objectReference: {fileID: 0}
-    - target: {fileID: 3006457688324375242, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
-      propertyPath: m_Color.r
-      value: 0.8867924
-      objectReference: {fileID: 0}
-    - target: {fileID: 6636943147249123082, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
-      propertyPath: m_Text
-      value: 'Submit
-
-'
-      objectReference: {fileID: 0}
+    - target: {fileID: 7212583250122796431, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1330544218680432235}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
 --- !u!1 &1099800415
@@ -512,6 +505,11 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!1 &1157551946 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1035130918453244774, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
+  m_PrefabInstance: {fileID: 1046401401}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1752237263
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -803,7 +801,7 @@ PrefabInstance:
     - target: {fileID: 3084048362389471262, guid: 03db97e0704762948b3a7e328f706adc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1330544218680432235}
+      objectReference: {fileID: 1004627975}
     - target: {fileID: 4650254634906296051, guid: 03db97e0704762948b3a7e328f706adc, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -891,10 +889,6 @@ PrefabInstance:
     - target: {fileID: 4650254634906296055, guid: 03db97e0704762948b3a7e328f706adc, type: 3}
       propertyPath: m_Name
       value: ConationCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 4650254634906296055, guid: 03db97e0704762948b3a7e328f706adc, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6400231998250696479, guid: 03db97e0704762948b3a7e328f706adc, type: 3}
       propertyPath: m_AnchorMax.x
