@@ -35,12 +35,16 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void LoadNextLevel()
+    public void LoadNextLevel(float _time = 0f)
     {
+        float time = _time;
+        if (time == 0f)
+            time = transitionTime;
+        
         if(SceneManager.GetActiveScene().buildIndex + 1 < SceneManager.sceneCountInBuildSettings)
         {
             SaveProgress(SceneManager.GetActiveScene().buildIndex + 1);
-            StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
+            StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1, time));
         }
         else 
         {
@@ -75,7 +79,7 @@ public class LevelManager : MonoBehaviour
     }
 
 
-    IEnumerator LoadLevel(int levelIndex)
+    IEnumerator LoadLevel(int levelIndex, float transitionTime)
     {
         transition.SetTrigger("Start");
 
