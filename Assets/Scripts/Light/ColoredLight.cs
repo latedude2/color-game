@@ -17,7 +17,8 @@ public class ColoredLight : MonoBehaviour, Activatable
         _light = gameObject.GetComponent<Light>();
         lightBulb = transform.parent.GetComponentInChildren<EmittingSurface>();
         SetLightColor(color);
-        if (enabledAtStart)
+
+        if (enabledAtStart || !IsColorSwitchable())
             SetSignifierColor(color);
         else
             SetSignifierColor(ColorCode.White);
@@ -66,6 +67,14 @@ public class ColoredLight : MonoBehaviour, Activatable
     {
         lightBulb.SetActive(false);
         gameObject.SetActive(false);
-        SetSignifierColor(ColorCode.White);
+    }
+
+    private bool IsColorSwitchable()
+    {
+        GameObject parent = transform.parent.transform.parent.transform.parent.gameObject;
+        SetLightColor[] setLightColors = parent.GetComponentsInChildren<SetLightColor>();
+        bool IsColorSwitchable = setLightColors.Length > 0 ? true : false;
+
+        return IsColorSwitchable;
     }
 }
