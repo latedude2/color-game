@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -383,17 +383,55 @@ PrefabInstance:
       propertyPath: m_Name
       value: WhyConation
       objectReference: {fileID: 0}
+    - target: {fileID: 1555802322334863158, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 209
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971781800561410559, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
+      propertyPath: m_Text
+      value: 'Please explain why
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7212583250122796431, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7212583250122796431, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7212583250122796431, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7212583250122796431, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1330544218680432235}
     - target: {fileID: 7212583250122796431, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 1330544218680432235}
+    - target: {fileID: 7212583250122796431, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7212583250122796431, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: LoadNextLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7212583250122796431, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: DisableReload
+      objectReference: {fileID: 0}
+    - target: {fileID: 7212583250122796431, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: LevelManager, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 7212583250122796431, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ae6e765df477674681fd7376bea5ce4, type: 3}

@@ -7,9 +7,10 @@ public class LevelManager : MonoBehaviour
     public Animator transition;
     public float transitionTime = 1f;
     public LevelVideoCapture webCamRecorder;
+    private bool reloadEnabled = true;
 
     private static LevelManager _instance;
-     public static LevelManager Instance
+    public static LevelManager Instance
     {
         get
         {
@@ -21,12 +22,14 @@ public class LevelManager : MonoBehaviour
 
     private void Awake() {
         _instance = this;
+        if (SceneManager.GetActiveScene().name.Contains("Conation"))
+            DisableReload();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.R))
+        if(reloadEnabled && Input.GetKeyDown(KeyCode.R))
         {
             ReloadScene();
         }
@@ -76,6 +79,11 @@ public class LevelManager : MonoBehaviour
     void ReloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void DisableReload()
+    {
+        reloadEnabled = false;
     }
 
 
