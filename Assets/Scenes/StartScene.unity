@@ -346,10 +346,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7800456533317259234, guid: 79f908368993271488f01ccb5dd9b3e7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7800456533317259234, guid: 79f908368993271488f01ccb5dd9b3e7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7800456533317259234, guid: 79f908368993271488f01ccb5dd9b3e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7800456533317259234, guid: 79f908368993271488f01ccb5dd9b3e7, type: 3}
@@ -357,12 +361,28 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8976751913713485976}
     - target: {fileID: 7800456533317259234, guid: 79f908368993271488f01ccb5dd9b3e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 8976751913713485976}
+    - target: {fileID: 7800456533317259234, guid: 79f908368993271488f01ccb5dd9b3e7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DeleteProgress
+      objectReference: {fileID: 0}
+    - target: {fileID: 7800456533317259234, guid: 79f908368993271488f01ccb5dd9b3e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: LoadNextLevel
       objectReference: {fileID: 0}
     - target: {fileID: 7800456533317259234, guid: 79f908368993271488f01ccb5dd9b3e7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: LevelManager, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 7800456533317259234, guid: 79f908368993271488f01ccb5dd9b3e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: LevelManager, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 7800456533317259234, guid: 79f908368993271488f01ccb5dd9b3e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79f908368993271488f01ccb5dd9b3e7, type: 3}

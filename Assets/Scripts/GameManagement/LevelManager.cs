@@ -6,7 +6,10 @@ public class LevelManager : MonoBehaviour
 {
     public Animator transition;
     public float transitionTime = 1f;
-    public LevelVideoCapture webCamRecorder;
+
+    #if UNITY_STANDALONE_WIN 
+        public LevelVideoCapture webCamRecorder;
+    #endif
     private bool reloadEnabled = true;
 
     private static LevelManager _instance;
@@ -37,6 +40,11 @@ public class LevelManager : MonoBehaviour
         {
             LoadNextLevel();
         }
+    }
+
+    public void DeleteProgress()
+    {
+        PlayerPrefs.DeleteAll();
     }
 
     public void LoadNextLevel(float _time = 0f)
@@ -89,8 +97,10 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator LoadLevel(int levelIndex, float transitionTime)
     {
-        if(webCamRecorder)
-            Destroy(webCamRecorder);
+        #if UNITY_STANDALONE_WIN 
+            if(webCamRecorder)
+                Destroy(webCamRecorder);
+        #endif
             
         transition.SetTrigger("Start");
 
