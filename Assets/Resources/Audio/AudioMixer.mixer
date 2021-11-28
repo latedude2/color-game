@@ -307,10 +307,13 @@ AudioMixerSnapshotController:
   m_SnapshotID: a48bcafa288b2453aaedb6e5d28b3e20
   m_FloatValues:
     de51b44534a0b4bd3a9d908efb2bbc56: 0.8160306
+    c3175da5da71b492285527e4606ba52c: -80
     4a6328acf2c81410e9f4e72e127ecea3: 0
     fdecdfac8ba1f41a58c979a25db20a64: 0.04171297
     a70b6dbfb73954dc79ade35191157fad: -11.7683115
-  m_TransitionOverrides: {}
+  m_TransitionOverrides:
+    c3175da5da71b492285527e4606ba52c: 2
+    f950dfd93f01b4be081943cd2d47f20b: 3
 --- !u!244 &867101784364214254
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -364,7 +367,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Music
+  m_Name: Music Master
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 51640ed223af242b4988fea5734277aa
   m_Children: []

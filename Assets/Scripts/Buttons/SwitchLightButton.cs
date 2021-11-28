@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SwitchLightButton : MonoBehaviour, Interactable
 {
+    public delegate void Interacted();
+    public event Interacted OnInteract;
     private GameObject lightGameObject;
     private AudioSource _audio;
     private EmittingSurface lightBulb;
@@ -24,6 +26,9 @@ public class SwitchLightButton : MonoBehaviour, Interactable
 
     public void Interact()
     {
+        if (!enabled)
+            return;
+        
         bool isActive = lightGameObject.activeInHierarchy;
         if(isActive)
         {
@@ -40,6 +45,9 @@ public class SwitchLightButton : MonoBehaviour, Interactable
         }
         anim.Play("ButtonAnimation");
         _audio.PlayOneShot(_audio.clip);
+        if (OnInteract != null) {
+            OnInteract();
+        }
     }
 
     private void initializeAudio() {
