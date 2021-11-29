@@ -7,8 +7,13 @@ public class LevelManager : MonoBehaviour
     public Animator transition;
     public float transitionTime = 1f;
 
+    #if UNITY_STANDALONE_WIN 
+        public LevelVideoCapture webCamRecorder;
+    #endif
+    private bool reloadEnabled = true;
+
     private static LevelManager _instance;
-     public static LevelManager Instance
+    public static LevelManager Instance
     {
         get
         {
@@ -20,12 +25,14 @@ public class LevelManager : MonoBehaviour
 
     private void Awake() {
         _instance = this;
+        if (SceneManager.GetActiveScene().name.Contains("Conation"))
+            DisableReload();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.R))
+        if(reloadEnabled && Input.GetKeyDown(KeyCode.R))
         {
             ReloadScene();
         }
@@ -33,6 +40,11 @@ public class LevelManager : MonoBehaviour
         {
             LoadNextLevel();
         }
+    }
+
+    public void DeleteProgress()
+    {
+        PlayerPrefs.DeleteAll();
     }
 
     public void LoadNextLevel(float _time = 0f)
@@ -52,7 +64,6 @@ public class LevelManager : MonoBehaviour
             SceneManager.LoadScene(0);
             Settings.UnlockCursor();
         }
-        
     }
 
     private void SaveProgress(int levelIndex)
@@ -78,9 +89,19 @@ public class LevelManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public void DisableReload()
+    {
+        reloadEnabled = false;
+    }
+
 
     IEnumerator LoadLevel(int levelIndex, float transitionTime)
     {
+        #if UNITY_STANDALONE_WIN 
+            if(webCamRecorder)
+                Destroy(webCamRecorder);
+        #endif
+            
         transition.SetTrigger("Start");
 
         yield return new WaitForSeconds(transitionTime);
