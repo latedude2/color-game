@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using System;
 
 #if UNITY_EDITOR
 [ExecuteInEditMode]
@@ -10,6 +12,38 @@ public class WireBuilder : MonoBehaviour
     [System.NonSerialized] public Vector3 lineStart = Vector3.right / 2;
     public GameObject wirePrefab;
 
+    List<Vector3> possibleLineEndPositions;
+
+
+    public void FindPosition()
+    {
+        possibleLineEndPositions = new List<Vector3>(); 
+        checkDirection(-Vector3.forward);
+        checkDirection(Vector3.forward);
+        checkDirection(Vector3.right);
+        Debug.Log("Found " + possibleLineEndPositions.Count + " possible positions"); //only 2?
+    }
+
+    public void SpawnRandomSegment()
+    {
+        Vector3 endPosition = possibleLineEndPositions[UnityEngine.Random.Range(0, possibleLineEndPositions.Count)];
+        lineEnd = endPosition;
+        AddWire();
+        FindPosition();
+
+    }
+
+    public void checkDirection(Vector3 direction)
+    {
+        RaycastHit hit;
+        LayerMask layerMask = 0b_0000_1001; //Block rays with default and static layers
+        var distance = transform.localScale.x;
+        Debug.DrawRay(transform.TransformPoint(lineStart), direction * distance, Color.magenta, 2f);
+        if (!Physics.Raycast(lineStart, direction, out hit, distance, layerMask))
+        {
+            possibleLineEndPositions.Add(transform.TransformPoint(lineStart) + direction * distance); //Setting wrong position
+        }
+    }
 
     public void AddWire()
     {

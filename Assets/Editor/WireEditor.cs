@@ -18,7 +18,6 @@ public class WireEditor : Editor
 		Vector3 p0 = handleTransform.TransformPoint(wire.lineStart);
 		Vector3 p1 = handleTransform.TransformPoint(wire.lineEnd);
 
-        
 		Handles.color = Color.white;
 		Handles.DrawLine(p0, p1);
     }
@@ -38,6 +37,16 @@ public class WireEditor : Editor
         {
             MarkSceneAsDirty();
             wireBuilder.RotateLeft();
+        }
+
+        if(GUILayout.Button("Find position"))
+        {
+            wireBuilder.FindPosition();
+        }
+
+        if(GUILayout.Button("Spawn random segment"))
+        {
+            wireBuilder.SpawnRandomSegment();
         }
     }
 
