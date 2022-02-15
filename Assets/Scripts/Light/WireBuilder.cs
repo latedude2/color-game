@@ -8,7 +8,7 @@ using System;
 [ExecuteInEditMode]
 public class WireBuilder : MonoBehaviour
 {
-    [System.NonSerialized] public Vector3 lineEnd = Vector3.right;
+    public Vector3 lineEnd = Vector3.right;
     [System.NonSerialized] public Vector3 lineStart = Vector3.right / 2;
     public GameObject wirePrefab;
 
@@ -18,30 +18,31 @@ public class WireBuilder : MonoBehaviour
     public void FindPosition()
     {
         possibleLineEndPositions = new List<Vector3>(); 
-        checkDirection(-Vector3.forward);
-        checkDirection(Vector3.forward);
-        checkDirection(Vector3.right);
+        checkDirection(-Vector3.forward, 50);   //TODO: Replace with proper scaling
+        checkDirection(Vector3.forward, 50);
+        checkDirection(Vector3.right, 1);
         Debug.Log("Found " + possibleLineEndPositions.Count + " possible positions"); //only 2?
     }
 
     public void SpawnRandomSegment()
     {
-        Vector3 endPosition = possibleLineEndPositions[UnityEngine.Random.Range(0, possibleLineEndPositions.Count)];
+        Vector3 endPosition = possibleLineEndPositions[UnityEngine.Random.Range(0, possibleLineEndPositions.Count)]; 
         lineEnd = endPosition;
         AddWire();
         FindPosition();
 
     }
 
-    public void checkDirection(Vector3 direction)
+    public void checkDirection(Vector3 direction, float multiplier)
     {
         RaycastHit hit;
         LayerMask layerMask = 0b_0000_1001; //Block rays with default and static layers
         var distance = transform.localScale.x;
+        Debug.Log("Direction vector3: " + direction);
         Debug.DrawRay(transform.TransformPoint(lineStart), direction * distance, Color.magenta, 2f);
-        if (!Physics.Raycast(lineStart, direction, out hit, distance, layerMask))
+        if (!Physics.Raycast(transform.TransformPoint(lineStart), direction, out hit, distance, layerMask)) //BUG: never colliding
         {
-            possibleLineEndPositions.Add(transform.TransformPoint(lineStart) + direction * distance); //Setting wrong position
+            possibleLineEndPositions.Add(lineStart + direction * multiplier); //Setting wrong position
         }
     }
 
