@@ -7,7 +7,7 @@ using UnityEngine;
 public class WireSurface : MonoBehaviour, Activatable
 {
     [Min(.001f)] public float loadingSpeed = .01f;
-    [SerializeField] GameObject[] gameObjectsToActivate;
+    public List<GameObject> gameObjectsToActivate;
     private Renderer _renderer;
     private ParticleSystem sparks;
     public float progress;
@@ -21,7 +21,7 @@ public class WireSurface : MonoBehaviour, Activatable
         loadingSpeed /= transform.localScale.x;
         _renderer.material.SetColor("LoadedColor", ColorHelper.GetColor(_color));
         _renderer.material.SetFloat("Progress", progress);
-        if(gameObjectsToActivate.Length == 0)
+        if(gameObjectsToActivate.Count == 0)
         {
             Debug.LogError("Objects that should be activated was not set.");
         }
