@@ -32,6 +32,11 @@ public class WireEditor : Editor
         {
             wireBuilder.AddWire();
         }
+
+        if(GUILayout.Button("Rotate left"))
+        {
+            wireBuilder.RotateLeft();
+        }
     }
     
 }

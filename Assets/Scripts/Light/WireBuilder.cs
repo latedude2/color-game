@@ -24,6 +24,36 @@ public class WireBuilder : MonoBehaviour
 
         newWire.transform.LookAt(transform.TransformPoint(lineEnd));
         newWire.transform.Rotate(new Vector3(0,-90,0));
-        GetComponent<WireSurface>().gameObjectsToActivate.Add(newWire);        
+
+        GetComponent<WireSurface>().gameObjectsToActivate.Add(newWire);  
+        RotateWireToStickToWall(Vector3.Distance(transform.TransformPoint(lineStart), transform.TransformPoint(lineEnd)), newWire.transform);  
+
+        GameObject[] newEditorSelection = new GameObject[1];
+        newEditorSelection[0] = newWire;
+        UnityEditor.Selection.objects = newEditorSelection;    
+    }
+
+    private void RotateWireToStickToWall(float newWireLength, Transform newWire)
+    {
+        RaycastHit hit;
+        LayerMask layerMask = 0b_0000_1001; //Block rays with default and static layers
+        float distance = newWireLength / 2;
+
+        if (Physics.Raycast(newWire.position, newWire.forward, out hit, distance, layerMask))
+        {
+            //Debug.Log("Hit forward, rotating");
+            newWire.transform.Rotate(new Vector3(90,0,0));
+        }
+        if (Physics.Raycast(newWire.position, -newWire.forward, out hit, distance, layerMask))
+        {
+            //Debug.Log("Hit back, rotating");
+            newWire.transform.Rotate(new Vector3(90,0,0));
+            
+        }
+    }
+
+    public void RotateLeft()
+    {
+        transform.Rotate(new Vector3(90,0,0));
     }
 }
