@@ -30,13 +30,23 @@ public class WireEditor : Editor
         WireBuilder wireBuilder = (WireBuilder)target;
         if(GUILayout.Button("Add wire"))
         {
+            MarkSceneAsDirty();
             wireBuilder.AddWire();
         }
 
         if(GUILayout.Button("Rotate left"))
         {
+            MarkSceneAsDirty();
             wireBuilder.RotateLeft();
         }
+    }
+
+    //Force unity to save changes or Unity may not save when we have instantiated/removed prefabs despite pressing save button
+    private void MarkSceneAsDirty()
+    {
+        UnityEngine.SceneManagement.Scene activeScene = UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene();
+
+        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(activeScene);
     }
     
 }

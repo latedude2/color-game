@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
 [ExecuteInEditMode]
 public class WireBuilder : MonoBehaviour
 {
@@ -57,3 +58,4 @@ public class WireBuilder : MonoBehaviour
         transform.Rotate(new Vector3(90,0,0));
     }
 }
+#endif
