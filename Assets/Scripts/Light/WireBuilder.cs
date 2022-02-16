@@ -18,15 +18,16 @@ public class WireBuilder : MonoBehaviour
     [SerializeField] [Range(1, 3)] public int branchCount = 2;
     public bool randomizeBranchLength = true;
     
-
     public bool followWalls = true;
     public float maxWallDistance = 0.2f;
-
     public float maxWireLength = 5f;
-
     List<Vector3> possibleLineEndPositions;
 
+    private Activater activater;
 
+    void OnDestroy() {
+        GetComponent<WireBuilder>().activater.RemoveActivatable(gameObject);
+    }
 
     public void FindPosition(bool randomLength = true)
     {
@@ -80,18 +81,17 @@ public class WireBuilder : MonoBehaviour
     }
 
     private bool checkWallExists(Vector3 position, float distance){
-        bool hitwall = false;        
         if(wallCheck(transform.TransformPoint(position), transform.up, maxWallDistance) | wallCheck(transform.TransformPoint(position), -transform.up, maxWallDistance))
         {
-            hitwall = true;
+            return true;
         }
         
         if(wallCheck(transform.TransformPoint(position), transform.right, maxWallDistance) | wallCheck(transform.TransformPoint(position), -transform.right, maxWallDistance))
         {
-            hitwall = true;
+            return true;
         }
         
-        return hitwall;
+        return false;
     }
 
     
@@ -119,6 +119,7 @@ public class WireBuilder : MonoBehaviour
         Vector3 spawnPoint = Vector3.Lerp(transform.TransformPoint(lineStart), transform.TransformPoint(lineEnd), 0.5001f); //the wire is spawned slightly in front so that it is later detected by raycasting
         GameObject newWire = Instantiate(wirePrefab, spawnPoint, Quaternion.identity);
         Undo.RegisterCreatedObjectUndo(newWire, "Created new wire");
+        
         newWire.name = "Wire";
         newWire.transform.localScale = new Vector3(
             Vector3.Distance(transform.TransformPoint(lineStart), transform.TransformPoint(lineEnd)), 
@@ -128,11 +129,13 @@ public class WireBuilder : MonoBehaviour
         newWire.GetComponent<WireSurface>()._color = gameObject.GetComponent<WireSurface>()._color;
 
         newWire.transform.LookAt(transform.TransformPoint(lineEnd));
-        newWire.transform.Rotate(new Vector3(0,-90,0));
+        newWire.transform.Rotate(new Vector3(0, -90, 0));
 
-        EditorUtility.SetDirty(gameObject);
-        Undo.RecordObject(gameObject, "Added new wire to list");
         GetComponent<WireSurface>().gameObjectsToActivate.Add(newWire);  
+        SaveChangeHack(newWire);
+        newWire.GetComponent<WireSurface>().activater = GetComponent<WireSurface>();
+        newWire.GetComponent<WireBuilder>().activater = GetComponent<WireSurface>();
+        
         RotateWireToStickToWall(Vector3.Distance(transform.TransformPoint(lineStart), transform.TransformPoint(lineEnd)), newWire.transform);  
 
         GameObject[] newEditorSelection = new GameObject[1];
@@ -140,6 +143,18 @@ public class WireBuilder : MonoBehaviour
 
         newWire.GetComponent<WireSurface>().gameObjectsToActivate = new List<GameObject>();
         return newWire;
+    }
+
+    private void SaveChangeHack(GameObject newWire)
+    //HACK: The addition of element does not get saved for some reason and readding the component works as a workaround
+    {
+        List<GameObject> activateGameObjectList = GetComponent<WireSurface>().gameObjectsToActivate;
+        ColorCode savedColor = GetComponent<WireSurface>()._color;
+        DestroyImmediate(GetComponent<WireSurface>());
+        gameObject.AddComponent<WireSurface>();
+        GetComponent<WireSurface>().gameObjectsToActivate = activateGameObjectList;
+        GetComponent<WireSurface>()._color = savedColor;
+
     }
 
     private void RotateWireToStickToWall(float newWireLength, Transform newWire)

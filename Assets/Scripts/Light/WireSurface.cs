@@ -1,13 +1,12 @@
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WireSurface : MonoBehaviour, Activatable
+public class WireSurface : MonoBehaviour, Activatable, Activater
 {
-    [Min(.001f)] public float loadingSpeed = .01f;
-    public List<GameObject> gameObjectsToActivate;
+    [Min(.001f)] public float loadingSpeed = 5f;
+    [SerializeField] public List<GameObject> gameObjectsToActivate;
     private Renderer _renderer;
     private ParticleSystem sparks;
     public float progress;
@@ -15,12 +14,19 @@ public class WireSurface : MonoBehaviour, Activatable
     private bool loading = false;
     private int loadDir;
 
+    public Activater activater;
+
     private void Start() {
         _renderer = GetComponent<Renderer>();
         sparks = GetComponentInChildren<ParticleSystem>();
         loadingSpeed /= transform.localScale.x;
         _renderer.material.SetColor("LoadedColor", ColorHelper.GetColor(_color));
         _renderer.material.SetFloat("Progress", progress);
+    }
+
+    public void RemoveActivatable(GameObject activatableGameObject)
+    {
+        gameObjectsToActivate.Remove(activatableGameObject);
     }
 
     public void Activate()
