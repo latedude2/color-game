@@ -53,8 +53,11 @@ public class WireEditor : Editor
         if(GUILayout.Button("Autogenerate branches"))
         {
             MarkSceneAsDirty();
-            wireBuilder.iterateGeneration(wireBuilder.treeLength, wireBuilder.branchCount, wireBuilder.randomizeBranchLength);
+            GameObject newWireSystem = new GameObject("New Wire System");
+            wireBuilder.iterateGeneration(wireBuilder.treeLength, wireBuilder.branchCount, wireBuilder.randomizeBranchLength, newWireSystem);
+            
         }
+
     }
 
     //Force unity to save changes or Unity may not save when we have instantiated/removed prefabs despite pressing save button

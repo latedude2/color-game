@@ -96,7 +96,7 @@ public class WireBuilder : MonoBehaviour
 
     
 
-    public void iterateGeneration(int iteration = 3, int branchCount = 2, bool randomLength = true) 
+    public void iterateGeneration(int iteration = 3, int branchCount = 2, bool randomLength = true, GameObject wireSystem = null) 
     {   //Bug: the wires will tangle with each other because they all spawn at once, so the raycasts fail
         possibleLineEndPositions = new List<Vector3>();
         if(iteration > 0)
@@ -108,7 +108,8 @@ public class WireBuilder : MonoBehaviour
                 GameObject newWire = SpawnRandomSegment();
                 if(newWire != null)
                 {
-                    newWire.GetComponent<WireBuilder>().iterateGeneration(iteration, branchCount, randomLength);
+                    newWire.transform.SetParent(wireSystem.transform);
+                    newWire.GetComponent<WireBuilder>().iterateGeneration(iteration, branchCount, randomLength, wireSystem);
                 }
             }
         }
