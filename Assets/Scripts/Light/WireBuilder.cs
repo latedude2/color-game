@@ -68,8 +68,7 @@ public class WireBuilder : MonoBehaviour
             distance = hit.distance;
         }
 
-        Debug.DrawRay(transform.TransformPoint(lineStart), transform.TransformDirection(direction * distance), Color.magenta, 2f);
-
+        //Debug.DrawRay(transform.TransformPoint(lineStart), transform.TransformDirection(direction * distance), Color.magenta, 2f);
         Vector3 potentialLineEnd = lineStart + direction * multiplier * (distance/maxWireLength);
 
         if(checkForWalls && (!checkWallExists(lineStart, distance) | !checkWallExists(potentialLineEnd, distance)))
@@ -169,7 +168,7 @@ public class WireBuilder : MonoBehaviour
     {
         RaycastHit hit;
         LayerMask layerMask = 0b_0000_1001; //Block rays with default and static layers
-        Debug.DrawRay(position, direction * distance, Color.green, 2f);
+        //Debug.DrawRay(position, direction * distance, Color.green, 2f);
         return Physics.Raycast(position, direction, out hit, distance, layerMask);
     }
 
