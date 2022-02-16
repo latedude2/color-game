@@ -41,12 +41,19 @@ public class WireEditor : Editor
 
         if(GUILayout.Button("Find position"))
         {
-            wireBuilder.FindPosition();
+            wireBuilder.FindPosition(wireBuilder.randomizeBranchLength);
         }
 
         if(GUILayout.Button("Spawn random segment"))
         {
+            MarkSceneAsDirty();
             wireBuilder.SpawnRandomSegment();
+        }
+
+        if(GUILayout.Button("Autogenerate branches"))
+        {
+            MarkSceneAsDirty();
+            wireBuilder.iterateGeneration(wireBuilder.treeLength, wireBuilder.branchCount, wireBuilder.randomizeBranchLength);
         }
     }
 
