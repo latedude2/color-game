@@ -21,10 +21,6 @@ public class WireSurface : MonoBehaviour, Activatable
         loadingSpeed /= transform.localScale.x;
         _renderer.material.SetColor("LoadedColor", ColorHelper.GetColor(_color));
         _renderer.material.SetFloat("Progress", progress);
-        if(gameObjectsToActivate.Count == 0)
-        {
-            Debug.LogError("Objects that should be activated was not set.");
-        }
     }
 
     public void Activate()

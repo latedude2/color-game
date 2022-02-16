@@ -7,17 +7,25 @@ using System;
 #if UNITY_EDITOR
 using UnityEditor;
 [ExecuteInEditMode]
+
 public class WireBuilder : MonoBehaviour
 {
     [System.NonSerialized] public Vector3 lineEnd = Vector3.right;
     [System.NonSerialized] public Vector3 lineStart = Vector3.right / 2;
     public GameObject wirePrefab;
 
-    [SerializeField] [Range(1, 20)] public int treeLength = 5;
-    [SerializeField] [Range(1, 3)] public int branchCount = 3;
+    [SerializeField] [Range(1, 15)] public int treeLength = 4;
+    [SerializeField] [Range(1, 3)] public int branchCount = 2;
     public bool randomizeBranchLength = true;
+    
+
+    public bool followWalls = true;
+    public float maxWallDistance = 0.2f;
+
+    public float maxWireLength = 5f;
 
     List<Vector3> possibleLineEndPositions;
+
 
 
     public void FindPosition(bool randomLength = true)
@@ -28,38 +36,65 @@ public class WireBuilder : MonoBehaviour
         {
             lengthMultiplier = UnityEngine.Random.Range(0.3f, 1f);
         }
-        checkDirection(-Vector3.forward * lengthMultiplier, 50);
-        checkDirection(Vector3.forward * lengthMultiplier, 50);
-        checkDirection(Vector3.right * lengthMultiplier);
+        checkDirection(-Vector3.forward * lengthMultiplier, 10 * maxWireLength , followWalls);
+        checkDirection(Vector3.forward * lengthMultiplier, 10 * maxWireLength , followWalls);
+        checkDirection(Vector3.right * lengthMultiplier, 1 * maxWireLength / transform.localScale.x, followWalls);
         Debug.Log("Found " + possibleLineEndPositions.Count + " possible positions"); 
     }
 
     public GameObject SpawnRandomSegment()
     {
-        GameObject newWire;
+        GameObject newWire = null;
         if(possibleLineEndPositions.Count > 0)
         {
             Vector3 endPosition = possibleLineEndPositions[UnityEngine.Random.Range(0, possibleLineEndPositions.Count)]; 
             lineEnd = endPosition;
             newWire = AddWire();
             possibleLineEndPositions.Remove(endPosition);
-            return newWire;
         }
-        else 
-            return null;
+        return newWire;
     }
 
-    public void checkDirection(Vector3 direction, float multiplier = 1)
+    public void checkDirection(Vector3 direction, float multiplier = 1, bool checkForWalls = true)
     {
         RaycastHit hit;
         LayerMask layerMask = 0b_0001_0000_1001; //Block rays with default, static and ignore outline layers
-        var distance = 5;
-        Debug.DrawRay(transform.TransformPoint(lineStart), transform.TransformDirection(direction * distance), Color.magenta, 2f);
-        if (!Physics.Raycast(transform.TransformPoint(lineStart), transform.TransformDirection(direction), out hit, distance, layerMask)) 
+        float distance = maxWireLength;
+        
+        bool hitSomething = Physics.Raycast(transform.TransformPoint(lineStart), transform.TransformDirection(direction), out hit, distance, layerMask);
+        if (hitSomething)
         {
-            possibleLineEndPositions.Add(lineStart + direction * multiplier); 
+            distance = hit.distance;
         }
+
+        Debug.DrawRay(transform.TransformPoint(lineStart), transform.TransformDirection(direction * distance), Color.magenta, 2f);
+
+        Vector3 potentialLineEnd = lineStart + direction * multiplier * (distance/maxWireLength);
+
+        if(checkForWalls && (!checkWallExists(lineStart, distance) | !checkWallExists(potentialLineEnd, distance)))
+        {
+            Debug.Log("Missing wall to attach to");
+            return;
+        }
+        possibleLineEndPositions.Add(potentialLineEnd); 
     }
+
+    private bool checkWallExists(Vector3 position, float distance){
+        bool hitwall = false;        
+        if(wallCheck(transform.TransformPoint(position), transform.up, maxWallDistance) | wallCheck(transform.TransformPoint(position), -transform.up, maxWallDistance))
+        {
+            hitwall = true;
+        }
+        
+        if(wallCheck(transform.TransformPoint(position), transform.right, maxWallDistance) | wallCheck(transform.TransformPoint(position), -transform.right, maxWallDistance))
+        {
+            hitwall = true;
+        }
+        
+        return hitwall;
+    }
+
+    
 
     public void iterateGeneration(int iteration = 3, int branchCount = 2, bool randomLength = true) 
     {   //Bug: the wires will tangle with each other because they all spawn at once, so the raycasts fail
@@ -95,6 +130,8 @@ public class WireBuilder : MonoBehaviour
         newWire.transform.LookAt(transform.TransformPoint(lineEnd));
         newWire.transform.Rotate(new Vector3(0,-90,0));
 
+        EditorUtility.SetDirty(gameObject);
+        Undo.RecordObject(gameObject, "Added new wire to list");
         GetComponent<WireSurface>().gameObjectsToActivate.Add(newWire);  
         RotateWireToStickToWall(Vector3.Distance(transform.TransformPoint(lineStart), transform.TransformPoint(lineEnd)), newWire.transform);  
 
@@ -107,22 +144,20 @@ public class WireBuilder : MonoBehaviour
 
     private void RotateWireToStickToWall(float newWireLength, Transform newWire)
     {
+        float distance = maxWallDistance;
+        if(wallCheck(newWire.position, newWire.forward, distance) || wallCheck(newWire.position, -newWire.forward, distance))
+            newWire.transform.Rotate(new Vector3(90,0,0));
+    }
+
+    public bool wallCheck(Vector3 position, Vector3 direction, float distance)
+    {
         RaycastHit hit;
         LayerMask layerMask = 0b_0000_1001; //Block rays with default and static layers
-        float distance = newWireLength / 2;
-
-        if (Physics.Raycast(newWire.position, newWire.forward, out hit, distance, layerMask))
-        {
-            //Debug.Log("Hit forward, rotating");
-            newWire.transform.Rotate(new Vector3(90,0,0));
-        }
-        if (Physics.Raycast(newWire.position, -newWire.forward, out hit, distance, layerMask))
-        {
-            //Debug.Log("Hit back, rotating");
-            newWire.transform.Rotate(new Vector3(90,0,0));
-            
-        }
+        Debug.DrawRay(position, direction * distance, Color.green, 2f);
+        return Physics.Raycast(position, direction, out hit, distance, layerMask);
     }
+
+    
 
     public void RotateLeft()
     {
