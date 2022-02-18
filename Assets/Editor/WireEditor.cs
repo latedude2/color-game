@@ -39,11 +39,6 @@ public class WireEditor : Editor
             wireBuilder.RotateLeft();
         }
 
-        if(GUILayout.Button("Find position"))
-        {
-            wireBuilder.FindPosition(wireBuilder.randomizeBranchLength);
-        }
-
         if(GUILayout.Button("Spawn random segment"))
         {
             MarkSceneAsDirty();

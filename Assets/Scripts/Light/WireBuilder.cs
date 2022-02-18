@@ -28,7 +28,11 @@ public class WireBuilder : MonoBehaviour
     private Activater activater;
 
     void OnDestroy() {
-        GetComponent<WireBuilder>().activater.RemoveActivatable(gameObject);
+        if(gameObject.scene.isLoaded) //Gameobject was Deleted
+        {
+            GetComponent<WireBuilder>().activater.RemoveActivatable(gameObject);
+        }
+        
     }
 
     public void FindPosition(bool randomLength = true)
@@ -48,6 +52,7 @@ public class WireBuilder : MonoBehaviour
 
     public GameObject SpawnRandomSegment()
     {
+        FindPosition(randomizeBranchLength);
         GameObject newWire = null;
         if(possibleLineEndPositions.Count > 0)
         {
