@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+
+[ExecuteAlways]
 
 public class ColoredLight : MonoBehaviour, Activatable
 {
     [SerializeField] private bool enabledAtStart = false;
-    [SerializeField] private ColorCode color = ColorCode.White;
+    public ColorCode color = ColorCode.White;
     [SerializeField] private GameObject[] signifiers;
     Light _light;
 
@@ -16,13 +19,18 @@ public class ColoredLight : MonoBehaviour, Activatable
     {
         _light = gameObject.GetComponent<Light>();
         lightBulb = transform.parent.GetComponentInChildren<EmittingSurface>();
+        SetColorAtStart();
+        Invoke(nameof(SetInitialEnabled), 0.1f);
+    }
+    
+    public void SetColorAtStart()
+    {
         SetLightColor(color);
-
         if (enabledAtStart || !IsColorSwitchable())
             SetSignifierColor(color);
         else
             SetSignifierColor(ColorCode.White);
-        Invoke(nameof(SetInitialEnabled), 0.1f);
+        
     }
 
     void SetInitialEnabled()
@@ -41,7 +49,9 @@ public class ColoredLight : MonoBehaviour, Activatable
     private void SetSignifierColor(ColorCode newColor)
     {
         foreach (var signifier in signifiers) {
-            signifier.GetComponent<Renderer>().material.SetColor("_Color", ColorHelper.GetColor(newColor));
+            var tempMaterial = new Material(signifier.GetComponent<Renderer>().sharedMaterial);
+            tempMaterial.SetColor("_Color", ColorHelper.GetColor(newColor));
+            signifier.GetComponent<Renderer>().sharedMaterial = tempMaterial;
         }
     }
 

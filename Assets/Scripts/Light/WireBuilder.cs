@@ -6,8 +6,7 @@ using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
-[ExecuteInEditMode]
-
+[ExecuteAlways] [RequireComponent(typeof(WireSurface))]
 public class WireBuilder : MonoBehaviour
 {
     [System.NonSerialized] public Vector3 lineEnd = Vector3.right;

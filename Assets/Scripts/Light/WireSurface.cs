@@ -17,10 +17,9 @@ public class WireSurface : MonoBehaviour, Activatable, Activater
     public Activater activater;
 
     private void Start() {
-        _renderer = GetComponent<Renderer>();
+        SetLoadedColor();
         sparks = GetComponentInChildren<ParticleSystem>();
         loadingSpeed /= transform.localScale.x;
-        _renderer.material.SetColor("LoadedColor", ColorHelper.GetColor(_color));
         _renderer.material.SetFloat("Progress", progress);
     }
 
@@ -99,5 +98,13 @@ public class WireSurface : MonoBehaviour, Activatable, Activater
             else
                 Debug.LogError("Object is missing activatable component.");
         }
+    }
+
+    public void SetLoadedColor()
+    {
+        _renderer = GetComponent<Renderer>();
+        var tempMaterial = new Material(_renderer.sharedMaterial);
+        tempMaterial.SetColor("LoadedColor", ColorHelper.GetColor(_color));
+        _renderer.sharedMaterial = tempMaterial;
     }
 }
