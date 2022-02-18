@@ -23,10 +23,16 @@ public class WireBuilder : MonoBehaviour
     public float maxWireLength = 5f;
     List<Vector3> possibleLineEndPositions;
 
+    [SerializeField] float minimumLength = 0.2f;
+
     private Activater activater;
 
     void OnDestroy() {
-        GetComponent<WireBuilder>().activater.RemoveActivatable(gameObject);
+        if(gameObject.scene.isLoaded) //Gameobject was Deleted
+        {
+            GetComponent<WireBuilder>().activater.RemoveActivatable(gameObject);
+        }
+        
     }
 
     public void FindPosition(bool randomLength = true)
@@ -37,14 +43,16 @@ public class WireBuilder : MonoBehaviour
         {
             lengthMultiplier = UnityEngine.Random.Range(0.3f, 1f);
         }
-        checkDirection(-Vector3.forward * lengthMultiplier, 10 * maxWireLength , followWalls);
-        checkDirection(Vector3.forward * lengthMultiplier, 10 * maxWireLength , followWalls);
-        checkDirection(Vector3.right * lengthMultiplier, 1 * maxWireLength / transform.localScale.x, followWalls);
+        checkDirection(-Vector3.forward * lengthMultiplier, maxWireLength  / transform.localScale.z, followWalls);
+        checkDirection(Vector3.forward * lengthMultiplier, maxWireLength  / transform.localScale.z, followWalls);
+        checkDirection(Vector3.right * lengthMultiplier, maxWireLength / transform.localScale.x, followWalls);
+        checkDirection(Vector3.up * lengthMultiplier, maxWireLength / transform.localScale.y , followWalls);
         Debug.Log("Found " + possibleLineEndPositions.Count + " possible positions"); 
     }
 
     public GameObject SpawnRandomSegment()
     {
+        FindPosition(randomizeBranchLength);
         GameObject newWire = null;
         if(possibleLineEndPositions.Count > 0)
         {
@@ -59,12 +67,14 @@ public class WireBuilder : MonoBehaviour
     public void checkDirection(Vector3 direction, float multiplier = 1, bool checkForWalls = true)
     {
         RaycastHit hit;
-        LayerMask layerMask = 0b_0001_0000_1001; //Block rays with default, static and ignore outline layers
+        LayerMask layerMask = 0b_0001_0000_1011; //Block rays with default, static and ignore outline layers
         float distance = maxWireLength;
         
         bool hitSomething = Physics.Raycast(transform.TransformPoint(lineStart), transform.TransformDirection(direction), out hit, distance, layerMask);
         if (hitSomething)
         {
+            if(hit.distance < minimumLength)
+                return;
             distance = hit.distance;
         }
 
@@ -167,7 +177,7 @@ public class WireBuilder : MonoBehaviour
     public bool wallCheck(Vector3 position, Vector3 direction, float distance)
     {
         RaycastHit hit;
-        LayerMask layerMask = 0b_0000_1001; //Block rays with default and static layers
+        LayerMask layerMask = 0b_0000_1011; //Block rays with default, transparentFX and static layers
         //Debug.DrawRay(position, direction * distance, Color.green, 2f);
         return Physics.Raycast(position, direction, out hit, distance, layerMask);
     }

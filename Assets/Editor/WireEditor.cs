@@ -39,11 +39,6 @@ public class WireEditor : Editor
             wireBuilder.RotateLeft();
         }
 
-        if(GUILayout.Button("Find position"))
-        {
-            wireBuilder.FindPosition(wireBuilder.randomizeBranchLength);
-        }
-
         if(GUILayout.Button("Spawn random segment"))
         {
             MarkSceneAsDirty();
@@ -54,6 +49,7 @@ public class WireEditor : Editor
         {
             MarkSceneAsDirty();
             GameObject newWireSystem = new GameObject("New Wire System");
+            Undo.RegisterCreatedObjectUndo(newWireSystem, "Created new wire system");
             wireBuilder.iterateGeneration(wireBuilder.treeLength, wireBuilder.branchCount, wireBuilder.randomizeBranchLength, newWireSystem);
             
         }
