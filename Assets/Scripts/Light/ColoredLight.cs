@@ -17,7 +17,6 @@ public class ColoredLight : MonoBehaviour, Activatable
     // Start is called before the first frame update
     void Start()
     {
-        _light = gameObject.GetComponent<Light>();
         lightBulb = transform.parent.GetComponentInChildren<EmittingSurface>();
         SetColorAtStart();
         Invoke(nameof(SetInitialEnabled), 0.1f);
@@ -25,6 +24,7 @@ public class ColoredLight : MonoBehaviour, Activatable
     
     public void SetColorAtStart()
     {
+        _light = gameObject.GetComponent<Light>();
         SetLightColor(color);
         if (enabledAtStart || !IsColorSwitchable())
             SetSignifierColor(color);
