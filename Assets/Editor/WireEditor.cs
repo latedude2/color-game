@@ -58,7 +58,7 @@ public class WireEditor : Editor
             wireBuilder.iterateGeneration(wireBuilder.treeLength, wireBuilder.branchCount, wireBuilder.randomizeBranchLength, newWireSystem);
         }
 
-        wireBuilder.GetComponent<WireSurface>().ChangeLoadedColor();
+        wireBuilder.GetComponent<WireSurface>().SetLoadedColor();
 
     }
 
