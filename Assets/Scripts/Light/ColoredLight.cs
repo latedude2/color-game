@@ -19,7 +19,10 @@ public class ColoredLight : MonoBehaviour, Activatable
     {
         lightBulb = transform.parent.GetComponentInChildren<EmittingSurface>();
         SetColorAtStart();
-        Invoke(nameof(SetInitialEnabled), 0.1f);
+        if (Application.isPlaying)
+        {
+            Invoke(nameof(SetInitialEnabled), 0.1f);
+        }
     }
     
     public void SetColorAtStart()
