@@ -78,8 +78,8 @@ public class Settings : MonoBehaviour
 
     public static void UnlockCursor()
     {
-        Cursor.lockState = CursorLockMode.None; // freeze cursor on screen centre
-        Cursor.visible = true; // invisible cursor
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void SetMusicVolume(float value)
