@@ -10,13 +10,10 @@ public class VisibleObjectPhysics : MonoBehaviour, Activatable
     private Rigidbody _rigidbody;
     private GrabIt grabIt;
     private List<ObjectConnection> objectConnections = new List<ObjectConnection>();
-    
     //Used for keeping the velocity of a non-visible object
     Vector3 velocity;
-
     bool visible;
     bool justMadeVisible;
-
 
     void Start()
     {
@@ -59,6 +56,7 @@ public class VisibleObjectPhysics : MonoBehaviour, Activatable
             UnfreezeMotion();
         }
         _collider.enabled = true;
+        GetComponent<VisibleObjectObstacle>().BlockPath(true);
         visible = true;
         justMadeVisible = true;
     }
@@ -71,6 +69,7 @@ public class VisibleObjectPhysics : MonoBehaviour, Activatable
             FreezeMotion();
         RemoveAllObjectConnections();
         _collider.enabled = false;
+        GetComponent<VisibleObjectObstacle>().BlockPath(false);
         visible = false;
     }
 
