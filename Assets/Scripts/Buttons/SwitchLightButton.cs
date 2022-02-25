@@ -1,11 +1,12 @@
 using UnityEngine;
+using FMODUnity;
 
 public class SwitchLightButton : MonoBehaviour, Interactable
 {
     public delegate void Interacted();
     public event Interacted OnInteract;
     private GameObject lightGameObject;
-    private AudioSource _audio;
+    // private StudioEventEmitter _audio;
     private EmittingSurface lightBulb;
     private Animation anim;
 
@@ -20,7 +21,7 @@ public class SwitchLightButton : MonoBehaviour, Interactable
         }
         lightGameObject = transform.parent.GetComponentInChildren<Light>().gameObject;
         lightBulb = transform.parent.GetComponentInChildren<EmittingSurface>();
-        _audio = GetComponent<AudioSource>();
+        // _audio = GetComponent<StudioEventEmitter>();
         anim = GetComponent<Animation>();
     }
 
@@ -44,7 +45,7 @@ public class SwitchLightButton : MonoBehaviour, Interactable
             }
         }
         anim.Play("ButtonAnimation");
-        _audio.PlayOneShot(_audio.clip);
+        // _audio.Play();
         if (OnInteract != null) {
             OnInteract();
         }
