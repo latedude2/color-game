@@ -391,6 +391,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3753216224115638506}
   - component: {fileID: 391872799729921610}
+  - component: {fileID: -1288726851938722333}
   m_Layer: 0
   m_Name: Music
   m_TagString: Untagged
@@ -406,7 +407,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8764864264602903363}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -322.34735, y: -297.85492, z: -7.74671}
+  m_LocalPosition: {x: -330.23, y: -315.79, z: -7.74671}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2175820634457994355}
@@ -428,12 +429,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35f1bd03798bd4208ac859e73c1bebb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  music:
-  - {fileID: 7989630852235235610}
-  - {fileID: 3558279026498332630}
-  - {fileID: 3512021850515887207}
-  - {fileID: 4925139287181138941}
   currMusic: 0
+--- !u!114 &-1288726851938722333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8764864264602903363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1537264444
+      Data2: 1114333432
+      Data3: -996633425
+      Data4: 1128190754
+    Path: event:/Music/Music
+  Event: 
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &9164217745982420258
 GameObject:
   m_ObjectHideFlags: 0
