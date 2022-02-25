@@ -1,59 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
-[RequireComponent(typeof(AudioSource))]
 public class ActivatableSound : MonoBehaviour, Activatable
 {
-    private AudioSource _audioSource;
-    [SerializeField] private AudioClip _onSFX;
-    [SerializeField] private AudioClip _offSFX;
-    [SerializeField] private GameObject LoopPrefab;
-    [SerializeField] private AudioSource _audioLoop;
+    private StudioEventEmitter _audio;
+    bool initiated = false;
 
-    bool soundsEnabled = false;
-    // Start is called before the first frame update
-    void Start()
-    {
-        // Audio source that plays on/off sounds
-        _audioSource = GetComponent<AudioSource>();
+    void Awake() {
+        _audio = GetComponent<StudioEventEmitter>();
+    }
 
-        // Loop that plays while object is active
-        if (LoopPrefab != null) {
-            Instantiate(LoopPrefab, transform).TryGetComponent<AudioSource>(out _audioLoop);
+    public void Activate() {
+        if(!initiated)
+            Initiate();
+        else {
+            if (_audio.Params.Length > 0) {
+                _audio.Params[0].Value = 1;
+                _audio.Play();
+            }
         }
-
-        // Disable sounds when loading levels
-        Invoke(nameof(EnableSounds), .2f);
     }
 
-    void EnableSounds()
-    {
-        soundsEnabled = true;
+    private void Initiate() {
+        initiated = true;
     }
 
-    public void Activate()
-    {
-        if(soundsEnabled)
-        {
-            _audioSource.PlayOneShot(_onSFX);
-        }
-        Loop();
-    }
-
-    public void Deactivate()
-    {
-        if(soundsEnabled)
-        {
-            _audioSource.PlayOneShot(_offSFX);
-        }
-        _audioLoop.Stop();
-    }
-
-    void Loop() {
-        if (_audioLoop != null) {
-            _audioLoop.time = UnityEngine.Random.value;
-            _audioLoop.Play();
+    public void Deactivate(){
+        if (_audio.Params.Length > 0) {
+            _audio.Params[0].Value = 0;
+            _audio.Play();
         }
     }
 }
