@@ -36,6 +36,8 @@ public class VisibleObjectVisibility : MonoBehaviour
         {
             shinePoints = FindShinePoints();
         }
+        SetColor(ColorCode.Black);
+        SetToInvisible();
     }
 
     void FixedUpdate()

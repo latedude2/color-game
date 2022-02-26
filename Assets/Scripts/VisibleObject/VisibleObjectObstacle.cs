@@ -9,7 +9,8 @@ public enum ObstacleMode
     ForceBridge = 2
 }
 
-public class VisibleObjectObstacle : MonoBehaviour
+[ExecuteAlways]
+public class VisibleObjectObstacle : MonoBehaviour, Activatable
 {
     NavMeshObstacle obstacle;
     bool bridgeObstacle = false;
@@ -18,9 +19,16 @@ public class VisibleObjectObstacle : MonoBehaviour
     [SerializeField] ObstacleMode forceObstacleMode = ObstacleMode.Automatic;
     void Start()
     {
-        obstacle = gameObject.AddComponent<NavMeshObstacle>();
-        obstacle.carving = true;
+        if(TryGetComponent<NavMeshObstacle>(out NavMeshObstacle newObstacle))
+        {
+            this.obstacle = newObstacle;
+        }
+        else
+        {
+            this.obstacle = gameObject.AddComponent<NavMeshObstacle>();
+        }
 
+        obstacle.carving = true;
         var sizeInWorld = GetComponent<Collider>().bounds.size;
         //TODO: Check for no rigidbody
         if(forceObstacleMode == ObstacleMode.ForceBridge || (forceObstacleMode == ObstacleMode.Automatic && sizeInWorld.y < sizeInWorld.x && sizeInWorld.y < sizeInWorld.z))   
@@ -29,18 +37,34 @@ public class VisibleObjectObstacle : MonoBehaviour
         }
     }
 
-    //TODO: Account for bridge object rotation
     void ChangeToBridgeObstacle()
     {
+        Vector3 up = transform.InverseTransformDirection(Vector3.up);
         bridgeObstacle = true;
-        obstacle.size = new Vector3(2,1,1);
-        obstacle.center = new Vector3(1.5f,0,0);
+        obstacle.size = new Vector3(1,1,1) + Abs(up);
+        obstacle.center = up * 1.5f;
     }
+    Vector3 Abs(Vector3 v)
+    {
+        return new Vector3(Mathf.Abs(v.x), Mathf.Abs(v.y), Mathf.Abs(v.z));
+    }
+
 
     public void BlockPath(bool enabled)
     {
         if(bridgeObstacle)
             obstacle.enabled = !enabled;
         obstacle.enabled = enabled;
+    }
+
+
+    public void Activate()
+    {
+        BlockPath(true);
+    }
+
+    public void Deactivate()
+    {
+        BlockPath(false);
     }
 }

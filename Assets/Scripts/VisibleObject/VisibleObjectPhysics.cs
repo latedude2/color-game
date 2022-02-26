@@ -56,7 +56,6 @@ public class VisibleObjectPhysics : MonoBehaviour, Activatable
             UnfreezeMotion();
         }
         _collider.enabled = true;
-        GetComponent<VisibleObjectObstacle>().BlockPath(true);
         visible = true;
         justMadeVisible = true;
     }
@@ -69,7 +68,6 @@ public class VisibleObjectPhysics : MonoBehaviour, Activatable
             FreezeMotion();
         RemoveAllObjectConnections();
         _collider.enabled = false;
-        GetComponent<VisibleObjectObstacle>().BlockPath(false);
         visible = false;
     }
 
