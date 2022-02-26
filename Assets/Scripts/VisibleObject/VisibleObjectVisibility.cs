@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using DimBoxes;
+using UnityEngine.Events;
 
 public class VisibleObjectVisibility : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class VisibleObjectVisibility : MonoBehaviour
     [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
     Activatable[] activatableComponents;
     
+    public UnityEvent visibilityChanged;
     
     void Start()
     {
@@ -84,6 +86,7 @@ public class VisibleObjectVisibility : MonoBehaviour
             activatable.Activate();
         }
         visible = true;
+        visibilityChanged.Invoke();
     }
 
     protected void SetToInvisible()
@@ -93,6 +96,7 @@ public class VisibleObjectVisibility : MonoBehaviour
             activatable.Deactivate();
         }
         visible = false;
+        visibilityChanged.Invoke();
     }
 
     protected void SetColor(ColorCode color)

@@ -54,7 +54,8 @@ public class VisibleObjectObstacle : MonoBehaviour, Activatable
     {
         if(bridgeObstacle)
             obstacle.enabled = !enabled;
-        obstacle.enabled = enabled;
+        else 
+            obstacle.enabled = enabled;
     }
 
 
