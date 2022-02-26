@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEditor;
 
 [ExecuteAlways]
-
 public class ColoredLight : MonoBehaviour, Activatable
 {
     [SerializeField] private bool enabledAtStart = false;
@@ -21,10 +20,14 @@ public class ColoredLight : MonoBehaviour, Activatable
         SetColorAtStart();
         if (Application.isPlaying)
         {
+            GetComponent<Light>().enabled = true;
             Invoke(nameof(SetInitialEnabled), 0.1f);
         }
+        #if UNITY_EDITOR
+        toggleShowingLightsInEditor(EditorPrefs.GetBool("ToggleShowingDisabledLights"));
+        #endif
     }
-    
+
     public void SetColorAtStart()
     {
         _light = gameObject.GetComponent<Light>();
@@ -36,11 +39,18 @@ public class ColoredLight : MonoBehaviour, Activatable
         
     }
 
-    void SetInitialEnabled()
+    public void SetInitialEnabled()
     {
         gameObject.SetActive(enabledAtStart);
         lightBulb.SetColor(color);
         lightBulb.SetActive(enabledAtStart);
+    }
+
+    //Editor tool - toggles the light if it is not enabled at start
+    public void toggleShowingLightsInEditor(bool showing)
+    {
+        if(!enabledAtStart)
+            GetComponent<Light>().enabled = showing;
     }
 
     public void SetColor(ColorCode newColor)
