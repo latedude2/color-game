@@ -7,6 +7,8 @@ public class SolutionChecker : MonoBehaviour
     GameObject solutionCheckpoint;
     GameObject player;
 
+    bool solutionFound = false;
+
     private NavMeshPath path;
     // Start is called before the first frame update
     void Start()
@@ -42,27 +44,31 @@ public class SolutionChecker : MonoBehaviour
 
     void CheckSolution()
     {
-        NavMesh.CalculatePath(player.transform.position, solutionCheckpoint.transform.position, NavMesh.AllAreas, path);
-
-        //TODO: retry if path invalid
-        if(path.status == NavMeshPathStatus.PathComplete)
+        if(!solutionFound)
         {
-            Debug.Log("Solution found!");
-            //Stop checking for solution after it was found once
-            foreach(VisibleObjectVisibility visibleObject in visibleObjects)
+            NavMesh.CalculatePath(player.transform.position, solutionCheckpoint.transform.position, NavMesh.AllAreas, path);
+
+            //TODO: retry if path invalid
+            if(path.status == NavMeshPathStatus.PathComplete)
             {
-                visibleObject.visibilityChanged.RemoveListener(InvokeCheckSolution);
+                Debug.Log("Solution found!");
+                solutionFound = true;
+                //Stop checking for solution after it was found once
+                foreach(VisibleObjectVisibility visibleObject in visibleObjects)
+                {
+                    visibleObject.visibilityChanged.RemoveListener(InvokeCheckSolution);
+                }
             }
-        }
-        else if(path.status == NavMeshPathStatus.PathInvalid)
-        {
-            Debug.Log("Path invalid, trying again.");
-            InvokeCheckSolution();
-        }
+            else if(path.status == NavMeshPathStatus.PathInvalid)
+            {
+                Debug.Log("Path invalid, trying again.");
+                InvokeCheckSolution();
+            }
 
-        //For debugging
-        for (int i = 0; i < path.corners.Length - 1; i++)
-            Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.red, 2f);
+            //For debugging
+            for (int i = 0; i < path.corners.Length - 1; i++)
+                Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.red, 2f);
+        }
     }
 
     
