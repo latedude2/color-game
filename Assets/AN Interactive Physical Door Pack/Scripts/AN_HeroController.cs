@@ -7,6 +7,7 @@ public class AN_HeroController : MonoBehaviour
     [Tooltip("Character settings (rigid body)")]
     public float MoveSpeed = 4f, RunSpeed = 8f, JumpForce = 200f, Sensitivity = 70f;
 
+    float enableControlSceneStartDelay = 0.5f;
     CharacterController character;
     Rigidbody rb;
     Vector3 moveVector;
@@ -37,6 +38,8 @@ public class AN_HeroController : MonoBehaviour
         #endif
         Settings.Locked += EnableControls;
         Settings.Unlocked += DisableControls;
+        DisableControls();
+        Invoke(nameof(EnableControls), enableControlSceneStartDelay);
     }
 
     void Update()
