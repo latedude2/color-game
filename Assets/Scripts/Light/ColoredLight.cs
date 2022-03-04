@@ -23,9 +23,11 @@ public class ColoredLight : MonoBehaviour, Activatable
             GetComponent<Light>().enabled = true;
             Invoke(nameof(SetInitialEnabled), 0.1f);
         }
-        #if UNITY_EDITOR
-        toggleShowingLightsInEditor(EditorPrefs.GetBool("ToggleShowingDisabledLights"));
-        #endif
+        else{
+            #if UNITY_EDITOR
+            toggleShowingLightsInEditor(EditorPrefs.GetBool("ToggleShowingDisabledLights"));
+            #endif
+        }
     }
 
     public void SetColorAtStart()
