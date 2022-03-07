@@ -6,29 +6,18 @@ public class RailSystem : MonoBehaviour
 {
     [SerializeField] List<RailNode> railNodes;
     [SerializeField] int startingNode = 0;
-
-    [SerializeField] private int targetNodeID; // field
-
+    [SerializeField] private int targetNodeID;
     RailNode currentNode;
     RailNode nextNode;
-
-
-    // Movement speed in units per second.
-    public float speed = 1.0F;
-
-    // Time when the movement started.
-    private float startTime;
-
-    // Total distance between the markers.
-    private float journeyLength;
-    
+    [SerializeField] float speed = 5.0F;     // Movement speed in units per second.
+    float startTime;    // Time when the movement started.
+    float journeyLength; // Total distance between the markers.
     bool moving = false;
-
-    [SerializeField] MovingPlatform movingPlatform;
+    [SerializeField] Transform movingPlatform;
 
     void Start()
     {
-        movingPlatform.transform.position  = railNodes[startingNode].transform.position;
+        movingPlatform.position  = railNodes[startingNode].transform.position;
         currentNode = railNodes[startingNode];
         for(int i = 0; i < railNodes.Count; i++)
         {
@@ -73,9 +62,11 @@ public class RailSystem : MonoBehaviour
         // Fraction of journey completed equals current distance divided by total distance.
         float fractionOfJourney = distCovered / journeyLength;
         // Set our position as a fraction of the distance between the markers.
-        movingPlatform.transform.position = Vector3.Lerp(currentNode.transform.position, nextNode.transform.position, fractionOfJourney);
 
-        if(movingPlatform.transform.position == nextNode.transform.position)
+        
+        movingPlatform.position = Vector3.Lerp(currentNode.transform.position, nextNode.transform.position, fractionOfJourney);
+
+        if(movingPlatform.position == nextNode.transform.position)
         {
             moving = false;
             currentNode = nextNode;
