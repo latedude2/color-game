@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class SetLightColor : MonoBehaviour, Interactable
 {
     private GameObject lightGameObject;
     [SerializeField] private ColorCode lightColorToSet;
     [SerializeField] private bool enablesLight = true;
-    private AudioSource _audio;
+    private StudioEventEmitter _audio;
     private EmittingSurface lightBulb;
     private Animation anim;
     Activatable[] activatableComponents;
@@ -15,7 +16,7 @@ public class SetLightColor : MonoBehaviour, Interactable
     private void Start() {
         lightBulb = transform.parent.GetComponentInChildren<EmittingSurface>();
         lightGameObject = transform.parent.GetComponentInChildren<Light>().gameObject;
-        _audio = GetComponent<AudioSource>();
+        _audio = GetComponent<StudioEventEmitter>();
         anim = GetComponent<Animation>();
         activatableComponents = transform.parent.GetComponentsInChildren<Activatable>();
         if(activatableComponents == null)
@@ -28,7 +29,7 @@ public class SetLightColor : MonoBehaviour, Interactable
     {
         lightGameObject.GetComponent<ColoredLight>().SetColor(lightColorToSet);
         lightBulb.SetColor(lightColorToSet);
-        _audio.PlayOneShot(_audio.clip);
+        _audio.Play();
         anim.Play("ButtonAnimation");
 
         if(enablesLight)

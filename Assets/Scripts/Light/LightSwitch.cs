@@ -17,34 +17,40 @@ public class LightSwitch : MonoBehaviour, Activatable
     }
     public void Activate()
     {
-        active = true;
-        foreach(GameObject gameObjectToActivate in gameObjectsToActivate)
+        if(!active)
         {
-            EmittingSurface emittingSurface = gameObjectToActivate.GetComponent<EmittingSurface>();
-            if(emittingSurface != null)
+            active = true;
+            foreach(GameObject gameObjectToActivate in gameObjectsToActivate)
             {
-                emittingSurface.SetColor(GetComponent<VisibleObjectVisibility>().trueColor);
+                EmittingSurface emittingSurface = gameObjectToActivate.GetComponent<EmittingSurface>();
+                if(emittingSurface != null)
+                {
+                    emittingSurface.SetColor(GetComponent<VisibleObjectVisibility>().trueColor);
+                }
+                Activatable activatable = gameObjectToActivate.GetComponent<Activatable>();
+                if(activatable != null)
+                    activatable.Activate();
+                else
+                    Debug.LogError("Object is missing activatable component.");
             }
-            Activatable activatable = gameObjectToActivate.GetComponent<Activatable>();
-            if(activatable != null)
-                activatable.Activate();
-            else
-                Debug.LogError("Object is missing activatable component.");
+            sparks.Play();
         }
-        sparks.Play();
     }
 
     public void Deactivate()
     {
-        active = false;
-        foreach(GameObject gameObjectToActivate in gameObjectsToActivate)
+        if(active)
         {
-            Activatable activatable = gameObjectToActivate.GetComponent<Activatable>();
-            if(activatable != null)
-                activatable.Deactivate();
-            else
-                Debug.LogError("Object is missing activatable component.");
+            active = false;
+            foreach(GameObject gameObjectToActivate in gameObjectsToActivate)
+            {
+                Activatable activatable = gameObjectToActivate.GetComponent<Activatable>();
+                if(activatable != null)
+                    activatable.Deactivate();
+                else
+                    Debug.LogError("Object is missing activatable component.");
+            }
+            sparks.Stop();
         }
-        sparks.Stop();
     }
 }
