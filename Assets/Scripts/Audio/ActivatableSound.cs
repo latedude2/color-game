@@ -1,6 +1,7 @@
 using UnityEngine;
 using FMODUnity;
 
+[RequireComponent(typeof(StudioEventEmitter))]
 public class ActivatableSound : MonoBehaviour, Activatable
 {
     private StudioEventEmitter _audio;

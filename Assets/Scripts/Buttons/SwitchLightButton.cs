@@ -50,8 +50,4 @@ public class SwitchLightButton : MonoBehaviour, Interactable
             OnInteract();
         }
     }
-
-    private void initializeAudio() {
-
-    }
 }
