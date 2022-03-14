@@ -11,7 +11,6 @@ public class Settings : MonoBehaviour
 
     private bool settingsOpen = false;
     public static float mouseSensitivityMultiplier = 1f;
-    public AudioMixer mixer;
     private GameObject optionsMenu;
     private GameObject targetReticle;
 
@@ -84,12 +83,14 @@ public class Settings : MonoBehaviour
 
     public void SetMusicVolume(float value)
     {
-        mixer.SetFloat("MusicVolume", Mathf.Log10(value)*20);
+        // TODO: Replace with FMOD mixer
+        // mixer.SetFloat("MusicVolume", Mathf.Log10(value)*20);
     }
 
     public void SetSfxVolume(float value)
     {
-        mixer.SetFloat("SFXVolume", Mathf.Log10(value)*20);
+        // TODO: Replace with FMOD mixer
+        // mixer.SetFloat("SFXVolume", Mathf.Log10(value)*20);
     }
 
     public void SetMouseSensitivity(float value)
