@@ -8,7 +8,8 @@ public class Settings : MonoBehaviour
     public delegate void PointerHandler();
     public static event PointerHandler Locked;
     public static event PointerHandler Unlocked;
-    [HideInInspector] public AudioSettings audioSettings;
+    private AudioSettings audioSettings;
+    private VideoSettings videoSettings;
 
     private bool settingsOpen = false;
     public static float mouseSensitivityMultiplier = 1f;
