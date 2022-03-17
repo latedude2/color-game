@@ -8,10 +8,10 @@ public class Settings : MonoBehaviour
     public delegate void PointerHandler();
     public static event PointerHandler Locked;
     public static event PointerHandler Unlocked;
+    [HideInInspector] public AudioSettings audioSettings;
 
     private bool settingsOpen = false;
     public static float mouseSensitivityMultiplier = 1f;
-    public AudioMixer mixer;
     private GameObject optionsMenu;
     private GameObject targetReticle;
 
@@ -20,6 +20,7 @@ public class Settings : MonoBehaviour
         targetReticle = transform.Find("TargetReticle").gameObject;
         Locked += LockCursor;
         Unlocked += UnlockCursor;
+        audioSettings = new AudioSettings();
     }
 
     // Update is called once per frame
@@ -84,12 +85,12 @@ public class Settings : MonoBehaviour
 
     public void SetMusicVolume(float value)
     {
-        mixer.SetFloat("MusicVolume", Mathf.Log10(value)*20);
+        audioSettings.SetMusicVolume(value);
     }
 
     public void SetSfxVolume(float value)
     {
-        mixer.SetFloat("SFXVolume", Mathf.Log10(value)*20);
+        audioSettings.SetSfxVolume(value);
     }
 
     public void SetMouseSensitivity(float value)
