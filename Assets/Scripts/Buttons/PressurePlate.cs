@@ -4,15 +4,31 @@ using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    [SerializeField] RailNode railNode;
+    [SerializeField] RailSystem railSystem;
+    [SerializeField] Activatable[] activatableComponents;
+    Animation anim;
+
+    void Start() {
+        anim = GetComponent<Animation>();
+        activatableComponents = transform.GetComponents<Activatable>();
+        if(activatableComponents == null)
+        {
+            Debug.LogError("Button does not have activatable item connected");
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    void OnTriggerEnter(Collider other) {
+        if(activatableComponents.Length > 0)
+        {
+            foreach (Activatable activatable in activatableComponents)
+            {
+                activatable.Activate();
+            }
+        }
+
+        railNode.Interact();
         
+        anim.Play("ButtonAnimation");
     }
 }
