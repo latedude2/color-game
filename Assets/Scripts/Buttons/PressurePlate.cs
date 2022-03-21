@@ -29,11 +29,11 @@ public class PressurePlate : MonoBehaviour
 
         railNode.Interact();
         
-        //anim.Play("ButtonAnimation"); //TODO:  animation for the pressure plate pressing
+        anim.Play("PressurePlateAnimation"); 
     }
 
     void OnTriggerExit(Collider other) {
         
-        //anim.Play("ButtonAnimation"); //TODO:  animation for the pressure plate releasing
+        anim.Play("PressurePlateUpAnimation");
     }
 }
