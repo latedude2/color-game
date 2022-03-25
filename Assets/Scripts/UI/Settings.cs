@@ -31,12 +31,10 @@ public class Settings : MonoBehaviour
         {
             if(settingsOpen)
             {
-                ShowTarget();
                 HideSettings();
             }
             else
             {
-                HideTarget();
                 ShowSettings();
             }
         }
@@ -50,6 +48,7 @@ public class Settings : MonoBehaviour
 
     void ShowSettings()
     {
+        HideTarget();
         Unlocked?.Invoke();
         optionsMenu.SetActive(true);
         settingsOpen = true;
@@ -57,6 +56,7 @@ public class Settings : MonoBehaviour
 
     public void HideSettings()
     {
+        ShowTarget();
         Locked?.Invoke();
         optionsMenu.SetActive(false);
         settingsOpen = false;
