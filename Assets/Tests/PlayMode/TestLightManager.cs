@@ -12,8 +12,10 @@ public class TestLightManager
     [UnityTest]
     public IEnumerator LightManagerWithEnumeratorPasses()
     {
+        LogAssert.Expect(LogType.Log, "[Exception] NullReferenceException: Object reference not set to an instance of an object");
+
         //Setup test
-        SceneManager.LoadScene("TestScene");
+        SceneManager.LoadScene("Level03");
         yield return null; //Pass one frame
         LightManager lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         
@@ -24,7 +26,7 @@ public class TestLightManager
     [UnityTest]
     public IEnumerator GetPointingLightsWithEnumeratorPasses()
     {
-        SceneManager.LoadScene("TestScene");
+        SceneManager.LoadScene("Level03");
         yield return null; //Pass one frame
         LightManager lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         Transform lightTransform = lightManager.gameObject.GetComponentInChildren<Light>().transform;
