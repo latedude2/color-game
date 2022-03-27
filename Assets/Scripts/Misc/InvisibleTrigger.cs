@@ -5,20 +5,27 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class InvisibleTrigger : MonoBehaviour, Interactable
 {
-    public Activatable[] activatableComponents;
+    public GameObject[] activatableObjects;
+    Activatable[] _activatables;
 
     void Start()
     {
-        activatableComponents = transform.GetComponents<Activatable>();
-        if(activatableComponents == null)
+        List<Activatable> activatables = new List<Activatable>();
+
+        activatables.AddRange(transform.GetComponents<Activatable>());
+
+        foreach (GameObject obj in activatableObjects)
+        {
+            Debug.Log(obj.GetComponents<Activatable>().Length);
+            activatables.AddRange(obj.GetComponents<Activatable>());
+        }
+
+        _activatables = activatables.ToArray();
+
+        if(_activatables == null)
         {
             Debug.LogError("Button does not have activatable item connected");
         }
-    }
-
-    void Update()
-    {
-        
     }
 
     public void Interact()
@@ -26,9 +33,9 @@ public class InvisibleTrigger : MonoBehaviour, Interactable
         if (!enabled)
             return;
 
-        if(activatableComponents.Length > 0)
+        if(_activatables.Length > 0)
         {
-            foreach (Activatable activatable in activatableComponents)
+            foreach (Activatable activatable in _activatables)
             {
                 activatable.Activate();
             }
@@ -37,10 +44,11 @@ public class InvisibleTrigger : MonoBehaviour, Interactable
 
     void OnTriggerEnter(Collider other)
     {
-        if(activatableComponents.Length > 0)
+        if(_activatables.Length > 0)
         {
-            foreach (Activatable activatable in activatableComponents)
+            foreach (Activatable activatable in _activatables)
             {
+                Debug.Log(activatable);
                 activatable.Activate();
             }
         }
