@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class EndTrigger : MonoBehaviour
 { 
+    [SerializeField] string customLevelName = "";
 
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Player")
-            LevelManager.Instance.LoadNextLevel();
+        {
+            if(customLevelName != "")
+            {
+                LevelManager.Instance.LoadLevel(customLevelName);
+            }
+            else LevelManager.Instance.LoadNextLevel();
+        }
     }
 }
