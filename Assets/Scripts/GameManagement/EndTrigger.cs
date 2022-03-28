@@ -7,11 +7,13 @@ public class EndTrigger : MonoBehaviour
     [SerializeField] string customLevelName = "";
 
     private void OnTriggerEnter(Collider other) {
-        if(customLevelName != "")
+        if (other.tag == "Player")
         {
-            LevelManager.Instance.LoadLevel(customLevelName);
+            if(customLevelName != "")
+            {
+                LevelManager.Instance.LoadLevel(customLevelName);
+            }
+            else LevelManager.Instance.LoadNextLevel();
         }
-        else if (other.tag == "Player")
-            LevelManager.Instance.LoadNextLevel();
     }
 }
