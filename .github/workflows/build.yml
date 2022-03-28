@@ -13,6 +13,8 @@ jobs:
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
           - StandaloneLinux64 # Build a Linux 64-bit standalone.
           - WebGL # WebGL.
+        testMode:
+            - playmode
     steps:
       - uses: actions/checkout@v2
         with:
