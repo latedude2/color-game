@@ -8,6 +8,8 @@ public class PressurePlate : MonoBehaviour
     [SerializeField] RailSystem railSystem;
     [SerializeField] Activatable[] activatableComponents;
     Animation anim;
+    public delegate void PressurePlateHandler();
+    public static event PressurePlateHandler Pressed;
 
     void Start() {
         anim = GetComponent<Animation>();
@@ -19,6 +21,7 @@ public class PressurePlate : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
+        Pressed?.Invoke();
         if(activatableComponents.Length > 0)
         {
             foreach (Activatable activatable in activatableComponents)
