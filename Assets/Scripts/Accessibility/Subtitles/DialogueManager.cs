@@ -20,6 +20,7 @@ public class DialogueManager : MonoBehaviour
     private string[] fileLines;
 
     // Subtitle variables
+    // TODO: Contain these variables in a single Subtitle class
     private List<string> subtitleLines = new List<string>();
     private List<string> subtitleTimingStrings = new List<string>();
     public List<float> subtitleTimings = new List<float>();
@@ -117,6 +118,7 @@ public class DialogueManager : MonoBehaviour
         nextTrigger = 0;
 
         // Get data from text file
+        // TODO: Load subtitle files in Start. Maybe refactor to load them in ActivatableNarration?
         TextAsset temp = Resources.Load<TextAsset>("Subtitles/" + GetEventPath());
         fileLines = temp.text.Split('\n');
 
