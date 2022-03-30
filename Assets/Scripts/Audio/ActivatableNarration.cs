@@ -18,6 +18,7 @@ public class ActivatableNarration : MonoBehaviour, Activatable
     public void Activate() {
         if(soundsEnabled) {
             _audio.Play();
+            DialogueManager.Instance.BeginDialogue(_audio.EventInstance);
             soundsEnabled = false;
         }
     }

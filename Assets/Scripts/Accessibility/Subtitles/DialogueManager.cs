@@ -2,12 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text.RegularExpressions;
+using TMPro;
+using FMOD.Studio;
 
 // Thanks to Random Seed Games for sharing their implementation
 // https://www.youtube.com/watch?v=1NW0BYn5KfE&ab_channel=RandomSeedGames
 
+[RequireComponent(typeof(TMP_Text))]
 public class DialogueManager : MonoBehaviour
 {
+    
+    private TMP_Text subtitleUI;
+    private float lineStartTime;
+    private bool isDisplaying = false;
+    private EventInstance fmodEvent;
 
     private string[] fileLines;
 
@@ -39,10 +47,62 @@ public class DialogueManager : MonoBehaviour
         Instance = this;
     }
 
-    // Update is called once per frame
-    public void BeginDialogue(string dialogueFileName)
+    private void Start()
     {
+        subtitleUI = GetComponent<TMP_Text>();
+        subtitleUI.SetText("");
+    }
+
+    private void Update()
+    {
+        if (!isDisplaying)
+            return;
+
+        // Check if dialogue has finished
+        FMOD.Studio.PLAYBACK_STATE playbackState;    
+        fmodEvent.getPlaybackState(out playbackState);
+        if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED) {
+            EndDialogue();
+            return;
+        }
+        
+        // Check for <break/> tag or negative nextSubtitle
+        if (nextSubtitle > 0 && !subtitleText[nextSubtitle - 1].Contains("<break/>"))
+        {
+            subtitleUI.SetText(displaySubtitle);
+        }
+
+        // Increment nextSubtitle when passing time point
+        if (nextSubtitle < subtitleText.Count)
+        {
+            if (Time.time - lineStartTime > subtitleTimings[nextSubtitle])
+            {
+                displaySubtitle = subtitleText[nextSubtitle];
+                nextSubtitle++;
+            }
+        }
+
+        // Fire triggers when passing time point
+        if (nextTrigger < triggers.Count)
+        {
+            if (Time.time - lineStartTime > triggerTimings[nextSubtitle])
+            {
+                GameObject obj = GameObject.Find(triggerObjectNames[nextTrigger]);
+                if (obj != null) {
+                    obj.SendMessage(triggerMethodNames[nextTrigger]);
+                }
+                nextTrigger++;
+            }
+        }
+    }
+
+    public void BeginDialogue(FMOD.Studio.EventInstance instance)
+    {
+        fmodEvent = instance;
+        isDisplaying = true;
+
         // Reset variables
+        lineStartTime = Time.time;
         subtitleLines = new List<string>();
         subtitleTimingStrings = new List<string>();
         subtitleTimings = new List<float>();
@@ -57,7 +117,7 @@ public class DialogueManager : MonoBehaviour
         nextTrigger = 0;
 
         // Get data from text file
-        TextAsset temp = Resources.Load<TextAsset>("Subtitles/" + dialogueFileName);
+        TextAsset temp = Resources.Load<TextAsset>("Subtitles/" + GetEventPath());
         fileLines = temp.text.Split('\n');
 
         // Split subtitle lines and triggers
@@ -78,7 +138,6 @@ public class DialogueManager : MonoBehaviour
         {
             string[] splitTemp = subtitleLines[i].Split('|');
             subtitleTimingStrings.Add(splitTemp[0]);
-            Debug.Log(CleanTimeString(subtitleTimingStrings[i]));
             subtitleTimings.Add(float.Parse(CleanTimeString(subtitleTimingStrings[i])));
             subtitleText.Add(splitTemp[1]);
         }
@@ -100,6 +159,28 @@ public class DialogueManager : MonoBehaviour
         if (subtitleText[0] != null)
         {
             displaySubtitle = subtitleText[0];
+        }
+    }
+
+    public void EndDialogue() {
+        isDisplaying = false;
+        subtitleUI.SetText("");
+    }
+
+    string GetEventPath() {
+        string result;
+        FMOD.Studio.EventDescription description;
+
+        // Get path in the form event:/folder/sub-folder/eventName
+        fmodEvent.getDescription(out description);
+        description.getPath(out result);
+
+        // remove event:/Dialogue/
+        if (result.Contains("event:/Dialogue/"))
+            return result.Remove(0,16);
+        else {
+            Debug.LogWarning("The FMOD Event you are trying to reference is not in Dialogue folder.");
+            return null;
         }
     }
 

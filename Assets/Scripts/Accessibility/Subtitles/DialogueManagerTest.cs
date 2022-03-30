@@ -11,7 +11,7 @@ public class DialogueManagerTest : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            DialogueManager.Instance.BeginDialogue(dialogueEvent);
+            // DialogueManager.Instance.BeginDialogue(dialogueEvent);
         }
     }
 }
