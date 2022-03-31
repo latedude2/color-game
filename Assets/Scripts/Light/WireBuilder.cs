@@ -9,7 +9,7 @@ using UnityEditor;
 [ExecuteAlways]
 public class WireBuilder : MonoBehaviour
 {
-    [System.NonSerialized] public Vector3 lineEnd = Vector3.right;
+    [System.NonSerialized] public Vector3 lineEnd = Vector3.right / 2;
     [System.NonSerialized] public Vector3 lineStart = Vector3.right / 2;
     public GameObject wirePrefab;
 
