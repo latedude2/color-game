@@ -8,7 +8,7 @@ public class EndTrigger : MonoBehaviour
     [SerializeField] string customLevelName = "";
 
 
-    [Tooltip("Example: Informing people")]
+    [Tooltip("Example: Situation1")]
     [SerializeField] string choiceName = "";
 
     [Tooltip("Example: side with blue")]
