@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RailSystem : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class RailSystem : MonoBehaviour
     float startTime;    // Time when the movement started.
     float journeyLength; // Total distance between the markers.
     bool moving = false;
-    [SerializeField] Transform movingPlatform;
+    [SerializeField] Transform movingPlatform;    
 
     void Start()
     {
@@ -44,6 +45,13 @@ public class RailSystem : MonoBehaviour
     public void SetTargetID(int newTargetID)
     {
         targetNodeID = newTargetID;
+        foreach(RailNode railNode in railNodes)
+        {
+            if(railNode.nodeID != newTargetID)
+            {
+                railNode.Deactivate();
+            }            
+        }
     }
 
     int FindNextNodeID()
