@@ -7,7 +7,7 @@ public class PressurePlate : MonoBehaviour, Activatable
     bool activated = false;
     [SerializeField] RailNode railNode;
     [SerializeField] RailSystem railSystem;
-    [SerializeField] List<Activatable> activatableComponents = new List<Activatable>();
+    [SerializeField] GameObject[] gameObjectsToActivate;
     Animation anim;
     public delegate void PressurePlateHandler();
     public static event PressurePlateHandler Pressed;
@@ -27,16 +27,14 @@ public class PressurePlate : MonoBehaviour, Activatable
         {
             activated = true;
             Pressed?.Invoke();
-            if(activatableComponents != null && activatableComponents.Count > 0)
+            if(gameObjectsToActivate.Length > 0)
             {
-                foreach (Activatable activatable in activatableComponents)
+                foreach (GameObject activatableGameobject in gameObjectsToActivate)
                 {
-                    activatable.Activate();
+                    activatableGameobject.GetComponent<Activatable>().Activate();
                 }
             }
-
             railNode.Activate();
-            
             anim.Play("PressurePlateAnimation"); 
         }
     }
@@ -45,13 +43,14 @@ public class PressurePlate : MonoBehaviour, Activatable
         if(activated)
         {
             activated = false;
-            if(activatableComponents != null && activatableComponents.Count > 0)
+            if(gameObjectsToActivate.Length > 0)
             {
-                foreach (Activatable activatable in activatableComponents)
+                foreach (GameObject activatableGameobject in gameObjectsToActivate)
                 {
-                    activatable.Deactivate();
+                    activatableGameobject.GetComponent<Activatable>().Deactivate();
                 }
             }
+            railNode.Deactivate();
             anim.Play("PressurePlateUpAnimation");
         }
         
