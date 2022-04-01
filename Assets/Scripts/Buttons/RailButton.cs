@@ -31,7 +31,7 @@ public class RailButton : MonoBehaviour, Interactable
             }
         }
 
-        railNode.Interact();
+        railNode.Activate();
         
         anim.Play("ButtonAnimation");
     }

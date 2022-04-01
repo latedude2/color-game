@@ -2,41 +2,58 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PressurePlate : MonoBehaviour
+public class PressurePlate : MonoBehaviour, Activatable
 {
+    bool activated = false;
     [SerializeField] RailNode railNode;
     [SerializeField] RailSystem railSystem;
-    [SerializeField] Activatable[] activatableComponents;
+    [SerializeField] List<Activatable> activatableComponents = new List<Activatable>();
     Animation anim;
     public delegate void PressurePlateHandler();
     public static event PressurePlateHandler Pressed;
 
     void Start() {
         anim = GetComponent<Animation>();
-        activatableComponents = transform.GetComponents<Activatable>();
-        if(activatableComponents == null)
-        {
-            Debug.LogError("Button does not have activatable item connected");
-        }
+        railNode.nodeDeactivated.AddListener(Deactivate);
     }
 
     void OnTriggerEnter(Collider other) {
-        Pressed?.Invoke();
-        if(activatableComponents.Length > 0)
-        {
-            foreach (Activatable activatable in activatableComponents)
-            {
-                activatable.Activate();
-            }
-        }
-
-        railNode.Interact();
-        
-        anim.Play("PressurePlateAnimation"); 
+        Activate();
     }
 
-    void OnTriggerExit(Collider other) {
+    public void Activate()
+    {
+        if(!activated)
+        {
+            activated = true;
+            Pressed?.Invoke();
+            if(activatableComponents != null && activatableComponents.Count > 0)
+            {
+                foreach (Activatable activatable in activatableComponents)
+                {
+                    activatable.Activate();
+                }
+            }
+
+            railNode.Activate();
+            
+            anim.Play("PressurePlateAnimation"); 
+        }
+    }
+    public void Deactivate()
+    {
+        if(activated)
+        {
+            activated = false;
+            if(activatableComponents != null && activatableComponents.Count > 0)
+            {
+                foreach (Activatable activatable in activatableComponents)
+                {
+                    activatable.Deactivate();
+                }
+            }
+            anim.Play("PressurePlateUpAnimation");
+        }
         
-        anim.Play("PressurePlateUpAnimation");
     }
 }
