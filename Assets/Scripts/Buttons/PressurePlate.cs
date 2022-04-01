@@ -50,7 +50,6 @@ public class PressurePlate : MonoBehaviour, Activatable
                     activatableGameobject.GetComponent<Activatable>().Deactivate();
                 }
             }
-            railNode.Deactivate();
             anim.Play("PressurePlateUpAnimation");
         }
         
