@@ -27,7 +27,7 @@ public class Settings : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.M))
+        if(Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.Escape))
         {
             if(settingsOpen)
             {
