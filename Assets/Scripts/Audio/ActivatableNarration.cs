@@ -1,10 +1,12 @@
 using UnityEngine;
 using FMODUnity;
+using UnityEngine.Events;
 
 public class ActivatableNarration : MonoBehaviour, Activatable
 {
     private StudioEventEmitter _audio;
     bool soundsEnabled = false;
+    public UnityEvent OnDialogueEnd;
 
     void Awake() {
         _audio = GetComponent<StudioEventEmitter>();
@@ -13,6 +15,7 @@ public class ActivatableNarration : MonoBehaviour, Activatable
     private void Start() {
         // Avoid sounds from playing on new scene load
         Invoke(nameof(EnableSounds), .2f);
+        DialogueManager.Instance.OnDialogueEnd.AddListener(DialogueEnd);
     }
 
     public void Activate() {
@@ -29,5 +32,13 @@ public class ActivatableNarration : MonoBehaviour, Activatable
 
     void EnableSounds() {
         soundsEnabled = true;
+    }
+
+    void DialogueEnd() {
+        OnDialogueEnd.Invoke();
+    }
+
+    private void OnDestroy() {
+        DialogueManager.Instance.OnDialogueEnd.RemoveListener(DialogueEnd);
     }
 }

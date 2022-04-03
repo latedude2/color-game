@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Text.RegularExpressions;
 using TMPro;
 using FMOD.Studio;
+using UnityEngine.Events;
 
 // Thanks to Random Seed Games for sharing their implementation
 // https://www.youtube.com/watch?v=1NW0BYn5KfE&ab_channel=RandomSeedGames
@@ -11,6 +12,8 @@ using FMOD.Studio;
 [RequireComponent(typeof(TMP_Text))]
 public class DialogueManager : MonoBehaviour
 {
+    
+    public UnityEvent OnDialogueEnd;
     
     private TMP_Text subtitleUI;
     private float lineStartTime;
@@ -168,6 +171,7 @@ public class DialogueManager : MonoBehaviour
     public void EndDialogue() {
         isDisplaying = false;
         subtitleUI.SetText("");
+        OnDialogueEnd.Invoke();
     }
 
     string GetEventPath() {
