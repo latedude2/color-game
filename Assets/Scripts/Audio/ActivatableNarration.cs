@@ -15,13 +15,13 @@ public class ActivatableNarration : MonoBehaviour, Activatable
     private void Start() {
         // Avoid sounds from playing on new scene load
         Invoke(nameof(EnableSounds), .2f);
-        DialogueManager.Instance.OnDialogueEnd.AddListener(DialogueEnd);
     }
 
     public void Activate() {
         if(soundsEnabled) {
             _audio.Play();
             DialogueManager.Instance.BeginDialogue(_audio.EventInstance);
+            DialogueManager.Instance.OnDialogueEnd.AddListener(DialogueEnd);
             soundsEnabled = false;
         }
     }
