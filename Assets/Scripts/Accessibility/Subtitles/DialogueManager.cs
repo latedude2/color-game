@@ -142,10 +142,15 @@ public class DialogueManager : MonoBehaviour
         // Split subtitle elements
         for (int i = 0; i < subtitleLines.Count; i++)
         {
-            string[] splitTemp = subtitleLines[i].Split('|');
-            subtitleTimingStrings.Add(splitTemp[0]);
+            string[] splitTemp1 = subtitleLines[i].Split('|');
+
+            // Add timing
+            subtitleTimingStrings.Add(splitTemp1[0]);
             subtitleTimings.Add(float.Parse(CleanTimeString(subtitleTimingStrings[i])));
-            subtitleText.Add(splitTemp[1]);
+
+            // Add line with stylized names
+            string[] splitTemp2 = splitTemp1[1].Split(':');
+            subtitleText.Add("<style=\"" + splitTemp2[0] + "\"></style>: " + splitTemp2[1]);
         }
 
         //Split trigger elements
