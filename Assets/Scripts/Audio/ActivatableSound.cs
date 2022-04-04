@@ -20,8 +20,8 @@ public class ActivatableSound : MonoBehaviour, Activatable
         if(soundsEnabled) {
             if (_audio.Params.Length > 0) {
                 _audio.Params[0].Value = 1;
-                _audio.Play();
             }
+            _audio.Play();
         }
     }
 
@@ -29,8 +29,8 @@ public class ActivatableSound : MonoBehaviour, Activatable
         if (soundsEnabled) {
             if (_audio.Params.Length > 0) {
                 _audio.Params[0].Value = 0;
-                _audio.Play();
             }
+            _audio.Play();
         }
     }
 
