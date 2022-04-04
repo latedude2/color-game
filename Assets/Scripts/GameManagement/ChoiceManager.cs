@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class ChoiceManager : MonoBehaviour
 {
-    static public void SaveChoice(string choiceName, string choiceSolution)
+    static public void SaveChoice(Situation situation, Choice choice)
     {
-        PlayerPrefs.SetString(choiceName, choiceSolution);
+        Debug.Log("Saving choice: " + situation.ToString() + " as " + choice.ToString());
+        PlayerPrefs.SetString(situation.ToString(), choice.ToString());
         PlayerPrefs.Save();
     }
 
-    static public string GetChoice(string choiceName)
+    static public string GetChoice(Situation situation)
     {
-        return PlayerPrefs.GetString(choiceName);
+        return PlayerPrefs.GetString(situation.ToString());
     }
 }
