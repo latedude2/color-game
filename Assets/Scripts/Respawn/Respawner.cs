@@ -7,6 +7,7 @@ public class Respawner : MonoBehaviour
 
     private void Start() {
         GrabIt.Released += SaveSpawnPoint;
+        PressurePlate.Pressed += SaveSpawnPoint;
         SaveSpawnPoint();
     }
 
@@ -36,5 +37,6 @@ public class Respawner : MonoBehaviour
 
     private void OnDestroy() {
         GrabIt.Released -= SaveSpawnPoint;
+        PressurePlate.Pressed -= SaveSpawnPoint;
     }
 }

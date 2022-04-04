@@ -27,16 +27,14 @@ public class Settings : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.M))
+        if(Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.Escape))
         {
             if(settingsOpen)
             {
-                ShowTarget();
                 HideSettings();
             }
             else
             {
-                HideTarget();
                 ShowSettings();
             }
         }
@@ -50,6 +48,7 @@ public class Settings : MonoBehaviour
 
     void ShowSettings()
     {
+        HideTarget();
         Unlocked?.Invoke();
         optionsMenu.SetActive(true);
         settingsOpen = true;
@@ -57,6 +56,7 @@ public class Settings : MonoBehaviour
 
     public void HideSettings()
     {
+        ShowTarget();
         Locked?.Invoke();
         optionsMenu.SetActive(false);
         settingsOpen = false;
