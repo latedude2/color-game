@@ -5,17 +5,33 @@ using UnityEngine;
 public class ChoiceResult : MonoBehaviour
 {
     [SerializeField] Situation situation;
-    [SerializeField] Choice choice;
-    [SerializeField] GameObject[] gameObjectsToEnable;
-    [SerializeField] GameObject[] gameObjectsToDisable;
+
+    // TODO: Find better naming
+    public ChoiceGameObjects[] choiceGameObjects;
+
+    [System.Serializable]
+    public class ChoiceGameObjects
+    {
+        // TODO: Find a way to make these private while still showing them in inspector
+        [SerializeField] public Choice choice;
+        [SerializeField] public GameObject[] gameObjects;
+    }
+
     void Start()
     {
-        if(ChoiceManager.GetChoice(situation) == choice.ToString())
+        foreach (ChoiceGameObjects objects in choiceGameObjects)
         {
-            foreach(GameObject gameObject in gameObjectsToEnable)
-                gameObject.SetActive(true);
-            foreach(GameObject gameObject in gameObjectsToDisable)
-                gameObject.SetActive(false);
+            if (objects.choice == ChoiceManager.GetChoice(situation)) {
+                foreach(GameObject gameObject in objects.gameObjects)
+                {
+                    gameObject.SetActive(true);
+                }
+            } else {
+                foreach(GameObject gameObject in objects.gameObjects)
+                {
+                    gameObject.SetActive(false);
+                }
+            }
         }
     }
 }
