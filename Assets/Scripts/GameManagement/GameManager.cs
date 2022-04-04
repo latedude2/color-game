@@ -24,4 +24,13 @@ public class GameManager : MonoBehaviour {
     private void Start() {
         session = DateTime.Now;
     }
+
+    public static void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+    public static void ResumeGame()
+    {
+        Time.timeScale = 1;
+    }
 }
