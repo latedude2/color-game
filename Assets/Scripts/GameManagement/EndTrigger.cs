@@ -9,15 +9,15 @@ public class EndTrigger : MonoBehaviour
 
 
     [Tooltip("Example: Situation1")]
-    [SerializeField] string choiceName = "";
+    [SerializeField] Situation situation = Situation.Unset;
 
     [Tooltip("Example: side with blue")]
-    [SerializeField] string choiceSolution = "";
+    [SerializeField] Choice choice = Choice.Unset;
 
     private void OnTriggerEnter(Collider other) {
-        if(choiceName != "" && choiceSolution != "")
+        if(situation != Situation.Unset && choice != Choice.Unset)
         {
-            ChoiceManager.SaveChoice(choiceName, choiceSolution);
+            ChoiceManager.SaveChoice(situation, choice);
         }
         if (other.tag == "Player")
         {

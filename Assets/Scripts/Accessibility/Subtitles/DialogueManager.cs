@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using TMPro;
 using FMOD.Studio;
 using UnityEngine.Events;
+using System.Globalization;
 
 // Thanks to Random Seed Games for sharing their implementation
 // https://www.youtube.com/watch?v=1NW0BYn5KfE&ab_channel=RandomSeedGames
@@ -142,10 +143,15 @@ public class DialogueManager : MonoBehaviour
         // Split subtitle elements
         for (int i = 0; i < subtitleLines.Count; i++)
         {
-            string[] splitTemp = subtitleLines[i].Split('|');
-            subtitleTimingStrings.Add(splitTemp[0]);
-            subtitleTimings.Add(float.Parse(CleanTimeString(subtitleTimingStrings[i])));
-            subtitleText.Add(splitTemp[1]);
+            string[] splitTemp1 = subtitleLines[i].Split('|');
+
+            // Add timing
+            subtitleTimingStrings.Add(splitTemp1[0]);
+            subtitleTimings.Add(float.Parse(CleanTimeString(subtitleTimingStrings[i]), CultureInfo.InvariantCulture));
+
+            // Add line with stylized names
+            string[] splitTemp2 = splitTemp1[1].Split(':');
+            subtitleText.Add("<style=\"" + splitTemp2[0] + "\"></style>: " + splitTemp2[1]);
         }
 
         //Split trigger elements
@@ -153,7 +159,7 @@ public class DialogueManager : MonoBehaviour
         {
             string[] splitTemp1 = triggerLines[i].Split('|');
             triggerTimingStrings.Add(splitTemp1[0]);
-            triggerTimings.Add(float.Parse(CleanTimeString(triggerTimingStrings[i])));
+            triggerTimings.Add(float.Parse(CleanTimeString(triggerTimingStrings[i]), CultureInfo.InvariantCulture));
             triggers.Add(splitTemp1[1]);
             string[] splitTemp2 = triggers[i].Split('-');
             splitTemp2[0] = splitTemp2[0].Replace("<trigger/>", "");

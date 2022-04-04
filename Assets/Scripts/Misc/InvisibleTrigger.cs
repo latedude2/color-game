@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
-public class InvisibleTrigger : MonoBehaviour, Interactable
+public class InvisibleTrigger : MonoBehaviour
 {
     public GameObject[] activatableObjects;
     Activatable[] _activatables;
@@ -28,27 +28,12 @@ public class InvisibleTrigger : MonoBehaviour, Interactable
         }
     }
 
-    public void Interact()
-    {
-        if (!enabled)
-            return;
-
-        if(_activatables.Length > 0)
-        {
-            foreach (Activatable activatable in _activatables)
-            {
-                activatable.Activate();
-            }
-        }
-    }
-
     void OnTriggerEnter(Collider other)
     {
         if(_activatables.Length > 0)
         {
             foreach (Activatable activatable in _activatables)
             {
-                Debug.Log(activatable);
                 activatable.Activate();
             }
         }
