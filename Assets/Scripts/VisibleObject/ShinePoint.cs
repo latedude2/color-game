@@ -27,4 +27,9 @@ public class ShinePoint
     {
         return position;
     }
+
+    public void SetPosition(Vector3 newPosition)
+    {
+        this.position = newPosition;
+    }
 }
