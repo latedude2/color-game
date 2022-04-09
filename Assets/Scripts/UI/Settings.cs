@@ -22,6 +22,7 @@ public class Settings : MonoBehaviour
         Locked += LockCursor;
         Unlocked += UnlockCursor;
         audioSettings = new AudioSettings();
+        LoadSettings();
     }
 
     // Update is called once per frame
@@ -44,6 +45,12 @@ public class Settings : MonoBehaviour
         //It is a good practice to unsubscribe events when the objects are destroyed to avoid errors.
         Locked -= LockCursor;
         Unlocked -= UnlockCursor;
+    }
+
+    void LoadSettings()
+    {
+        audioSettings.Load();
+        videoSettings.Load();
     }
 
     void ShowSettings()

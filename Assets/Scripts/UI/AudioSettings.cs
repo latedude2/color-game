@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMOD.Studio;
 
-public class AudioSettings
+public class AudioSettings : Loadable
 {
     private Bus music;
     private Bus sfx;
@@ -15,11 +15,19 @@ public class AudioSettings
 
     public void SetMusicVolume(float value)
     {
+        PlayerPrefs.SetFloat("MusicVolume", value);
         music.setVolume(value);
     }
 
     public void SetSfxVolume(float value)
     {
+        PlayerPrefs.SetFloat("SfxVolume", value);
         sfx.setVolume(value);
+    }
+
+    public void Load()
+    {
+        SetMusicVolume(PlayerPrefs.GetFloat("MusicVolume"));
+        SetSfxVolume(PlayerPrefs.GetFloat("SfxVolume"));
     }
 }

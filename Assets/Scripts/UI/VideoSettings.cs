@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VideoSettings : MonoBehaviour
+public class VideoSettings : MonoBehaviour, Loadable
 {
     ColorAdjustment colorAdjustment;
     private void Start() {
@@ -11,12 +11,18 @@ public class VideoSettings : MonoBehaviour
     public void SetContrast(float value)
     {
         colorAdjustment.SetContrast(value);
-        Debug.Log("Set brightness to: " + value);
+        PlayerPrefs.SetFloat("contrast", value);
     }
 
     public void SetBrightness(float value)
     {
         colorAdjustment.SetBrightness(value);
-        Debug.Log("Set brightness to: " + value);
+        PlayerPrefs.SetFloat("brightness", value);
+    }
+
+    public void Load()
+    {
+        SetContrast(PlayerPrefs.GetFloat("contrast"));
+        SetBrightness(PlayerPrefs.GetFloat("brightness"));
     }
 }
