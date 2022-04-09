@@ -11,8 +11,9 @@ public class Settings : MonoBehaviour
     private AudioSettings audioSettings;
     private VideoSettings videoSettings;
 
+    private ControlSettings controlSettings;
+
     private bool settingsOpen = false;
-    public static float mouseSensitivityMultiplier = 1f;
     private GameObject optionsMenu;
     private GameObject targetReticle;
 
@@ -22,6 +23,7 @@ public class Settings : MonoBehaviour
         Locked += LockCursor;
         Unlocked += UnlockCursor;
         audioSettings = new AudioSettings();
+        controlSettings = new ControlSettings();
         LoadSettings();
     }
 
@@ -51,6 +53,7 @@ public class Settings : MonoBehaviour
     {
         audioSettings.Load();
         videoSettings.Load();
+        controlSettings.Load();
     }
 
     void ShowSettings()
@@ -105,6 +108,6 @@ public class Settings : MonoBehaviour
 
     public void SetMouseSensitivity(float value)
     {
-        mouseSensitivityMultiplier = value;
+        controlSettings.SetMouseSensitivity(value);
     }
 }
