@@ -24,6 +24,7 @@ public class Settings : MonoBehaviour
         Unlocked += UnlockCursor;
         audioSettings = new AudioSettings();
         controlSettings = new ControlSettings();
+        videoSettings = GetComponent<VideoSettings>();
         LoadSettings();
     }
 
