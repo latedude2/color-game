@@ -208,8 +208,6 @@ namespace Lightbug.GrabIt
         {
             Vector3 hitPointPos = m_hitPointObject.transform.position;
             Vector3 dif = m_targetPos - hitPointPos;
-            if (!ColorGame.Debug.debugMode)
-                dif.y = 0;  // prevent lifting boxes
 
             if (m_isHingeJoint || m_isConfigurableJoint){
                 if (m_targetRB.GetComponent<Lamp>() != null)

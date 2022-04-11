@@ -19,9 +19,11 @@ public class VisibleObjectVisibility : MonoBehaviour
     Activatable[] activatableComponents;
     
     public UnityEvent visibilityChanged;
+    BoxCollider boxCollider;
     
     void Start()
     {
+        TryGetComponent<BoxCollider>(out boxCollider);
         activatableComponents = GetComponents<Activatable>();
         lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         _renderer = GetComponent<Renderer>();
@@ -34,10 +36,7 @@ public class VisibleObjectVisibility : MonoBehaviour
         boundBox = GetComponent<BoundBox>();
         boundBox.lineColor = ColorHelper.GetColor(trueColor);
         boundBox.SetLineRenderers();
-        if(GetComponent<Rigidbody>() == null)
-        {
-            shinePoints = FindShinePoints();
-        }
+        shinePoints = CreateShinePoints();
         SetColor(ColorCode.Black);
         SetToInvisible();
     }
@@ -46,7 +45,7 @@ public class VisibleObjectVisibility : MonoBehaviour
     {
         if(GetComponent<Rigidbody>() != null)
         {
-            shinePoints = FindShinePoints();
+            UpdateShinePoints();
         }
         // When object becomes lit and interactable
         ColorCode objectFinalColor = FindShownColor();
@@ -144,45 +143,118 @@ public class VisibleObjectVisibility : MonoBehaviour
     {
         foreach (ShinePoint shinePoint in shinePoints)
         {
-            foreach (GameObject light in LightManager.GetPointingLights(shinePoint.GetPosition(), color))
+            for(int i = 0; i < LightManager.optimizedLights.Length; i++)
             {
-                if (shinePoint.Reached(light))
+                if (IsPointing(LightManager.optimizedLights[i], color, shinePoint))
                 {
-                    return true;
+                    if (shinePoint.Reached(LightManager.optimizedLights[i].gameobject))
+                    {
+                        return true;
+                    }
                 }
             }
         }
         return false;
     }
 
-    ShinePoint[] FindShinePoints()
+    private bool IsPointing(LightManager.OptimizedLight pointingLight, ColorCode color, ShinePoint shinePoint)
+    {
+        if(!pointingLight.gameobject.activeInHierarchy)
+        {
+            return false;
+        }
+        //If the colored object cannot reflect the light. We check for bitwise overlap here.
+        if((color & pointingLight.coloredLightComponent.GetColorCode()) == 0)
+        {
+            return false;
+        }
+        //If the light is pointing towards the point
+        if (Vector3.Angle(pointingLight.transform.forward, shinePoint.GetPosition() - pointingLight.transform.position) < pointingLight.lightComponent.spotAngle / 2)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    ShinePoint[] CreateShinePoints()
     {
         //Create a list of points for the visible object that we will be checking for shine.
         List<ShinePoint> shinepoints = new List<ShinePoint>();
         if (TryGetComponent<MeshCollider>(out MeshCollider collider)) {
-            Mesh mesh = collider.sharedMesh;
-            foreach (var vertice in mesh.vertices) {
-                shinepoints.Add(new ShinePoint(transform.TransformPoint(vertice)));
-            }
-        } else {
-
-            BoxCollider b = GetComponent<BoxCollider>();
+            return CreateMeshShinePoints(collider, shinepoints);
             
-            // Add points on the box collider to the list
-            for (int z = -shinePointMultiplier; z <= shinePointMultiplier; z++)
+        } else {
+            return CreateBoxShinePoints(shinepoints);
+        }
+    }
+
+    ShinePoint[] CreateBoxShinePoints(List<ShinePoint> shinepoints)
+    {
+        // Add points on the box collider to the list
+        for (int z = -shinePointMultiplier; z <= shinePointMultiplier; z++)
+        {
+            for (int y = -shinePointMultiplier; y <= shinePointMultiplier; y++)
             {
-                for (int y = -shinePointMultiplier; y <= shinePointMultiplier; y++)
+                for (int x = -shinePointMultiplier; x <= shinePointMultiplier; x++)
                 {
-                    for (int x = -shinePointMultiplier; x <= shinePointMultiplier; x++)
-                    {
-                        // skip the middle of the box
-                        if (!IsShinePointInMiddle(x, y, z, shinePointMultiplier))
-                            shinepoints.Add(new ShinePoint(transform.TransformPoint(b.center + new Vector3(b.size.x * x / shinePointMultiplier, b.size.y * y / shinePointMultiplier, b.size.z * z / shinePointMultiplier) * 0.50f)));
-                    }
+                    // skip the middle of the box
+                    if (!IsShinePointInMiddle(x, y, z, shinePointMultiplier))
+                        shinepoints.Add(new ShinePoint(transform.TransformPoint(boxCollider.center + new Vector3(boxCollider.size.x * x / shinePointMultiplier, boxCollider.size.y * y / shinePointMultiplier, boxCollider.size.z * z / shinePointMultiplier) * 0.50f)));
                 }
             }
         }
         return shinepoints.ToArray();
+    }
+
+    ShinePoint[] CreateMeshShinePoints(MeshCollider collider, List<ShinePoint> shinepoints)
+    {
+        Mesh mesh = collider.sharedMesh;
+        foreach (var vertice in mesh.vertices) {
+            shinepoints.Add(new ShinePoint(transform.TransformPoint(vertice)));
+        }
+        return shinepoints.ToArray();
+    }
+
+    void UpdateShinePoints()
+    {
+        if (TryGetComponent<MeshCollider>(out MeshCollider collider)) {
+            UpdateMeshShinePoints(collider);
+        }
+        else{
+            UpdateBoxShinePoints();
+        }
+    }
+
+    void UpdateMeshShinePoints(MeshCollider collider)
+    {
+        Mesh mesh = collider.sharedMesh;
+        for(int i = 0; i < mesh.vertices.Length; i++)
+        {
+            shinePoints[i].SetPosition(transform.TransformPoint(mesh.vertices[i]));
+        }
+    }
+
+    void UpdateBoxShinePoints()
+    {
+        Vector3 size = boxCollider.size;
+        Vector3 center = boxCollider.center; 
+        int i = 0;
+        // Add points on the box collider to the list
+        for (int z = -shinePointMultiplier; z <= shinePointMultiplier; z++)
+        {
+            for (int y = -shinePointMultiplier; y <= shinePointMultiplier; y++)
+            {
+                for (int x = -shinePointMultiplier; x <= shinePointMultiplier; x++)
+                {
+                    // skip the middle of the box
+                    if (!IsShinePointInMiddle(x, y, z, shinePointMultiplier))
+                    {
+                        shinePoints[i].SetPosition(transform.TransformPoint(center + new Vector3(size.x * x / shinePointMultiplier, size.y * y / shinePointMultiplier, size.z * z / shinePointMultiplier) * 0.50f));
+                        i++;
+                    }
+                }
+            }
+        }
     }
 
     bool IsShinePointInMiddle(int x, int y, int z, int shinePointMultiplier)
