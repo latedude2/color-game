@@ -22,8 +22,8 @@ public class Settings : MonoBehaviour
         targetReticle = transform.Find("TargetReticle").gameObject;
         Locked += LockCursor;
         Unlocked += UnlockCursor;
-        audioSettings = new AudioSettings();
-        controlSettings = new ControlSettings();
+        audioSettings = GetComponent<AudioSettings>();
+        controlSettings = GetComponent<ControlSettings>();
         videoSettings = GetComponent<VideoSettings>();
         LoadSettings();
     }
