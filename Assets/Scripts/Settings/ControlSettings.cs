@@ -5,6 +5,7 @@ using UnityEngine;
 public class ControlSettings : Loadable
 {
     public static float mouseSensitivityMultiplier = 1f;
+    float defaultSensitivity = 1;
     public void SetMouseSensitivity(float value)
     {
         mouseSensitivityMultiplier = value;
@@ -14,6 +15,6 @@ public class ControlSettings : Loadable
 
     public void Load()
     {
-        SetMouseSensitivity(PlayerPrefs.GetFloat("mouseSensitivity"));
+        SetMouseSensitivity(PlayerPrefs.GetFloat("mouseSensitivity", defaultSensitivity));
     }
 }

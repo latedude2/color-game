@@ -5,6 +5,10 @@ using UnityEngine;
 public class VideoSettings : MonoBehaviour, Loadable
 {
     ColorAdjustment colorAdjustment;
+
+    float defaultContrast = 0;
+    float defaultBrightness = 1;
+
     private void Start() {
         colorAdjustment = GameObject.FindObjectsOfType<ColorAdjustment>()[0];
     }
@@ -22,7 +26,7 @@ public class VideoSettings : MonoBehaviour, Loadable
 
     public void Load()
     {
-        SetContrast(PlayerPrefs.GetFloat("contrast"));
-        SetBrightness(PlayerPrefs.GetFloat("brightness"));
+        SetContrast(PlayerPrefs.GetFloat("contrast", defaultContrast));
+        SetBrightness(PlayerPrefs.GetFloat("brightness", defaultBrightness));
     }
 }

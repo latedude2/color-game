@@ -8,6 +8,9 @@ public class AudioSettings : Loadable
     private Bus music;
     private Bus sfx;
 
+    private float defaultSfxVolume = 1;
+    private float defaultMusicVolume = 1;
+
     public AudioSettings() {
         music = FMODUnity.RuntimeManager.GetBus("bus:/Music");
         sfx = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
@@ -27,7 +30,7 @@ public class AudioSettings : Loadable
 
     public void Load()
     {
-        SetMusicVolume(PlayerPrefs.GetFloat("MusicVolume"));
-        SetSfxVolume(PlayerPrefs.GetFloat("SfxVolume"));
+        SetMusicVolume(PlayerPrefs.GetFloat("MusicVolume", defaultMusicVolume));
+        SetSfxVolume(PlayerPrefs.GetFloat("SfxVolume", defaultSfxVolume));
     }
 }
