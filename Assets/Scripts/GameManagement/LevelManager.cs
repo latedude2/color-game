@@ -20,6 +20,7 @@ public class LevelManager : MonoBehaviour
 
     private void Awake() {
         _instance = this;
+        GameManager.ResumeGame();
     }
 
     // Update is called once per frame

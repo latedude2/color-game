@@ -12,8 +12,8 @@ public class VideoSettings : MonoBehaviour, Loadable
     [SerializeField] Slider brightnessSlider;
     [SerializeField]  Slider contrastSlider;
 
-    private void Start() {
-        colorAdjustment = GameObject.FindObjectsOfType<ColorAdjustment>()[0];
+    private void Awake() {
+        colorAdjustment = GameObject.Find("PostProcessing").GetComponent<ColorAdjustment>();
     }
     public void SetContrast(float value)
     {
