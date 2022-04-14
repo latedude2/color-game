@@ -23,7 +23,6 @@ public class LevelManager : MonoBehaviour
         GameManager.ResumeGame();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(reloadEnabled && Input.GetKeyDown(KeyCode.R))
