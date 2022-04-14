@@ -11,8 +11,9 @@ public class Settings : MonoBehaviour
     private AudioSettings audioSettings;
     private VideoSettings videoSettings;
 
+    private ControlSettings controlSettings;
+
     private bool settingsOpen = false;
-    public static float mouseSensitivityMultiplier = 1f;
     private GameObject optionsMenu;
     private GameObject targetReticle;
 
@@ -21,7 +22,10 @@ public class Settings : MonoBehaviour
         targetReticle = transform.Find("TargetReticle").gameObject;
         Locked += LockCursor;
         Unlocked += UnlockCursor;
-        audioSettings = new AudioSettings();
+        audioSettings = GetComponent<AudioSettings>();
+        controlSettings = GetComponent<ControlSettings>();
+        videoSettings = GetComponent<VideoSettings>();
+        LoadSettings();
     }
 
     // Update is called once per frame
@@ -44,6 +48,13 @@ public class Settings : MonoBehaviour
         //It is a good practice to unsubscribe events when the objects are destroyed to avoid errors.
         Locked -= LockCursor;
         Unlocked -= UnlockCursor;
+    }
+
+    void LoadSettings()
+    {
+        audioSettings.Load();
+        videoSettings.Load();
+        controlSettings.Load();
     }
 
     void ShowSettings()
@@ -98,6 +109,6 @@ public class Settings : MonoBehaviour
 
     public void SetMouseSensitivity(float value)
     {
-        mouseSensitivityMultiplier = value;
+        controlSettings.SetMouseSensitivity(value);
     }
 }
