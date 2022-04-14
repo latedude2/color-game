@@ -15,7 +15,7 @@ public class VisibleObjectPhysics : MonoBehaviour, Activatable
     bool visible;
     bool justMadeVisible;
 
-    void Start()
+    void Awake()
     {
         grabIt = GameObject.Find("Main Camera").GetComponent<GrabIt>();
         _collider = GetComponent<Collider>();
