@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using TMPro;
 using FMOD.Studio;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using System.Globalization;
 
 // Thanks to Random Seed Games for sharing their implementation
@@ -15,6 +16,8 @@ public class DialogueManager : MonoBehaviour
 {
     
     public UnityEvent OnDialogueEnd;
+
+    private Image background;
     
     private TMP_Text subtitleUI;
     private float lineStartTime;
@@ -57,6 +60,11 @@ public class DialogueManager : MonoBehaviour
     {
         subtitleUI = GetComponent<TMP_Text>();
         subtitleUI.SetText("");
+
+        if (!transform.parent.TryGetComponent<Image>(out background)) {
+            Debug.LogError("Subtitle UI not set up correctly. Missing a background as parent.");
+        }
+        background.enabled = false;
     }
 
     private void Update()
@@ -76,6 +84,7 @@ public class DialogueManager : MonoBehaviour
         if (nextSubtitle > 0 && !subtitleText[nextSubtitle - 1].Contains("<break/>"))
         {
             subtitleUI.SetText(displaySubtitle);
+            background.enabled = true;
         }
 
         // Increment nextSubtitle when passing time point
@@ -177,6 +186,7 @@ public class DialogueManager : MonoBehaviour
     public void EndDialogue() {
         isDisplaying = false;
         subtitleUI.SetText("");
+        background.enabled = false;
         OnDialogueEnd.Invoke();
     }
 
