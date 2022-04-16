@@ -47,8 +47,8 @@ public class AN_HeroController : MonoBehaviour
         if(controlsEnabled)
         {
             // camera rotation
-            float xmouse = Input.GetAxis("Mouse X") * Time.deltaTime * Sensitivity * Settings.mouseSensitivityMultiplier;
-            float ymouse = Input.GetAxis("Mouse Y") * Time.deltaTime * Sensitivity * Settings.mouseSensitivityMultiplier;
+            float xmouse = Input.GetAxis("Mouse X") * Time.deltaTime * Sensitivity * ControlSettings.mouseSensitivityMultiplier;
+            float ymouse = Input.GetAxis("Mouse Y") * Time.deltaTime * Sensitivity * ControlSettings.mouseSensitivityMultiplier;
             transform.Rotate(Vector3.up * xmouse);
             yRotation -= ymouse;
             yRotation = Mathf.Clamp(yRotation, -85f, 60f);
