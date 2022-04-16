@@ -60,7 +60,6 @@ public class Settings : MonoBehaviour
     void ShowSettings()
     {
         GameManager.PauseGame();
-        StartCoroutine(GameManager.PauseGameAudio());
         HideTarget();
         Unlocked?.Invoke();
         optionsMenu.SetActive(true);
@@ -70,7 +69,6 @@ public class Settings : MonoBehaviour
     public void HideSettings()
     {
         GameManager.ResumeGame();
-        StartCoroutine(GameManager.ResumeGameAudio());
         ShowTarget();
         Locked?.Invoke();
         optionsMenu.SetActive(false);

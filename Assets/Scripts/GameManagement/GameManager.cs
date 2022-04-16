@@ -31,12 +31,14 @@ public class GameManager : MonoBehaviour {
     {
         gamePaused = true;
         Time.timeScale = 0;
+        _instance.StartCoroutine(PauseGameAudio());
     }
 
     public static void ResumeGame()
     {
         gamePaused = false;
         Time.timeScale = 1;
+        _instance.StartCoroutine(ResumeGameAudio());
     }
 
     public static IEnumerator PauseGameAudio()
