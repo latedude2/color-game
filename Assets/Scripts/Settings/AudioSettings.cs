@@ -16,8 +16,8 @@ public class AudioSettings : MonoBehaviour, Loadable
     [SerializeField] Slider musicSlider;
 
     void Start() {
-        music = FMODUnity.RuntimeManager.GetBus("bus:/Music");
-        sfx = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
+        music = FMODUnity.RuntimeManager.GetBus("bus:/Gameplay/Music");
+        sfx = FMODUnity.RuntimeManager.GetBus("bus:/Gameplay/SFX");
     }
 
     public void SetMusicVolume(float value)
