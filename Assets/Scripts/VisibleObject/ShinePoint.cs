@@ -8,7 +8,7 @@ public class ShinePoint
     LayerMask blockingLayers;
     public ShinePoint(Vector3 position){
         this.position = position;
-        this.blockingLayers = 0b_0000_1001; //Block rays with default and static layers
+        this.blockingLayers = 0b_0001_0000_1011; //Block rays with default and static layers
     }
     
     public bool Reached(GameObject pointingLight)
