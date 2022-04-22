@@ -176,7 +176,7 @@ public class WireBuilder : MonoBehaviour
     public bool wallCheck(Vector3 position, Vector3 direction, float distance)
     {
         RaycastHit hit;
-        LayerMask layerMask = 0b_0000_1011; //Block rays with default, transparentFX and static layers
+        LayerMask layerMask = 0b_0001_0000_1011; //Block rays with default, transparentFX and static layers
         //Debug.DrawRay(position, direction * distance, Color.green, 2f);
         return Physics.Raycast(position, direction, out hit, distance, layerMask);
     }

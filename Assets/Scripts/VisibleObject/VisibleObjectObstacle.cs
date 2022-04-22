@@ -17,7 +17,7 @@ public class VisibleObjectObstacle : MonoBehaviour, Activatable
 
     [Tooltip("How to treat the obstacle. Automatic will decide based on existence of rigidbody and scale of object.")]
     [SerializeField] ObstacleMode forceObstacleMode = ObstacleMode.Automatic;
-    void Start()
+    void Awake()
     {
         if(TryGetComponent<NavMeshObstacle>(out NavMeshObstacle newObstacle))
         {
