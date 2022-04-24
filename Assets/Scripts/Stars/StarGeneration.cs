@@ -5,7 +5,7 @@ using UnityEngine;
 public static class StarGeneration
 {
     //generate a list of points for the stars
-    public static List<Vector3> GeneratePoints(float radius, Vector3 sampleAreaSize, int attemptBefReject, float dispHeight)
+    public static List<Vector3> GeneratePoints(float radius, Vector3 sampleAreaSize, int attemptBefReject, float dispHeight, float heightVarience)
     {
         // each cell has a diagonal equal to the radius, so we have to calculate the side lengths
         float cellSize = radius / Mathf.Sqrt(2);
@@ -21,7 +21,7 @@ public static class StarGeneration
         List<Vector3> spawnPoints = new List<Vector3>();
 
         // adding a starting point to start generating around (added in the center for simplicity)
-        Vector3 startPoint = new Vector3(sampleAreaSize.x / 2, 0, sampleAreaSize.z / 2);
+        Vector3 startPoint = new Vector3(sampleAreaSize.x / 2, dispHeight, sampleAreaSize.z / 2);
         spawnPoints.Add(startPoint);
 
         // looping through spawnpoints to try and generate new points
@@ -37,10 +37,12 @@ public static class StarGeneration
             {
                 // random point at any angle and a distance between the radius and double the radius
                 float angle = Random.value * Mathf.PI * 2;
-                //float heightChange = Random.value + spawnCenter.y;  // needs to be limited in some wya maybe??
+                float heightChange = dispHeight + Random.Range(-heightVarience, heightVarience);  // needs to be limited in some wya maybe??
                 Vector3 dir = new Vector3(Mathf.Sin(angle), 0, Mathf.Cos(angle));
                 Vector3 candidate = spawnCenter + dir * Random.Range(radius, 2 * radius);
-
+                candidate.y = heightChange;
+                
+              
                 // checking if the new point is within another point's radius
                 if (isValid(candidate, sampleAreaSize, cellSize, points, grid, radius))
                 {
@@ -59,7 +61,7 @@ public static class StarGeneration
                 spawnPoints.RemoveAt(spawnIndex);
             }
         }
-
+        
         return points;
     }
 

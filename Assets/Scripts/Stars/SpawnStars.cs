@@ -10,6 +10,7 @@ public class SpawnStars : MonoBehaviour
     public Vector3 areaSize = new Vector3(1,1,1);
     public int rejectionSamples = 10;
     public float dispRadius = 1;
+    public float heightVariance = 1f;
 
     List<Vector3> points;
 
@@ -17,7 +18,7 @@ public class SpawnStars : MonoBehaviour
     void OnValidate()
     {
         // calling the function from the other script to generate a list of points
-        points = StarGeneration.GeneratePoints(radius, areaSize, rejectionSamples, displayHeight);
+        points = StarGeneration.GeneratePoints(radius, areaSize, rejectionSamples, displayHeight, heightVariance);
 
     }
 
@@ -25,13 +26,22 @@ public class SpawnStars : MonoBehaviour
     // and drawing the generation area
     void OnDrawGizmos()
     {
-        //Gizmos.DrawWireCube(areaSize / 2, areaSize);
 
         if (points != null)
         {
-            /*Gizmos.DrawSphere(points[0], dispRadius);
-            Gizmos.DrawSphere(points[1], dispRadius);
-            Gizmos.DrawSphere(points[2], dispRadius);*/
+            
+            foreach (Vector3 point in points)
+            { 
+                Gizmos.DrawSphere(point, dispRadius);
+            }
+        }
+    }
+
+    void OnStart()
+    {
+        if (points != null)
+        {
+
             foreach (Vector3 point in points)
             {
                 Gizmos.DrawSphere(point, dispRadius);
