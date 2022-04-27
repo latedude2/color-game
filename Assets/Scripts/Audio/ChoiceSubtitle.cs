@@ -5,16 +5,20 @@ public class ChoiceSubtitle : MonoBehaviour
 {
     [SerializeField] string textToShow = "Missing subtitle lol";
     Text textComponent;
+    Animation panelAnimation;
 
     private void Start() {
-        textComponent = GameObject.Find("ChoiceSubtitle").GetComponent<Text>();
+        textComponent = GameObject.Find("ChoiceSubtitlePanel/ChoiceSubtitle").GetComponent<Text>();
+        panelAnimation = GameObject.Find("ChoiceSubtitlePanel").GetComponent<Animation>();
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
+            panelAnimation.Play("ChoiceSubtitleAnim");
             textComponent.text = textToShow;
+
         }
     }
 
@@ -22,6 +26,7 @@ public class ChoiceSubtitle : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            panelAnimation.Play("ChoiceSubtitleHideAnim");
             textComponent.text = "";
         }
     }
