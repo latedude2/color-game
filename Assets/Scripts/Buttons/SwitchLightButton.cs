@@ -14,7 +14,7 @@ public class SwitchLightButton : MonoBehaviour, Interactable
 
     private void Start() {
         
-        activatableComponents = transform.parent.GetComponentsInChildren<Activatable>();
+        activatableComponents = transform.parent.parent.parent.GetComponentsInChildren<Activatable>();
         if(activatableComponents == null)
         {
             Debug.LogError("Button does not have activatable item connected");
