@@ -19,8 +19,8 @@ public class SwitchLightButton : MonoBehaviour, Interactable
         {
             Debug.LogError("Button does not have activatable item connected");
         }
-        lightGameObject = transform.parent.GetComponentInChildren<Light>().gameObject;
-        lightBulb = transform.parent.GetComponentInChildren<EmittingSurface>();
+        lightGameObject = transform.parent.parent.parent.GetComponentInChildren<Light>().gameObject;
+        lightBulb = transform.parent.parent.parent.GetComponentInChildren<EmittingSurface>();
         // _audio = GetComponent<StudioEventEmitter>();
         anim = GetComponent<Animation>();
     }

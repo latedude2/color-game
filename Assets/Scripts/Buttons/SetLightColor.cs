@@ -14,8 +14,8 @@ public class SetLightColor : MonoBehaviour, Interactable
     Activatable[] activatableComponents;
 
     private void Start() {
-        lightBulb = transform.parent.GetComponentInChildren<EmittingSurface>();
-        lightGameObject = transform.parent.GetComponentInChildren<Light>().gameObject;
+        lightBulb = transform.parent.parent.parent.GetComponentInChildren<EmittingSurface>();
+        lightGameObject = transform.parent.parent.parent.GetComponentInChildren<Light>().gameObject;
         _audio = GetComponent<StudioEventEmitter>();
         anim = GetComponent<Animation>();
         activatableComponents = transform.parent.GetComponentsInChildren<Activatable>();
