@@ -29,7 +29,9 @@ public class WireBuilder : MonoBehaviour
     void OnDestroy() {
         if(gameObject.scene.isLoaded) //Gameobject was Deleted
         {
-            GetComponent<WireBuilder>().activater.RemoveActivatable(gameObject);
+            WireBuilder wireBuilder= GetComponent<WireBuilder>();
+            if(wireBuilder.activater != null)
+                wireBuilder.activater.RemoveActivatable(gameObject);
         }
         
     }
