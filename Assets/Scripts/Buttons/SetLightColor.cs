@@ -18,7 +18,7 @@ public class SetLightColor : MonoBehaviour, Interactable
         lightGameObject = transform.parent.parent.parent.GetComponentInChildren<Light>().gameObject;
         _audio = GetComponent<StudioEventEmitter>();
         anim = GetComponent<Animation>();
-        activatableComponents = transform.parent.GetComponentsInChildren<Activatable>();
+        activatableComponents = transform.parent.parent.parent.GetComponentsInChildren<Activatable>();
         if(activatableComponents == null)
         {
             Debug.LogError("Button does not have activatable item connected");
