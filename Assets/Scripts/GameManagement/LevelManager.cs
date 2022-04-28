@@ -20,6 +20,10 @@ public class LevelManager : MonoBehaviour
 
     private void Awake() {
         _instance = this;
+    }
+
+    void Start()
+    {
         GameManager.ResumeGame();
     }
 
