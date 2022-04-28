@@ -199,7 +199,7 @@ public class VisibleObjectVisibility : MonoBehaviour
                 {
                     // skip the middle of the box
                     if (!IsShinePointInMiddle(x, y, z, shinePointMultiplier))
-                        shinepoints.Add(new ShinePoint(transform.TransformPoint(boxCollider.center + new Vector3(boxCollider.size.x * x / shinePointMultiplier, boxCollider.size.y * y / shinePointMultiplier, boxCollider.size.z * z / shinePointMultiplier) * 0.50f)));
+                        shinepoints.Add(new ShinePoint(transform.TransformPoint(boxCollider.center + new Vector3(boxCollider.size.x * x / shinePointMultiplier, boxCollider.size.y * y / shinePointMultiplier, boxCollider.size.z * z / shinePointMultiplier) * 0.51f))); //0.51 necessary for detection of visibility
                 }
             }
         }
