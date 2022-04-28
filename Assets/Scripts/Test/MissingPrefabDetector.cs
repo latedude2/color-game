@@ -6,7 +6,6 @@ using UnityEditor;
 public class MissingPrefabDetector
 {
 
-    [MenuItem("Enlit Games/Find Missing Prefab In Project")]
         public static void CheckForMissingPrefabsInProject()
     {
         string[] allPrefabs = GetAllPrefabs();
@@ -41,7 +40,6 @@ public class MissingPrefabDetector
         EditorUtility.ClearProgressBar();
     }
     
-    [MenuItem("Enlit Games/Find Missing Prefab In Scene")]
     public static void CheckForMissingPrefabsInScene()
     {
         int count = 0;
