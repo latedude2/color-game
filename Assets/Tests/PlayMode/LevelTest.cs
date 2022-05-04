@@ -139,6 +139,17 @@ public class LevelTest
     }
 
     [UnityTest]
+    public IEnumerator Level10a()
+    {
+        //Setup test
+        SceneManager.LoadScene("Level10a");
+        yield return null; //Pass one frame
+
+        //Check for missing prefabs
+        MissingPrefabDetector.CheckForMissingPrefabsInScene();
+    }
+
+    [UnityTest]
     public IEnumerator Level11()
     {
         //Setup test
@@ -187,6 +198,17 @@ public class LevelTest
     {
         //Setup test
         SceneManager.LoadScene("Level13");
+        yield return null; //Pass one frame
+
+        //Check for missing prefabs
+        MissingPrefabDetector.CheckForMissingPrefabsInScene();
+    }
+
+    [UnityTest]
+    public IEnumerator Level13a()
+    {
+        //Setup test
+        SceneManager.LoadScene("Level13a");
         yield return null; //Pass one frame
 
         //Check for missing prefabs
@@ -282,6 +304,17 @@ public class LevelTest
     }
 
     [UnityTest]
+    public IEnumerator Level21()
+    {
+        //Setup test
+        SceneManager.LoadScene("Level21");
+        yield return null; //Pass one frame
+
+        //Check for missing prefabs
+        MissingPrefabDetector.CheckForMissingPrefabsInScene();
+    }
+
+    [UnityTest]
     public IEnumerator LastLevel()
     {
         //Setup test
@@ -291,7 +324,7 @@ public class LevelTest
         //Check for missing prefabs
         MissingPrefabDetector.CheckForMissingPrefabsInScene();
     }
-
+    /*
     [UnityTest]
     public IEnumerator LevelSelect()
     {
@@ -302,6 +335,7 @@ public class LevelTest
         //Check for missing prefabs
         MissingPrefabDetector.CheckForMissingPrefabsInScene();
     }
+    */
 
     [UnityTest]
     public IEnumerator StartScene()
