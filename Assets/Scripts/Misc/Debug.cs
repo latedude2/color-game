@@ -22,7 +22,7 @@ namespace ColorGame
             guiStyle.normal.textColor = Color.white;
             guiStyle.fontSize = 20;
             if (debugMode)
-                GUI.Label(new Rect(50, 50, 100, 20), "Debug Mode",guiStyle);
+                GUI.Label(new Rect(50, 50, 100, 20), "Debug Mode, Press F2 for NoClip",guiStyle);
         }
     }
 }
