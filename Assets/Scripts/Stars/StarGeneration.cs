@@ -5,7 +5,7 @@ using UnityEngine;
 public static class StarGeneration
 {
     //generate a list of points for the stars
-    public static List<Vector3> GeneratePoints(float radius, Vector3 sampleAreaSize, int attemptBefReject, float dispHeight, float heightVarience)
+    public static List<Vector3> GeneratePoints(float radius, Vector3 sampleAreaSize, int attemptBefReject, float dispHeight, float heightVarience, int maxCount)
     {
         // each cell has a diagonal equal to the radius, so we have to calculate the side lengths
         float cellSize = radius / Mathf.Sqrt(2);
@@ -25,7 +25,7 @@ public static class StarGeneration
         spawnPoints.Add(startPoint);
 
         // looping through spawnpoints to try and generate new points
-        while(spawnPoints.Count > 0)
+        while(spawnPoints.Count > 0 && points.Count < maxCount)
         {
             // attempting to generate a new point based on a random spawnpoint in the list
             int spawnIndex = Random.Range(0, spawnPoints.Count);

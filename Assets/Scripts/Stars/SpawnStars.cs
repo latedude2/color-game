@@ -11,6 +11,7 @@ public class SpawnStars : MonoBehaviour
     public int rejectionSamples = 10;
     public float dispRadius = 1;
     public float heightVariance = 1f;
+    public int maxStarCount = 1500;
 
     List<Vector3> points;
 
@@ -18,7 +19,7 @@ public class SpawnStars : MonoBehaviour
     void OnValidate()
     {
         // calling the function from the other script to generate a list of points
-        points = StarGeneration.GeneratePoints(radius, areaSize, rejectionSamples, displayHeight, heightVariance);
+        points = StarGeneration.GeneratePoints(radius, areaSize, rejectionSamples, displayHeight, heightVariance, maxStarCount);
 
     }
 
