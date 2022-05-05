@@ -199,7 +199,7 @@ public class VisibleObjectVisibility : MonoBehaviour
                 {
                     // skip the middle of the box
                     if (!IsShinePointInMiddle(x, y, z, shinePointMultiplier))
-                        shinepoints.Add(new ShinePoint(transform.TransformPoint(boxCollider.center + new Vector3(boxCollider.size.x * x / shinePointMultiplier, boxCollider.size.y * y / shinePointMultiplier, boxCollider.size.z * z / shinePointMultiplier) * 0.50f)));
+                        shinepoints.Add(new ShinePoint(transform.TransformPoint(boxCollider.center + new Vector3(boxCollider.size.x * x / shinePointMultiplier, boxCollider.size.y * y / shinePointMultiplier, boxCollider.size.z * z / shinePointMultiplier) * 0.50f), gameObject));
                 }
             }
         }
@@ -210,7 +210,7 @@ public class VisibleObjectVisibility : MonoBehaviour
     {
         Mesh mesh = collider.sharedMesh;
         foreach (var vertice in mesh.vertices) {
-            shinepoints.Add(new ShinePoint(transform.TransformPoint(vertice)));
+            shinepoints.Add(new ShinePoint(transform.TransformPoint(vertice), gameObject));
         }
         return shinepoints.ToArray();
     }

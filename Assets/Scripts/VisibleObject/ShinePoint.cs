@@ -6,9 +6,11 @@ public class ShinePoint
 {
     Vector3 position;
     LayerMask blockingLayers;
-    public ShinePoint(Vector3 position){
+    GameObject visibleObject;
+    public ShinePoint(Vector3 position, GameObject visibleObject){
+        this.visibleObject = visibleObject;
         this.position = position;
-        this.blockingLayers = 0b_0001_0000_1011; //Block rays with default and static layers
+        this.blockingLayers = 0b_0001_0000_1001; //Block rays with default, ignore outline and static layers
     }
     
     public bool Reached(GameObject pointingLight)
@@ -19,7 +21,10 @@ public class ShinePoint
         {
             UnityEngine.Debug.DrawLine(position, lightPos, Color.red);
         }
-        bool nothingIsBlockingLight = !Physics.Linecast(lightPos, position, blockingLayers);
+        var layer = visibleObject.layer;
+        visibleObject.layer = Physics.IgnoreRaycastLayer;
+        bool nothingIsBlockingLight = !Physics.Linecast(lightPos, position, blockingLayers, QueryTriggerInteraction.Ignore);
+        visibleObject.layer = layer;
         return nothingIsBlockingLight;
     }
 

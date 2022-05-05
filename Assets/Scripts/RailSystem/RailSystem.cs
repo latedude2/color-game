@@ -24,6 +24,7 @@ public class RailSystem : MonoBehaviour
         {
             railNodes[i].GetComponent<RailNode>().nodeID = i;
         }
+        nextNode = currentNode;
     }
 
     void Update() {
@@ -69,6 +70,8 @@ public class RailSystem : MonoBehaviour
         float distCovered = (Time.time - startTime) * speed;
         // Fraction of journey completed equals current distance divided by total distance.
         float fractionOfJourney = distCovered / journeyLength;
+
+        Debug.Log(fractionOfJourney);
         // Set our position as a fraction of the distance between the markers.
 
         

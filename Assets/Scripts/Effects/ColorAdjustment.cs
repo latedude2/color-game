@@ -8,7 +8,7 @@ public class ColorAdjustment : MonoBehaviour
     Volume vol;
     ColorAdjustments colorAdjustments;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         vol = GetComponent<Volume>();
         vol.profile.TryGet(out colorAdjustments);
