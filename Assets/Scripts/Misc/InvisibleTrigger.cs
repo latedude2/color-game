@@ -8,6 +8,9 @@ public class InvisibleTrigger : MonoBehaviour
     public GameObject[] activatableObjects;
     Activatable[] _activatables;
 
+    public delegate void InvisibleTriggerHandler();
+    public static event InvisibleTriggerHandler Triggered;
+
     void Start()
     {
         List<Activatable> activatables = new List<Activatable>();
@@ -37,5 +40,9 @@ public class InvisibleTrigger : MonoBehaviour
                 activatable.Activate();
             }
         }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        Triggered?.Invoke();
     }
 }
