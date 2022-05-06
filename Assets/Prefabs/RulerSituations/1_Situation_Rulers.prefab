@@ -15546,6 +15546,7 @@ GameObject:
   - component: {fileID: 2803215682136097334}
   - component: {fileID: 3323636591361729476}
   - component: {fileID: 7332718701382398768}
+  - component: {fileID: 9152363912139440428}
   m_Layer: 0
   m_Name: Table
   m_TagString: Untagged
@@ -15617,6 +15618,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &9152363912139440428
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2486340779472511824}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 5.1001434
+  m_Height: 5.2523584
+  m_Direction: 1
+  m_Center: {x: 0.37964794, y: -1.0649552, z: -0.08115508}
 --- !u!1 &2490531937521009305
 GameObject:
   m_ObjectHideFlags: 0
@@ -28903,6 +28918,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6884305661895456023}
   - component: {fileID: 3536161046810798132}
+  - component: {fileID: 2255835241074969018}
   m_Layer: 0
   m_Name: Blue_Body
   m_TagString: Untagged
@@ -29411,6 +29427,19 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00005857041, y: -0.0017589106, z: -0.001290292}
     m_Extent: {x: 0.0034759874, y: 0.0035630204, z: 0.010548802}
   m_DirtyAABB: 0
+--- !u!65 &2255835241074969018
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4813412917237984194}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.09083427, y: 0.058758125, z: 0.17396122}
+  m_Center: {x: -0.00076527655, y: 0.0076076305, z: -0.06908224}
 --- !u!1 &4816229015047377958
 GameObject:
   m_ObjectHideFlags: 0
@@ -36388,7 +36417,7 @@ Transform:
   m_GameObject: {fileID: 5855684920662000937}
   m_LocalRotation: {x: 0, y: -0.44116125, z: 0, w: 0.89742786}
   m_LocalPosition: {x: 28.63361, y: 0.73, z: -11.172925}
-  m_LocalScale: {x: 0.42609, y: 0.42609, z: 0.42609}
+  m_LocalScale: {x: 0.3749592, y: 0.3749592, z: 0.3749592}
   m_Children:
   - {fileID: 3019681909632423320}
   - {fileID: 6884305661895456023}
@@ -44911,6 +44940,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4863385091811773}
   - component: {fileID: 1891833103144059347}
+  - component: {fileID: 4142177650291426448}
   m_Layer: 0
   m_Name: Green_Body
   m_TagString: Untagged
@@ -45393,6 +45423,19 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00019824412, y: -0.00019995077, z: -0.0017939578}
     m_Extent: {x: 0.0075995787, y: 0.006608756, z: 0.010288371}
   m_DirtyAABB: 0
+--- !u!65 &4142177650291426448
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7275850078550828788}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.054657593, y: 0.06971999, z: 0.1696665}
+  m_Center: {x: -0.0132894255, y: 0.014170007, z: -0.07321637}
 --- !u!1 &7311041978588621198
 GameObject:
   m_ObjectHideFlags: 0
@@ -51492,6 +51535,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8264416915556323487}
   - component: {fileID: 3178523319896833214}
+  - component: {fileID: 3318644240291073039}
   m_Layer: 0
   m_Name: Red_Body
   m_TagString: Untagged
@@ -51974,6 +52018,19 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00010763691, y: -0.0015476986, z: -0.0024943158}
     m_Extent: {x: 0.0047478694, y: 0.005752528, z: 0.00956251}
   m_DirtyAABB: 0
+--- !u!65 &3318644240291073039
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8326252883638611573}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.068030626, y: 0.086201, z: 0.15769625}
+  m_Center: {x: 0.006786289, y: 0.009982534, z: -0.07899118}
 --- !u!1 &8336046212970831092
 GameObject:
   m_ObjectHideFlags: 0
