@@ -100,6 +100,7 @@ public class LevelManager : MonoBehaviour
     IEnumerator LoadLevel(int levelIndex, float transitionTime)
     {            
         transition.SetTrigger("Start");
+        Debug.Log(transitionTime);
         yield return new WaitForSeconds(transitionTime);
         SceneManager.LoadScene(levelIndex);
     }
