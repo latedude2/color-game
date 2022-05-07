@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Events;
 
 public class PeacockAnimation : MonoBehaviour, Activatable {
     public List<LightSwitch> switches;
@@ -14,6 +15,8 @@ public class PeacockAnimation : MonoBehaviour, Activatable {
     private float tailProgress;
     private float bodyProgress;
     public ParticleSystem particles;
+    public UnityEvent OnAnimationEnd;
+
 
     void Start() {
         _renderer = GetComponent<Renderer>();
@@ -71,6 +74,6 @@ public class PeacockAnimation : MonoBehaviour, Activatable {
             yield return new WaitForSeconds(0.01f);
         }
         yield return new WaitForSeconds(1f);
-        LevelManager.Instance.LoadNextLevel(2.5f);
+        OnAnimationEnd.Invoke();
     }
 }
