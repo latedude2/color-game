@@ -5,6 +5,8 @@ using FMODUnity;
 
 public class SetLightColor : MonoBehaviour, Interactable
 {
+    public delegate void Interacted();
+    public event Interacted OnInteract;
     private GameObject lightGameObject;
     [SerializeField] private ColorCode lightColorToSet;
     [SerializeField] private bool enablesLight = true;
@@ -42,6 +44,9 @@ public class SetLightColor : MonoBehaviour, Interactable
                     activatable.Activate();
                 }
             }
+        }
+        if (OnInteract != null) {
+            OnInteract();
         }
     }
 
