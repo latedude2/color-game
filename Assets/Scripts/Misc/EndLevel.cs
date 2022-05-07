@@ -16,7 +16,7 @@ public class EndLevel : MonoBehaviour, Activatable
 
     IEnumerator EndTheLevel() {
         yield return new WaitForSeconds(delay);
-        LevelManager.Instance.LoadNextLevel();
+        LevelManager.Instance.LoadNextLevel(1f);
     }
 
     public void Activate()
