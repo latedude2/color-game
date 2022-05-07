@@ -25,7 +25,7 @@ public class MusicManager : MonoBehaviour {
             else if(scene.buildIndex >= 6 && scene.buildIndex < 12)
                 SwitchSoundtrack(2);
             else if(scene.buildIndex >= 12 && scene.buildIndex < 23)
-                SwitchSoundtrack(3);
+                SwitchSoundtrack(1);
             else if(scene.buildIndex >= 23)
                 SwitchSoundtrack(3);
         }
