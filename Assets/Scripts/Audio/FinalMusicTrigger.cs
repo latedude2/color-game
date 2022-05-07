@@ -5,11 +5,15 @@ using UnityEngine;
 public class FinalMusicTrigger : MonoBehaviour {
 
     private void Start() {
-        GetComponent<SwitchLightButton>().OnInteract += Interact;
+        GetComponent<SetLightColor>().OnInteract += Interact;
     }
 
     public void Interact() {
-        FindObjectOfType<MusicManager>().NextSoundtrack();
-        GetComponent<SwitchLightButton>().enabled = false;
+        FindObjectOfType<MusicManager>().SwitchSoundtrack(4);
+        GetComponent<SetLightColor>().enabled = false;
+    }
+
+    private void OnDestroy() {
+        GetComponent<SetLightColor>().OnInteract -= Interact;
     }
 }
