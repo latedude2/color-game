@@ -19,12 +19,22 @@ public class MusicManager : MonoBehaviour {
     }
 
     void Start() {
-        SwitchSoundtrack(SceneManager.GetActiveScene().buildIndex);
+        OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        if (scene.name.Contains("Level") && scene.name != "LevelSelect")
-            SwitchSoundtrack(scene.buildIndex);
+        if ((scene.name.Contains("Level") || scene.name.Contains("level")) && scene.name != "LevelSelect") {
+            if(scene.buildIndex < 6)
+                SwitchSoundtrack(1);
+            else if(scene.buildIndex >= 6 && scene.buildIndex < 12)
+                SwitchSoundtrack(2);
+            else if(scene.buildIndex >= 12 && scene.buildIndex < 18)
+                SwitchSoundtrack(3);
+            else if(scene.buildIndex >= 18 && scene.buildIndex < 24)
+                SwitchSoundtrack(2);
+            else if(scene.buildIndex >= 24)
+                SwitchSoundtrack(3);
+        }
     }
 
     public void NextSoundtrack() {
@@ -32,14 +42,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void SwitchSoundtrack(int to) {
-        if(to < 6)
-            soundtrack.SetParameter("Index", 1);
-        else if(to >= 6 && to < 12)
-            soundtrack.SetParameter("Index", 2);
-        else if(to >= 12 && to < 23)
-            soundtrack.SetParameter("Index", 3);
-        else if(to >= 23)
-            soundtrack.SetParameter("Index", 4);
+        soundtrack.SetParameter("Index", to);
         currMusic = to;
     }
 }
