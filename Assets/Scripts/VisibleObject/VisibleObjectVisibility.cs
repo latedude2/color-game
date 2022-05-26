@@ -8,10 +8,10 @@ public class VisibleObjectVisibility : MonoBehaviour
 {
     protected ColorCode objectColor = ColorCode.Black;
     public ColorCode trueColor = ColorCode.Black;
-    private Renderer _renderer;
-    private Material colorMat;
+    protected Renderer _renderer;
+    protected Material colorMat;
     private Material blackMat;
-    private BoundBox boundBox;
+    protected BoundBox boundBox;
     private ShinePoint[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
     protected bool visible = false;
@@ -33,9 +33,8 @@ public class VisibleObjectVisibility : MonoBehaviour
         }
         blackMat = Resources.Load<Material>("Materials/Black");
         _renderer.material = blackMat;
-        boundBox = GetComponent<BoundBox>();
-        boundBox.lineColor = ColorHelper.GetColor(trueColor);
-        boundBox.SetLineRenderers();
+        SetupBoundBox();
+        
         shinePoints = CreateShinePoints();
         SetColor(ColorCode.Black);
         SetToInvisible();
@@ -98,7 +97,14 @@ public class VisibleObjectVisibility : MonoBehaviour
         visibilityChanged.Invoke();
     }
 
-    protected void SetColor(ColorCode color)
+    protected virtual void SetupBoundBox()
+    {
+        boundBox = GetComponent<BoundBox>();
+        boundBox.lineColor = ColorHelper.GetColor(trueColor);
+        boundBox.SetLineRenderers();
+    }
+
+    protected virtual void SetColor(ColorCode color)
     {
         objectColor = color;
         colorMat = Resources.Load<Material>("Materials/" + color.ToString());
