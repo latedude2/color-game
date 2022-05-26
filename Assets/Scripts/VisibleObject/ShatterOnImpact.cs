@@ -12,7 +12,7 @@ public class ShatterOnImpact : MonoBehaviour
 
         FMOD.Studio.EventInstance heal = FMODUnity.RuntimeManager.CreateInstance(FMODEvent);
         heal.setParameterByName("Velocity Y", collision.impulse.magnitude/50);
-        Debug.Log(collision.impulse.magnitude/50);
+        Debug.Log(collision.impulse.magnitude / shatterImpulse);
         heal.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         heal.start();
         heal.release();
