@@ -71,10 +71,7 @@ public class RailSystem : MonoBehaviour
         // Fraction of journey completed equals current distance divided by total distance.
         float fractionOfJourney = distCovered / journeyLength;
 
-        Debug.Log(fractionOfJourney);
         // Set our position as a fraction of the distance between the markers.
-
-        
         movingPlatform.position = Vector3.Lerp(currentNode.transform.position, nextNode.transform.position, fractionOfJourney);
 
         if(movingPlatform.position == nextNode.transform.position)
