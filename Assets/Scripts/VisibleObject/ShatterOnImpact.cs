@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ShatterOnImpact : MonoBehaviour
 {
-    private float shatterVelocity = 5f;
+    private float shatterImpulse = 50f;
     [SerializeField] private GameObject replacementObject;
     private void OnCollisionEnter(Collision collision) {
-        if(collision.relativeVelocity.magnitude > shatterVelocity)
+        if(collision.impulse.magnitude > shatterImpulse)
         {
             GameObject go = Instantiate(replacementObject, transform.position, transform.rotation);
             go.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity;
