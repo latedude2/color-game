@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 5358145729283882196}
   - component: {fileID: 3010734782638397832}
   - component: {fileID: 7478404377113709878}
+  - component: {fileID: 8893507397827464747}
   m_Layer: 0
   m_Name: vase2default
   m_TagString: Untagged
@@ -131,13 +132,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   replacementObject: {fileID: 5514791361121255112, guid: d7faa7816abaede4d98c9c49c2493130, type: 3}
-  FMODEvent:
-    Guid:
-      Data1: -879504439
-      Data2: 1337126465
-      Data3: 810021520
-      Data4: -1159246484
-    Path: event:/SFX/Vase Collision
 --- !u!114 &3198318079412627855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,3 +625,29 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &8893507397827464747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990019620093151812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f0b1cfc435e845d996d075bfe1f416f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shatterEvent:
+    Guid:
+      Data1: -1752450331
+      Data2: 1300285837
+      Data3: -69447235
+      Data4: -521425050
+    Path: event:/SFX/Vase Shatter
+  collideEvent:
+    Guid:
+      Data1: -879504439
+      Data2: 1337126465
+      Data3: 810021520
+      Data4: -1159246484
+    Path: event:/SFX/Vase Collision
