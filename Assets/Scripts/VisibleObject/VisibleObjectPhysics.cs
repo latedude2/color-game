@@ -6,14 +6,14 @@ using DimBoxes;
 
 public class VisibleObjectPhysics : MonoBehaviour, Activatable
 {
-    private Collider _collider;
-    private Rigidbody _rigidbody;
-    private GrabIt grabIt;
+    protected Collider _collider;
+    protected Rigidbody _rigidbody;
+    protected GrabIt grabIt;
     private List<ObjectConnection> objectConnections = new List<ObjectConnection>();
     //Used for keeping the velocity of a non-visible object
     Vector3 velocity;
-    bool visible;
-    bool justMadeVisible;
+    protected bool visible;
+    protected bool justMadeVisible;
 
     void Awake()
     {
@@ -38,18 +38,19 @@ public class VisibleObjectPhysics : MonoBehaviour, Activatable
     void OnCollisionEnter(Collision collision)
     {
         VisibleObjectPhysics visibleObject = collision.collider.GetComponent<VisibleObjectPhysics>();
-        if(visibleObject != null)
+        if(visibleObject == null)
+            return;
+        if(visibleObject is BreakableObjectPhysics && this is BreakableObjectPhysics) 
+            return;
+        if (justMadeVisible)
         {
-            if (justMadeVisible)
-            {
-                AddObjectConnection(visibleObject);
-                if (!visibleObject.justMadeVisible)
-                    visibleObject.AddObjectConnection(this);
-            }
+            AddObjectConnection(visibleObject);
+            if (!visibleObject.justMadeVisible)
+                visibleObject.AddObjectConnection(this);
         }
     }
 
-    public void SetToVisible()
+    public virtual void SetToVisible()
     {
         if (_rigidbody != null)
         {
@@ -60,7 +61,7 @@ public class VisibleObjectPhysics : MonoBehaviour, Activatable
         justMadeVisible = true;
     }
 
-    public void SetToInvisible()
+    public virtual void SetToInvisible()
     {
         if (grabIt.m_targetRB != null && gameObject == grabIt.m_targetRB.gameObject)
             grabIt.Drop();

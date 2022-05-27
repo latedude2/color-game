@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 1555027987375261116}
   - component: {fileID: 2064317155984474664}
   - component: {fileID: 9023411779209046380}
-  - component: {fileID: 3198318079412627855}
   - component: {fileID: 5358145729283882196}
   - component: {fileID: 3010734782638397832}
+  - component: {fileID: 6976173938184246132}
   m_Layer: 0
   m_Name: vase2default
   m_TagString: Untagged
@@ -130,18 +130,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   replacementObject: {fileID: 5514791361121255112, guid: d7faa7816abaede4d98c9c49c2493130, type: 3}
---- !u!114 &3198318079412627855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 990019620093151812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b4e5d64476d83440a2bdee3846d4dfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5358145729283882196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -593,3 +581,16 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   materialToUseInsteadOfBlack: {fileID: 2100000, guid: 60a73ea810df72e4bafd38be3c48293a, type: 2}
+--- !u!114 &6976173938184246132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990019620093151812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe338d546051f04d8a3af9e50c491a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shattered: 0
