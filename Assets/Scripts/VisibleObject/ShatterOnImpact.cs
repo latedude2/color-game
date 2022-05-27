@@ -10,7 +10,7 @@ public class ShatterOnImpact : MonoBehaviour
         if(collision.impulse.magnitude > shatterImpulse)
         {
             GameObject go = Instantiate(replacementObject, transform.position, transform.rotation);
-            go.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity;
+            go.GetComponentInChildren<Rigidbody>().velocity = GetComponentInChildren<Rigidbody>().velocity;
             Destroy(gameObject);
         }
     }
