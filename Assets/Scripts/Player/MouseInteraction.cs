@@ -33,12 +33,21 @@ public class MouseInteraction : MonoBehaviour
                     }
                 }
             }
-            else if(target.GetComponent<Rigidbody>() != null)
+            else if(IsTargetGrabbable(target))
             {
                 pointingAt = PointingAt.grabbable;
-            }
+            } 
         }
         PointedAt?.Invoke(pointingAt);
+    }
+
+    bool IsTargetGrabbable(GameObject target)
+    {
+        if(target.GetComponent<Rigidbody>() != null)
+            return true;
+        else if(target.transform.parent != null && target.transform.parent.GetComponent<Rigidbody>() != null)
+            return true;
+        else return false;
     }
 
     GameObject FindTargetedGameObject()

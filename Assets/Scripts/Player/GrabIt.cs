@@ -143,6 +143,10 @@ namespace Lightbug.GrabIt
             if (Physics.Raycast(m_transform.position, m_transform.forward, out hitInfo, m_grabMaxDistance, m_collisionMask))
             {
                 Rigidbody rb = hitInfo.collider.GetComponent<Rigidbody>();
+                if(rb == null && hitInfo.collider.transform.parent != null)
+                {
+                    rb = hitInfo.collider.transform.parent.GetComponent<Rigidbody>();
+                }
                 if (rb != null)
                 {
                     SetHeldObject(rb, hitInfo.distance);

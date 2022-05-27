@@ -19,11 +19,19 @@ public class VisibleObjectVisibility : MonoBehaviour
     Activatable[] activatableComponents;
     
     public UnityEvent visibilityChanged;
-    BoxCollider boxCollider;
+    Collider _collider;
     
     void Start()
     {
-        TryGetComponent<BoxCollider>(out boxCollider);
+        TryGetComponent<Collider>(out _collider);
+        if(_collider == null)
+        {
+            Transform child = transform.GetChild(0);
+            if(child != null)
+            {
+                child.TryGetComponent<Collider>(out _collider);
+            }
+        }
         activatableComponents = GetComponents<Activatable>();
         lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         _renderer = GetComponent<Renderer>();
@@ -186,15 +194,14 @@ public class VisibleObjectVisibility : MonoBehaviour
     {
         //Create a list of points for the visible object that we will be checking for shine.
         List<ShinePoint> shinepoints = new List<ShinePoint>();
-        if (TryGetComponent<MeshCollider>(out MeshCollider collider)) {
-            return CreateMeshShinePoints(collider, shinepoints);
-            
-        } else {
-            return CreateBoxShinePoints(shinepoints);
+        if(_collider is BoxCollider)
+        {
+            return CreateBoxShinePoints((BoxCollider)_collider, shinepoints);
         }
+        else  return CreateMeshShinePoints((MeshCollider)_collider, shinepoints);   
     }
 
-    ShinePoint[] CreateBoxShinePoints(List<ShinePoint> shinepoints)
+    ShinePoint[] CreateBoxShinePoints(BoxCollider boxCollider, List<ShinePoint> shinepoints)
     {
         // Add points on the box collider to the list
         for (int z = -shinePointMultiplier; z <= shinePointMultiplier; z++)
@@ -223,11 +230,11 @@ public class VisibleObjectVisibility : MonoBehaviour
 
     void UpdateShinePoints()
     {
-        if (TryGetComponent<MeshCollider>(out MeshCollider collider)) {
-            UpdateMeshShinePoints(collider);
+        if (_collider is MeshCollider) {
+            UpdateMeshShinePoints((MeshCollider)_collider);
         }
-        else{
-            UpdateBoxShinePoints();
+        else {
+            UpdateBoxShinePoints((BoxCollider)_collider);
         }
     }
 
@@ -240,7 +247,7 @@ public class VisibleObjectVisibility : MonoBehaviour
         }
     }
 
-    void UpdateBoxShinePoints()
+    void UpdateBoxShinePoints(BoxCollider boxCollider)
     {
         Vector3 size = boxCollider.size;
         Vector3 center = boxCollider.center; 
