@@ -16,6 +16,7 @@ public class ShatterOnImpact : MonoBehaviour
         if(collision.impulse.magnitude > shatterImpulse)
         {
             GameObject go = Instantiate(replacementObject, transform.position, transform.rotation);
+            go.transform.localScale = transform.localScale;
             go.GetComponentInChildren<Rigidbody>().velocity = GetComponentInChildren<Rigidbody>().velocity;
             audio.PlayShatter(collision.impulse.magnitude / shatterImpulse);
             Destroy(gameObject);

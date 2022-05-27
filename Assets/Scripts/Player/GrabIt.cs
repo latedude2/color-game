@@ -143,6 +143,10 @@ namespace Lightbug.GrabIt
             if (Physics.Raycast(m_transform.position, m_transform.forward, out hitInfo, m_grabMaxDistance, m_collisionMask))
             {
                 Rigidbody rb = hitInfo.collider.GetComponent<Rigidbody>();
+                if(rb == null && hitInfo.collider.transform.parent != null)
+                {
+                    rb = hitInfo.collider.transform.parent.GetComponent<Rigidbody>();
+                }
                 if (rb != null)
                 {
                     SetHeldObject(rb, hitInfo.distance);
@@ -188,11 +192,13 @@ namespace Lightbug.GrabIt
 
         void Release()
         {
-            //Grab Properties	
-            m_targetRB.useGravity = m_defaultProperties.m_useGravity;
-            m_targetRB.drag = m_defaultProperties.m_drag;
-            m_targetRB.angularDrag = m_defaultProperties.m_angularDrag;
-            m_targetRB.constraints = m_defaultProperties.m_constraints;
+            if(m_targetRB != null)
+            {
+                m_targetRB.useGravity = m_defaultProperties.m_useGravity;
+                m_targetRB.drag = m_defaultProperties.m_drag;
+                m_targetRB.angularDrag = m_defaultProperties.m_angularDrag;
+                m_targetRB.constraints = m_defaultProperties.m_constraints; 
+            }
 
             m_targetRB = null;
 
@@ -206,6 +212,13 @@ namespace Lightbug.GrabIt
 
         void Hold()
         {
+            //If held object gets destroyed for some reason
+            if(m_hitPointObject == null)
+            {
+                m_hitPointObject = new GameObject("Point");
+                Drop();
+                return;
+            }
             Vector3 hitPointPos = m_hitPointObject.transform.position;
             Vector3 dif = m_targetPos - hitPointPos;
 
