@@ -122,7 +122,7 @@ namespace Lightbug.GrabIt
                     Release();
                     m_holding = false;
                 }
-                else if (ColorGame.Debug.debugMode && Input.GetMouseButtonDown(1))
+                else if (Input.GetMouseButtonDown(1))
                 {
                     m_applyImpulse = true;
                 }
