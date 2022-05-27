@@ -10,7 +10,15 @@ public class BreakableObjectPhysics : VisibleObjectPhysics
     void Awake()
     {
         grabIt = GameObject.Find("Main Camera").GetComponent<GrabIt>();
-        _collider = GetComponent<Collider>();
+        TryGetComponent<Collider>(out _collider);
+        if(_collider == null)
+        {
+            Transform child = transform.GetChild(0);
+            if(child != null)
+            {
+                child.TryGetComponent<Collider>(out _collider);
+            }
+        }
         if (TryGetComponent(out Rigidbody rb))
         {
             _rigidbody = rb;
