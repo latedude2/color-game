@@ -5,6 +5,7 @@ using UnityEngine;
 public class ShatterOnImpact : MonoBehaviour
 {
     private float shatterImpulse = 50f;
+    private float minimalImpulseForSound = 2f;
     [SerializeField] private GameObject replacementObject;
     private VaseCollisionAudio audio;
     
@@ -21,6 +22,14 @@ public class ShatterOnImpact : MonoBehaviour
             audio.PlayShatter(collision.impulse.magnitude / shatterImpulse);
             Destroy(gameObject);
         } else {
+            audio.PlayCollision(collision.impulse.magnitude / shatterImpulse);
+        }
+    }
+
+    private void OnCollisionStay(Collision collision) 
+    {
+        if(collision.impulse.magnitude > minimalImpulseForSound)
+        {
             audio.PlayCollision(collision.impulse.magnitude / shatterImpulse);
         }
     }
