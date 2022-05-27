@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
+        Physics.IgnoreLayerCollision(6, 9); //player and shattered not visible dont collide
         Application.targetFrameRate = 60;
         session = DateTime.Now;
     }
