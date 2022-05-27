@@ -6,14 +6,14 @@ using UnityEngine;
 public class BreakableObjectPhysics : VisibleObjectPhysics
 {
     [SerializeField] bool shattered = false;
-
+    Transform child;
     void Awake()
     {
         grabIt = GameObject.Find("Main Camera").GetComponent<GrabIt>();
         TryGetComponent<Collider>(out _collider);
         if(_collider == null)
         {
-            Transform child = transform.GetChild(0);
+            child = transform.GetChild(0);
             if(child != null)
             {
                 child.TryGetComponent<Collider>(out _collider);
@@ -34,7 +34,11 @@ public class BreakableObjectPhysics : VisibleObjectPhysics
         _collider.enabled = true;
         visible = true;
         justMadeVisible = true;
-        if(shattered) gameObject.layer = 0; //default
+        if(shattered) 
+        {
+            gameObject.layer = 0; //default
+            if(child != null) child.gameObject.layer = 0; 
+        }
     }
 
     override public void SetToInvisible()
@@ -45,6 +49,10 @@ public class BreakableObjectPhysics : VisibleObjectPhysics
             FreezeMotion();
         RemoveAllObjectConnections();
         visible = false;
-        if(shattered) gameObject.layer = 9; //shatteredNotVisible
+        if(shattered) 
+        {
+            gameObject.layer = 9; //shatteredNotVisible
+            if(child != null) child.gameObject.layer = 9; 
+        }
     }
 }
