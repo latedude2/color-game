@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 3810032508175298063}
   - component: {fileID: 8032123868723907106}
   - component: {fileID: 290516669066202631}
+  - component: {fileID: -3694137506983168348}
   m_Layer: 0
   m_Name: vase2
   m_TagString: Untagged
@@ -594,3 +595,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shattered: 0
+--- !u!114 &-3694137506983168348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5514791361121255112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f0b1cfc435e845d996d075bfe1f416f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shatterEvent:
+    Guid:
+      Data1: -1752450331
+      Data2: 1300285837
+      Data3: -69447235
+      Data4: -521425050
+    Path: event:/SFX/Vase Shatter
+  collideEvent:
+    Guid:
+      Data1: -879504439
+      Data2: 1337126465
+      Data3: 810021520
+      Data4: -1159246484
+    Path: event:/SFX/Vase Collision
