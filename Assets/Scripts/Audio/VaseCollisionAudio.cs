@@ -6,6 +6,11 @@ public class VaseCollisionAudio : MonoBehaviour
 {
     public FMODUnity.EventReference shatterEvent;
     public FMODUnity.EventReference collideEvent;
+    private Rigidbody rb;
+
+    private void Start() {
+        rb = GetComponent<Rigidbody>();
+    }
 
     public void PlayShatter(float force, float mass) {
         PlayOneShot(FMODUnity.RuntimeManager.CreateInstance(shatterEvent), force, mass);
@@ -21,5 +26,9 @@ public class VaseCollisionAudio : MonoBehaviour
         eventInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         eventInstance.start();
         eventInstance.release();
+    }
+
+    private void OnCollisionEnter(Collision collision) {
+        PlayCollision(collision.impulse.magnitude / 50, rb.mass);
     }
 }

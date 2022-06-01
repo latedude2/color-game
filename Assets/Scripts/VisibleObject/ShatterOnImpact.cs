@@ -21,11 +21,19 @@ public class ShatterOnImpact : MonoBehaviour
             go.GetComponentInChildren<Rigidbody>().velocity = GetComponentInChildren<Rigidbody>().velocity;
             audio.PlayShatter(collision.impulse.magnitude / shatterImpulse, GetComponent<Rigidbody>().mass);
             Destroy(gameObject);
-        } else {
-            audio.PlayCollision(collision.impulse.magnitude / shatterImpulse, GetComponent<Rigidbody>().mass);
         }
     }
 
+    private void Update() {
+        if (Input.anyKeyDown) {
+
+            GameObject go = Instantiate(replacementObject, transform.position, transform.rotation);
+            go.transform.localScale = transform.localScale;
+            go.GetComponentInChildren<Rigidbody>().velocity = GetComponentInChildren<Rigidbody>().velocity;
+            audio.PlayShatter(50 / shatterImpulse, GetComponent<Rigidbody>().mass);
+            Destroy(gameObject);
+        }
+    }
     private void OnCollisionStay(Collision collision) 
     {
         if(collision.impulse.magnitude > minimalImpulseForSound)
