@@ -19,10 +19,10 @@ public class ShatterOnImpact : MonoBehaviour
             GameObject go = Instantiate(replacementObject, transform.position, transform.rotation);
             go.transform.localScale = transform.localScale;
             go.GetComponentInChildren<Rigidbody>().velocity = GetComponentInChildren<Rigidbody>().velocity;
-            audio.PlayShatter(collision.impulse.magnitude / shatterImpulse);
+            audio.PlayShatter(collision.impulse.magnitude / shatterImpulse, GetComponent<Rigidbody>().mass);
             Destroy(gameObject);
         } else {
-            audio.PlayCollision(collision.impulse.magnitude / shatterImpulse);
+            audio.PlayCollision(collision.impulse.magnitude / shatterImpulse, GetComponent<Rigidbody>().mass);
         }
     }
 
@@ -30,7 +30,7 @@ public class ShatterOnImpact : MonoBehaviour
     {
         if(collision.impulse.magnitude > minimalImpulseForSound)
         {
-            audio.PlayCollision(collision.impulse.magnitude / shatterImpulse);
+            audio.PlayCollision(collision.impulse.magnitude / shatterImpulse, GetComponent<Rigidbody>().mass);
         }
     }
 }
