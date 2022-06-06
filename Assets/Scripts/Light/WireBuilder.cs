@@ -48,6 +48,7 @@ public class WireBuilder : MonoBehaviour
         checkDirection(Vector3.forward * lengthMultiplier, maxWireLength  / transform.localScale.z, followWalls);
         checkDirection(Vector3.right * lengthMultiplier, maxWireLength / transform.localScale.x, followWalls);
         checkDirection(Vector3.up * lengthMultiplier, maxWireLength / transform.localScale.y , followWalls);
+        checkDirection(-Vector3.up * lengthMultiplier, maxWireLength / transform.localScale.y , followWalls);
         Debug.Log("Found " + possibleLineEndPositions.Count + " possible positions"); 
     }
 
@@ -157,7 +158,7 @@ public class WireBuilder : MonoBehaviour
     }
 
     private void SaveChangeHack(GameObject newWire)
-    //HACK: The addition of element does not get saved for some reason and readding the component works as a workaround
+    //HACK: The addition of element does not get saved for some reason and reading the component works as a workaround
     {
         List<GameObject> activateGameObjectList = GetComponent<WireSurface>().gameObjectsToActivate;
         ColorCode savedColor = GetComponent<WireSurface>()._color;
