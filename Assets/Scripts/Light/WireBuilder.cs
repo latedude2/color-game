@@ -10,7 +10,7 @@ using UnityEditor;
 public class WireBuilder : MonoBehaviour
 {
     [System.NonSerialized] public Vector3 lineEnd = Vector3.right / 2;
-    [System.NonSerialized] public Vector3 lineStart = Vector3.right / 2;
+    [System.NonSerialized] public Vector3 lineStart = Vector3.right / 2 * 0.98f; 
     public GameObject wirePrefab;
 
     [SerializeField] [Range(1, 15)] public int treeLength = 4;
@@ -44,11 +44,11 @@ public class WireBuilder : MonoBehaviour
         {
             lengthMultiplier = UnityEngine.Random.Range(0.3f, 1f);
         }
-        checkDirection(-Vector3.forward * lengthMultiplier, maxWireLength  / transform.localScale.z, followWalls);
-        checkDirection(Vector3.forward * lengthMultiplier, maxWireLength  / transform.localScale.z, followWalls);
-        checkDirection(Vector3.right * lengthMultiplier, maxWireLength / transform.localScale.x, followWalls);
-        checkDirection(Vector3.up * lengthMultiplier, maxWireLength / transform.localScale.y , followWalls);
-        checkDirection(-Vector3.up * lengthMultiplier, maxWireLength / transform.localScale.y , followWalls);
+        checkDirection(-Vector3.forward, lengthMultiplier, maxWireLength  / transform.localScale.z, followWalls);
+        checkDirection(Vector3.forward, lengthMultiplier, maxWireLength  / transform.localScale.z, followWalls);
+        checkDirection(Vector3.right, lengthMultiplier, maxWireLength / transform.localScale.x, followWalls);
+        checkDirection(Vector3.up, lengthMultiplier, maxWireLength / transform.localScale.y , followWalls);
+        checkDirection(-Vector3.up, lengthMultiplier, maxWireLength / transform.localScale.y , followWalls);
         Debug.Log("Found " + possibleLineEndPositions.Count + " possible positions"); 
     }
 
@@ -66,11 +66,11 @@ public class WireBuilder : MonoBehaviour
         return newWire;
     }
 
-    public void checkDirection(Vector3 direction, float multiplier = 1, bool checkForWalls = true)
+    public void checkDirection(Vector3 direction, float lengthMultiplier, float scaleAdjustment = 1, bool checkForWalls = true)
     {
         RaycastHit hit;
         LayerMask layerMask = 0b_0001_0000_1011; //Block rays with default, static and ignore outline layers
-        float distance = maxWireLength;
+        float distance = maxWireLength * lengthMultiplier;
         
         bool hitSomething = Physics.Raycast(transform.TransformPoint(lineStart), transform.TransformDirection(direction), out hit, distance, layerMask);
         if (hitSomething)
@@ -81,7 +81,7 @@ public class WireBuilder : MonoBehaviour
         }
 
         //Debug.DrawRay(transform.TransformPoint(lineStart), transform.TransformDirection(direction * distance), Color.magenta, 2f);
-        Vector3 potentialLineEnd = lineStart + direction * multiplier * (distance/maxWireLength);
+        Vector3 potentialLineEnd = lineStart + direction * scaleAdjustment * (distance/maxWireLength);
 
         if(checkForWalls && (!checkWallExists(lineStart, distance) | !checkWallExists(potentialLineEnd, distance)))
         {
@@ -91,13 +91,16 @@ public class WireBuilder : MonoBehaviour
         possibleLineEndPositions.Add(potentialLineEnd); 
     }
 
-    private bool checkWallExists(Vector3 position, float distance){
-        if(wallCheck(transform.TransformPoint(position), transform.up, maxWallDistance) | wallCheck(transform.TransformPoint(position), -transform.up, maxWallDistance))
+    public bool checkWallExists(Vector3 position, float distance){
+        if(wallCheck(transform.TransformPoint(position), transform.TransformDirection(transform.up), maxWallDistance) | wallCheck(transform.TransformPoint(position), -transform.TransformDirection(transform.up), maxWallDistance))
         {
             return true;
         }
-        
-        if(wallCheck(transform.TransformPoint(position), transform.right, maxWallDistance) | wallCheck(transform.TransformPoint(position), -transform.right, maxWallDistance))
+        if(wallCheck(transform.TransformPoint(position), transform.TransformDirection(transform.right), maxWallDistance) | wallCheck(transform.TransformPoint(position), -transform.TransformDirection(transform.right), maxWallDistance))
+        {
+            return true;
+        }
+        if(wallCheck(transform.TransformPoint(position), transform.TransformDirection(transform.forward), maxWallDistance) | wallCheck(transform.TransformPoint(position), -transform.TransformDirection(transform.right), maxWallDistance))
         {
             return true;
         }
