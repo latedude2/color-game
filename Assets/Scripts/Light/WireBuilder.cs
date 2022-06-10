@@ -71,8 +71,8 @@ public class WireBuilder : MonoBehaviour
         RaycastHit hit;
         LayerMask layerMask = 0b_0001_0000_1011; //Block rays with default, static and ignore outline layers
         float distance = maxWireLength * lengthMultiplier;
-        
-        bool hitSomething = Physics.Raycast(transform.TransformPoint(lineStart), transform.TransformDirection(direction), out hit, distance, layerMask);
+        bool hitSomething = Physics.Raycast(transform.TransformPoint(lineStart), transform.TransformDirection(direction), out hit, distance, layerMask);        
+
         if (hitSomething)
         {
             if(hit.distance < minimumLength)
@@ -111,7 +111,7 @@ public class WireBuilder : MonoBehaviour
     
 
     public void iterateGeneration(int iteration = 3, int branchCount = 2, bool randomLength = true, GameObject wireSystem = null) 
-    {   //Bug: the wires will tangle with each other because they all spawn at once, so the raycasts fail
+    {
         possibleLineEndPositions = new List<Vector3>();
         if(iteration > 0)
         {
@@ -157,6 +157,11 @@ public class WireBuilder : MonoBehaviour
         newEditorSelection[0] = newWire;
 
         newWire.GetComponent<WireSurface>().gameObjectsToActivate = new List<GameObject>();
+        
+        //Note: this simulates a physics frame. A potential fix is to simulate a separate physics scene found here: https://forum.unity.com/threads/separating-physics-scenes.597697/
+        Physics.autoSimulation = false;
+        Physics.Simulate(Time.fixedDeltaTime);  
+        Physics.autoSimulation = true;
         return newWire;
     }
 
