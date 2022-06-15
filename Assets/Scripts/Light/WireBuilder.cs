@@ -61,7 +61,6 @@ public class WireBuilder : MonoBehaviour
             Vector3 endPosition = possibleLineEndPositions[UnityEngine.Random.Range(0, possibleLineEndPositions.Count)]; 
             lineEnd = endPosition;
             newWire = AddWire();
-            possibleLineEndPositions.Remove(endPosition);
         }
         return newWire;
     }
@@ -116,14 +115,13 @@ public class WireBuilder : MonoBehaviour
         if(iteration > 0)
         {
             iteration--;
-            FindPosition(randomLength);
             for(int i = 0; i < branchCount; i++)
             {
                 GameObject newWire = SpawnRandomSegment();
                 if(newWire != null)
                 {
                     newWire.transform.SetParent(wireSystem.transform);
-                    newWire.GetComponent<WireBuilder>().iterateGeneration(iteration, branchCount, randomLength, wireSystem);
+                    newWire.GetComponent<WireBuilder>().iterateGeneration(iteration, branchCount, randomLength, wireSystem);    //This can be turned into breadth first search
                 }
             }
         }
@@ -156,7 +154,7 @@ public class WireBuilder : MonoBehaviour
         GameObject[] newEditorSelection = new GameObject[1];
         newEditorSelection[0] = newWire;
 
-        newWire.GetComponent<WireSurface>().gameObjectsToActivate = new List<GameObject>();
+        newWire.GetComponent<WireSurface>().gameObjectsToActivate = new List<GameObject>(); //fixes random wires being added as activatables
         
         //Note: this simulates a physics frame. A potential fix is to simulate a separate physics scene found here: https://forum.unity.com/threads/separating-physics-scenes.597697/
         Physics.autoSimulation = false;
@@ -191,8 +189,6 @@ public class WireBuilder : MonoBehaviour
         //Debug.DrawRay(position, direction * distance, Color.green, 2f);
         return Physics.Raycast(position, direction, out hit, distance, layerMask);
     }
-
-    
 
     public void RotateLeft()
     {
