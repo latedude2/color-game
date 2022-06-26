@@ -76,7 +76,7 @@ public class SolutionChecker : MonoBehaviour
 
             //For debugging
             for (int i = 0; i < path.corners.Length - 1; i++)
-                Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.red, 2f);
+                Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.green, 2f);
         }
     }
 
