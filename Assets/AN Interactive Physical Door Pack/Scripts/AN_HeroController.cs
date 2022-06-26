@@ -160,7 +160,7 @@ public class AN_HeroController : MonoBehaviour
     {
         if(!grabIt.m_holding)
             return;
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, m_Capsule.radius, Vector3.down, ((m_Capsule.height/2f) - m_Capsule.radius) + groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore);
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, m_Capsule.radius * 0.9f, Vector3.down, ((m_Capsule.height/2f) - m_Capsule.radius) + groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore);
         foreach (RaycastHit hit in hits)
         {
             if(hit.collider.gameObject == grabIt.m_targetRB.gameObject)
