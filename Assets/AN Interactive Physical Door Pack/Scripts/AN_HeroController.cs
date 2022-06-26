@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using Lightbug.GrabIt;
 
 public class AN_HeroController : MonoBehaviour
 {
@@ -20,6 +19,8 @@ public class AN_HeroController : MonoBehaviour
     float stickToGroundHelperDistance = 0.5f;
     private Vector3 m_GroundContactNormal;
 
+    GrabIt grabIt;
+
 
     private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
 
@@ -30,6 +31,7 @@ public class AN_HeroController : MonoBehaviour
         character = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
         Cam = Camera.main.GetComponent<Transform>();
+        grabIt = GetComponentInChildren<GrabIt>();
 
         Cursor.lockState = CursorLockMode.Locked; // freeze cursor on screen centre
         Cursor.visible = false; // invisible cursor
@@ -40,6 +42,7 @@ public class AN_HeroController : MonoBehaviour
         Settings.Unlocked += DisableControls;
         DisableControls();
         Invoke(nameof(EnableControls), enableControlSceneStartDelay);
+        
     }
 
     void Update()
@@ -80,7 +83,10 @@ public class AN_HeroController : MonoBehaviour
         }
 
         if (!m_IsGrounded)
+        {
             rb.drag = 0f;
+            grabIt.Drop();
+        }
         if (m_PreviouslyGrounded && !m_Jumping)
         {
             StickToGroundHelper();
