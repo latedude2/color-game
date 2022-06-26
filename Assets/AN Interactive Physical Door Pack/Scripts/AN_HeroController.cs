@@ -81,16 +81,17 @@ public class AN_HeroController : MonoBehaviour
             }            
             rb.velocity = moveVector;
         }
-
+        
         if (!m_IsGrounded)
         {
             rb.drag = 0f;
-            grabIt.Drop();
         }
         if (m_PreviouslyGrounded && !m_Jumping)
         {
             StickToGroundHelper();
         }
+
+        DropIfClimbingHeldObject();
     }
 
     void EnableControls()
@@ -145,7 +146,8 @@ public class AN_HeroController : MonoBehaviour
         Settings.Unlocked -= DisableControls;
     }
 
-    bool isHittingKinematic(RaycastHit hitinfo){
+    bool isHittingKinematic(RaycastHit hitinfo)
+    {
         if(hitinfo.rigidbody != null){
             if(hitinfo.rigidbody.isKinematic){
                 return true;
@@ -154,4 +156,18 @@ public class AN_HeroController : MonoBehaviour
         return false;
     }
 
+    void DropIfClimbingHeldObject()
+    {
+        if(!grabIt.m_holding)
+            return;
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, m_Capsule.radius, Vector3.down, ((m_Capsule.height/2f) - m_Capsule.radius) + groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore);
+        foreach (RaycastHit hit in hits)
+        {
+            if(hit.collider.gameObject == grabIt.m_targetRB.gameObject)
+            {
+                grabIt.Drop();
+                return;
+            }
+        }
+    }
 }

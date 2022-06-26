@@ -72,7 +72,7 @@ namespace Lightbug.GrabIt
         GameObject m_hitPointObject;
         float m_targetDistance;
 
-        bool m_holding = false;
+        public bool m_holding = false;
         bool m_applyImpulse = false;
         bool m_isHingeJoint = false;
         bool m_isConfigurableJoint = false;
