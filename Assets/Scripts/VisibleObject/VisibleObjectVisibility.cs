@@ -13,6 +13,8 @@ public class VisibleObjectVisibility : MonoBehaviour
     private Material blackMat;
     protected BoundBox boundBox;
     private ShinePoint[] shinePoints;    //A list of points of the box where we check if the box is hit by light
+    private LayerMask blockingLayers = 0b_0001_0000_1001; //Block rays with default, ignore outline and static layers
+
     private LightManager lightManager;
     protected bool visible = false;
     [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
@@ -155,19 +157,23 @@ public class VisibleObjectVisibility : MonoBehaviour
 
     private bool IsShinedByColor(ColorCode color)
     {
+        var layer = gameObject.layer;
+        gameObject.layer = Physics.IgnoreRaycastLayer;
         foreach (ShinePoint shinePoint in shinePoints)
         {
             for(int i = 0; i < LightManager.optimizedLights.Length; i++)
             {
                 if (IsPointing(LightManager.optimizedLights[i], color, shinePoint))
                 {
-                    if (shinePoint.Reached(LightManager.optimizedLights[i].gameobject))
+                    if (shinePoint.Reached(LightManager.optimizedLights[i].gameobject.transform.position, blockingLayers))
                     {
+                        gameObject.layer = layer;
                         return true;
                     }
                 }
             }
         }
+        gameObject.layer = layer;
         return false;
     }
 
@@ -212,7 +218,7 @@ public class VisibleObjectVisibility : MonoBehaviour
                 {
                     // skip the middle of the box
                     if (!IsShinePointInMiddle(x, y, z, shinePointMultiplier))
-                        shinepoints.Add(new ShinePoint(transform.TransformPoint(boxCollider.center + new Vector3(boxCollider.size.x * x / shinePointMultiplier, boxCollider.size.y * y / shinePointMultiplier, boxCollider.size.z * z / shinePointMultiplier) * 0.50f), gameObject));
+                        shinepoints.Add(new ShinePoint(transform.TransformPoint(boxCollider.center + new Vector3(boxCollider.size.x * x / shinePointMultiplier, boxCollider.size.y * y / shinePointMultiplier, boxCollider.size.z * z / shinePointMultiplier) * 0.50f)));
                 }
             }
         }
@@ -223,7 +229,7 @@ public class VisibleObjectVisibility : MonoBehaviour
     {
         Mesh mesh = collider.sharedMesh;
         foreach (var vertice in mesh.vertices) {
-            shinepoints.Add(new ShinePoint(transform.TransformPoint(vertice), gameObject));
+            shinepoints.Add(new ShinePoint(transform.TransformPoint(vertice)));
         }
         return shinepoints.ToArray();
     }
