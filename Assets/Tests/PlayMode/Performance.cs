@@ -30,6 +30,19 @@ public class Performance
         yield return Measure.Frames().WarmupCount(5).MeasurementCount(100).Run();
     }
 
+    [UnityTest, Performance]
+    public IEnumerator PerformanceScene()
+    {
+        SceneManager.LoadScene("Performance");
+        yield return null;
+
+        GameObject.Find("RailSystem").transform.Find("RailNode2").GetComponent<RailNode>().Activate();
+        GameObject.Find("RailSystem (1)").transform.Find("RailNode2").GetComponent<RailNode>().Activate();
+        GameObject.Find("RailSystem (2)").transform.Find("RailNode2").GetComponent<RailNode>().Activate();
+
+        yield return Measure.Frames().WarmupCount(5).MeasurementCount(500).Run();
+    }
+
     private static void Counter()
     {
         var sum = 0;
