@@ -14,7 +14,7 @@ public class VisibleObjectVisibility : MonoBehaviour
     protected BoundBox boundBox;
     private ShinePoint[] shinePoints;    //A list of points of the box where we check if the box is hit by light
     private LightManager lightManager;
-    protected bool visible = false;
+    public bool visible = false;
     [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
     Activatable[] activatableComponents;
     
@@ -50,7 +50,7 @@ public class VisibleObjectVisibility : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(GetComponent<Rigidbody>() != null)
+        if(GetComponent<Rigidbody>() != null || GetComponent<Enemy>() != null)
         {
             UpdateShinePoints();
         }
