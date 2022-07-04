@@ -109,7 +109,7 @@ public class AN_HeroController : MonoBehaviour
         RaycastHit hitInfo;
         if (Physics.SphereCast(transform.position, m_Capsule.radius, Vector3.down, out hitInfo,
                                 ((m_Capsule.height/2f) - m_Capsule.radius) +
-                                stickToGroundHelperDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore) && !isHittingKinematic(hitInfo))
+                                stickToGroundHelperDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore) && !IsHittingKinematic(hitInfo))
         {
             if (Mathf.Abs(Vector3.Angle(hitInfo.normal, Vector3.up)) < 85f)
             {
@@ -124,7 +124,7 @@ public class AN_HeroController : MonoBehaviour
         m_PreviouslyGrounded = m_IsGrounded;
         RaycastHit hitInfo;
         if (Physics.SphereCast(transform.position, m_Capsule.radius, Vector3.down, out hitInfo,
-                                ((m_Capsule.height/2f) - m_Capsule.radius) + groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore) && !isHittingKinematic(hitInfo))
+                                ((m_Capsule.height/2f) - m_Capsule.radius) + groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore) && !IsHittingKinematic(hitInfo))
         {
             m_IsGrounded = true;
             m_GroundContactNormal = hitInfo.normal;
@@ -146,7 +146,7 @@ public class AN_HeroController : MonoBehaviour
         Settings.Unlocked -= DisableControls;
     }
 
-    bool isHittingKinematic(RaycastHit hitinfo)
+    bool IsHittingKinematic(RaycastHit hitinfo)
     {
         if(hitinfo.rigidbody != null){
             if(hitinfo.rigidbody.isKinematic){
