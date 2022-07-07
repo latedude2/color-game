@@ -5,26 +5,20 @@ using UnityEngine;
 public class ShinePoint
 {
     Vector3 position;
-    LayerMask blockingLayers;
-    GameObject visibleObject;
-    public ShinePoint(Vector3 position, GameObject visibleObject){
-        this.visibleObject = visibleObject;
+    public ShinePoint(Vector3 position){
         this.position = position;
-        this.blockingLayers = 0b_0001_0000_1001; //Block rays with default, ignore outline and static layers
     }
     
-    public bool Reached(GameObject pointingLight)
+    public bool Reached(Vector3 pointingLightPosition, LayerMask blockingLayers)
     {
-        Vector3 lightPos = pointingLight.transform.position;
+        Vector3 lightPos = pointingLightPosition;
         
         if (ColorGame.Debug.debugMode)
         {
             UnityEngine.Debug.DrawLine(position, lightPos, Color.red);
         }
-        var layer = visibleObject.layer;
-        visibleObject.layer = Physics.IgnoreRaycastLayer;
+        
         bool nothingIsBlockingLight = !Physics.Linecast(lightPos, position, blockingLayers, QueryTriggerInteraction.Ignore);
-        visibleObject.layer = layer;
         return nothingIsBlockingLight;
     }
 
