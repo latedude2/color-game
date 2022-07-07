@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using Lightbug.GrabIt;
 
 public class AN_HeroController : MonoBehaviour
@@ -161,13 +162,9 @@ public class AN_HeroController : MonoBehaviour
         if(!grabIt.m_holding)
             return;
         RaycastHit[] hits = Physics.SphereCastAll(transform.position, m_Capsule.radius * 0.9f, Vector3.down, ((m_Capsule.height/2f) - m_Capsule.radius) + groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore);
-        foreach (RaycastHit hit in hits)
+        if(Array.FindIndex(hits, x => x.collider.gameObject == grabIt.m_targetRB.gameObject) != -1)
         {
-            if(hit.collider.gameObject == grabIt.m_targetRB.gameObject)
-            {
-                grabIt.Drop();
-                return;
-            }
+            grabIt.Drop();
         }
     }
 }
