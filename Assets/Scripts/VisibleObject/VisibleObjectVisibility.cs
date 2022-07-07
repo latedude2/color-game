@@ -16,12 +16,15 @@ public class VisibleObjectVisibility : MonoBehaviour
     private LayerMask blockingLayers = 0b_0001_0000_1001; //Block rays with default, ignore outline and static layers
 
     private LightManager lightManager;
-    protected bool visible = false;
+    public bool visible = false;
     [SerializeField] [Range(1, 5)] int shinePointMultiplier = 1;
     Activatable[] activatableComponents;
     
     public UnityEvent visibilityChanged;
     Collider _collider;
+
+    Rigidbody rigidbody = null;
+    Enemy enemy = null;
     
     void Start()
     {
@@ -34,6 +37,8 @@ public class VisibleObjectVisibility : MonoBehaviour
                 child.TryGetComponent<Collider>(out _collider);
             }
         }
+        rigidbody = GetComponent<Rigidbody>();
+        enemy = GetComponent<Enemy>();
         activatableComponents = GetComponents<Activatable>();
         lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         _renderer = GetComponent<Renderer>();
@@ -52,7 +57,7 @@ public class VisibleObjectVisibility : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(GetComponent<Rigidbody>() != null)
+        if(rigidbody != null || enemy != null)
         {
             UpdateShinePoints();
         }
