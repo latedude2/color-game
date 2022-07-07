@@ -20,6 +20,9 @@ public class VisibleObjectVisibility : MonoBehaviour
     
     public UnityEvent visibilityChanged;
     Collider _collider;
+
+    Rigidbody rigidbody = null;
+    Enemy enemy = null;
     
     void Start()
     {
@@ -32,6 +35,8 @@ public class VisibleObjectVisibility : MonoBehaviour
                 child.TryGetComponent<Collider>(out _collider);
             }
         }
+        rigidbody = GetComponent<Rigidbody>();
+        enemy = GetComponent<Enemy>();
         activatableComponents = GetComponents<Activatable>();
         lightManager = GameObject.Find("LightManager").GetComponent<LightManager>();
         _renderer = GetComponent<Renderer>();
@@ -50,7 +55,7 @@ public class VisibleObjectVisibility : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(GetComponent<Rigidbody>() != null || GetComponent<Enemy>() != null)
+        if(rigidbody != null || enemy != null)
         {
             UpdateShinePoints();
         }
