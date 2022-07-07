@@ -149,6 +149,10 @@ namespace Lightbug.GrabIt
                 }
                 if (rb != null && rb.GetComponent<Pushable>() == null)
                 {
+                    if(rb.GetComponent<BreakableObjectPhysics>() != null && rb.isKinematic)
+                    {
+                        return;
+                    }
                     SetHeldObject(rb, hitInfo.distance);
                     m_holding = true;
                     Grabbed?.Invoke();

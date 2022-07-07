@@ -42,12 +42,28 @@ public class MouseInteraction : MonoBehaviour
     }
 
     bool IsTargetGrabbable(GameObject target)
+    {   
+        Rigidbody rb = GetRigidbodyInGameObjectObjectOrParent(target);
+        if(rb == null || rb.isKinematic)
+        {
+            return false;
+        }
+        if (rb.GetComponent<BreakableObjectPhysics>() != null)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    Rigidbody GetRigidbodyInGameObjectObjectOrParent(GameObject target)
     {
-        if(target.GetComponent<Rigidbody>() != null)
-            return true;
-        else if(target.transform.parent != null && target.transform.parent.GetComponent<Rigidbody>() != null)
-            return true;
-        else return false;
+        Rigidbody rb = null;
+        rb = target.GetComponent<Rigidbody>();
+        if(rb == null && target.transform.parent != null)
+        {
+            rb = target.transform.parent.GetComponent<Rigidbody>();
+        }
+        return rb;
     }
 
     GameObject FindTargetedGameObject()
