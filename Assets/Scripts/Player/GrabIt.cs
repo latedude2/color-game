@@ -147,11 +147,30 @@ namespace Lightbug.GrabIt
                 {
                     rb = hitInfo.collider.transform.parent.GetComponent<Rigidbody>();
                 }
-                if (rb != null)
+                if (rb != null && rb.GetComponent<Pushable>() == null)
                 {
                     SetHeldObject(rb, hitInfo.distance);
                     m_holding = true;
                     Grabbed?.Invoke();
+                }
+            }
+        }
+
+        void TryToPush()
+        {
+            RaycastHit hitInfo;
+            if (Physics.Raycast(m_transform.position, m_transform.forward, out hitInfo, m_grabMaxDistance, m_collisionMask))
+            {
+                Rigidbody rb = hitInfo.collider.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    if(rb.GetComponent<Pushable>() != null)
+                    {
+                        Vector3 forceVector = m_transform.forward * m_impulseMagnitude;
+                        forceVector.y = 0;  //we don't want to lift the object when pushing
+                        forceVector = forceVector * (1 - hitInfo.distance / m_grabMaxDistance);
+                        rb.AddForce(forceVector, ForceMode.Impulse);
+                    }
                 }
             }
         }
@@ -279,6 +298,11 @@ namespace Lightbug.GrabIt
 
         void FixedUpdate()
         {
+            if (Input.GetMouseButton(0) && !m_holding)
+            {
+                TryToPush();
+            }
+
             if (!m_holding)
                 return;
 
