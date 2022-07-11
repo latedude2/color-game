@@ -22,8 +22,8 @@ public class ShatterOnImpact : MonoBehaviour
             go.transform.localScale = transform.localScale;
             go.GetComponentInChildren<Rigidbody>().velocity = GetComponentInChildren<Rigidbody>().velocity;
             audio.PlayShatter(collision.impulse.magnitude / shatterImpulse, GetComponent<Rigidbody>().mass);
-            SpawnMemory();
             Destroy(gameObject);
+            SpawnMemory();
         }
     }
 
@@ -41,9 +41,12 @@ public class ShatterOnImpact : MonoBehaviour
         {
             if(memoryInfo.memoryText != "")
             {
-                GameObject newMemory = Instantiate(memoryPrefab, transform.position, transform.rotation);
+                GameObject newMemory = Instantiate(memoryPrefab);
+                //set memory parent to canvas
                 newMemory.GetComponent<Memory>().memoryDuration = memoryInfo.memoryDuration;
                 newMemory.GetComponent<Memory>().memoryText = memoryInfo.memoryText;
+                newMemory.GetComponent<OverlayUIFollow>().target = transform.position;
+                newMemory.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform);
             }
         }
     }
