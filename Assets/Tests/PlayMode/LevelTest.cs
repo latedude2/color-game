@@ -93,7 +93,7 @@ public class LevelTest
         //Check for missing prefabs
         MissingPrefabDetector.CheckForMissingPrefabsInScene();
     }
-
+/*
     [UnityTest]
     public IEnumerator Level08()
     {
@@ -324,6 +324,7 @@ public class LevelTest
         //Check for missing prefabs
         MissingPrefabDetector.CheckForMissingPrefabsInScene();
     }
+    */
     /*
     [UnityTest]
     public IEnumerator LevelSelect()
