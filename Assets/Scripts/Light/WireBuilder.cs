@@ -10,7 +10,7 @@ using UnityEditor;
 public class WireBuilder : MonoBehaviour
 {
     [System.NonSerialized] public Vector3 lineEnd = Vector3.right / 2;
-    [System.NonSerialized] public Vector3 lineStart = Vector3.right / 2;
+    [System.NonSerialized] public Vector3 lineStart = Vector3.right / 2 * 0.98f; 
     public GameObject wirePrefab;
 
     [SerializeField] [Range(1, 15)] public int treeLength = 4;
@@ -44,10 +44,11 @@ public class WireBuilder : MonoBehaviour
         {
             lengthMultiplier = UnityEngine.Random.Range(0.3f, 1f);
         }
-        checkDirection(-Vector3.forward * lengthMultiplier, maxWireLength  / transform.localScale.z, followWalls);
-        checkDirection(Vector3.forward * lengthMultiplier, maxWireLength  / transform.localScale.z, followWalls);
-        checkDirection(Vector3.right * lengthMultiplier, maxWireLength / transform.localScale.x, followWalls);
-        checkDirection(Vector3.up * lengthMultiplier, maxWireLength / transform.localScale.y , followWalls);
+        checkDirection(-Vector3.forward, lengthMultiplier, maxWireLength  / transform.localScale.z, followWalls);
+        checkDirection(Vector3.forward, lengthMultiplier, maxWireLength  / transform.localScale.z, followWalls);
+        checkDirection(Vector3.right, lengthMultiplier, maxWireLength / transform.localScale.x, followWalls);
+        checkDirection(Vector3.up, lengthMultiplier, maxWireLength / transform.localScale.y , followWalls);
+        checkDirection(-Vector3.up, lengthMultiplier, maxWireLength / transform.localScale.y , followWalls);
         Debug.Log("Found " + possibleLineEndPositions.Count + " possible positions"); 
     }
 
@@ -60,18 +61,17 @@ public class WireBuilder : MonoBehaviour
             Vector3 endPosition = possibleLineEndPositions[UnityEngine.Random.Range(0, possibleLineEndPositions.Count)]; 
             lineEnd = endPosition;
             newWire = AddWire();
-            possibleLineEndPositions.Remove(endPosition);
         }
         return newWire;
     }
 
-    public void checkDirection(Vector3 direction, float multiplier = 1, bool checkForWalls = true)
+    public void checkDirection(Vector3 direction, float lengthMultiplier, float scaleAdjustment = 1, bool checkForWalls = true)
     {
         RaycastHit hit;
         LayerMask layerMask = 0b_0001_0000_1011; //Block rays with default, static and ignore outline layers
-        float distance = maxWireLength;
-        
-        bool hitSomething = Physics.Raycast(transform.TransformPoint(lineStart), transform.TransformDirection(direction), out hit, distance, layerMask);
+        float distance = maxWireLength * lengthMultiplier;
+        bool hitSomething = Physics.Raycast(transform.TransformPoint(lineStart), transform.TransformDirection(direction), out hit, distance, layerMask);        
+
         if (hitSomething)
         {
             if(hit.distance < minimumLength)
@@ -80,7 +80,7 @@ public class WireBuilder : MonoBehaviour
         }
 
         //Debug.DrawRay(transform.TransformPoint(lineStart), transform.TransformDirection(direction * distance), Color.magenta, 2f);
-        Vector3 potentialLineEnd = lineStart + direction * multiplier * (distance/maxWireLength);
+        Vector3 potentialLineEnd = lineStart + direction * scaleAdjustment * (distance/maxWireLength);
 
         if(checkForWalls && (!checkWallExists(lineStart, distance) | !checkWallExists(potentialLineEnd, distance)))
         {
@@ -90,13 +90,16 @@ public class WireBuilder : MonoBehaviour
         possibleLineEndPositions.Add(potentialLineEnd); 
     }
 
-    private bool checkWallExists(Vector3 position, float distance){
-        if(wallCheck(transform.TransformPoint(position), transform.up, maxWallDistance) | wallCheck(transform.TransformPoint(position), -transform.up, maxWallDistance))
+    public bool checkWallExists(Vector3 position, float distance){
+        if(wallCheck(transform.TransformPoint(position), transform.TransformDirection(transform.up), maxWallDistance) | wallCheck(transform.TransformPoint(position), -transform.TransformDirection(transform.up), maxWallDistance))
         {
             return true;
         }
-        
-        if(wallCheck(transform.TransformPoint(position), transform.right, maxWallDistance) | wallCheck(transform.TransformPoint(position), -transform.right, maxWallDistance))
+        if(wallCheck(transform.TransformPoint(position), transform.TransformDirection(transform.right), maxWallDistance) | wallCheck(transform.TransformPoint(position), -transform.TransformDirection(transform.right), maxWallDistance))
+        {
+            return true;
+        }
+        if(wallCheck(transform.TransformPoint(position), transform.TransformDirection(transform.forward), maxWallDistance) | wallCheck(transform.TransformPoint(position), -transform.TransformDirection(transform.right), maxWallDistance))
         {
             return true;
         }
@@ -107,19 +110,18 @@ public class WireBuilder : MonoBehaviour
     
 
     public void iterateGeneration(int iteration = 3, int branchCount = 2, bool randomLength = true, GameObject wireSystem = null) 
-    {   //Bug: the wires will tangle with each other because they all spawn at once, so the raycasts fail
+    {
         possibleLineEndPositions = new List<Vector3>();
         if(iteration > 0)
         {
             iteration--;
-            FindPosition(randomLength);
             for(int i = 0; i < branchCount; i++)
             {
                 GameObject newWire = SpawnRandomSegment();
                 if(newWire != null)
                 {
                     newWire.transform.SetParent(wireSystem.transform);
-                    newWire.GetComponent<WireBuilder>().iterateGeneration(iteration, branchCount, randomLength, wireSystem);
+                    newWire.GetComponent<WireBuilder>().iterateGeneration(iteration, branchCount, randomLength, wireSystem);    //This can be turned into breadth first search
                 }
             }
         }
@@ -152,12 +154,17 @@ public class WireBuilder : MonoBehaviour
         GameObject[] newEditorSelection = new GameObject[1];
         newEditorSelection[0] = newWire;
 
-        newWire.GetComponent<WireSurface>().gameObjectsToActivate = new List<GameObject>();
+        newWire.GetComponent<WireSurface>().gameObjectsToActivate = new List<GameObject>(); //fixes random wires being added as activatables
+        
+        //Note: this simulates a physics frame. A potential fix is to simulate a separate physics scene found here: https://forum.unity.com/threads/separating-physics-scenes.597697/
+        Physics.autoSimulation = false;
+        Physics.Simulate(Time.fixedDeltaTime);  
+        Physics.autoSimulation = true;
         return newWire;
     }
 
     private void SaveChangeHack(GameObject newWire)
-    //HACK: The addition of element does not get saved for some reason and readding the component works as a workaround
+    //HACK: The addition of element does not get saved for some reason and reading the component works as a workaround
     {
         List<GameObject> activateGameObjectList = GetComponent<WireSurface>().gameObjectsToActivate;
         ColorCode savedColor = GetComponent<WireSurface>()._color;
@@ -182,8 +189,6 @@ public class WireBuilder : MonoBehaviour
         //Debug.DrawRay(position, direction * distance, Color.green, 2f);
         return Physics.Raycast(position, direction, out hit, distance, layerMask);
     }
-
-    
 
     public void RotateLeft()
     {

@@ -18,13 +18,21 @@ public class MusicManager : MonoBehaviour {
         soundtrack = GetComponent<StudioEventEmitter>();
     }
 
+    void Start() {
+        OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+    }
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        if (scene.name.Contains("Level") && scene.name != "LevelSelect") {
-            if(scene.buildIndex < 8)
+        if ((scene.name.Contains("Level") || scene.name.Contains("level")) && scene.name != "LevelSelect") {
+            if(scene.buildIndex < 6)
                 SwitchSoundtrack(1);
-            else if(scene.buildIndex >= 8 && scene.buildIndex < 14)
+            else if(scene.buildIndex >= 6 && scene.buildIndex < 12)
                 SwitchSoundtrack(2);
-            else if(scene.buildIndex >= 14)
+            else if(scene.buildIndex >= 12 && scene.buildIndex < 18)
+                SwitchSoundtrack(3);
+            else if(scene.buildIndex >= 18 && scene.buildIndex < 24)
+                SwitchSoundtrack(2);
+            else if(scene.buildIndex >= 24)
                 SwitchSoundtrack(3);
         }
     }

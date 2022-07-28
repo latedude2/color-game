@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
+using Lightbug.GrabIt;
 
 public class AN_HeroController : MonoBehaviour
 {
@@ -20,6 +20,8 @@ public class AN_HeroController : MonoBehaviour
     float stickToGroundHelperDistance = 0.5f;
     private Vector3 m_GroundContactNormal;
 
+    GrabIt grabIt;
+
 
     private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
 
@@ -30,6 +32,7 @@ public class AN_HeroController : MonoBehaviour
         character = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
         Cam = Camera.main.GetComponent<Transform>();
+        grabIt = GetComponentInChildren<GrabIt>();
 
         Cursor.lockState = CursorLockMode.Locked; // freeze cursor on screen centre
         Cursor.visible = false; // invisible cursor
@@ -40,6 +43,7 @@ public class AN_HeroController : MonoBehaviour
         Settings.Unlocked += DisableControls;
         DisableControls();
         Invoke(nameof(EnableControls), enableControlSceneStartDelay);
+        
     }
 
     void Update()
@@ -78,13 +82,17 @@ public class AN_HeroController : MonoBehaviour
             }            
             rb.velocity = moveVector;
         }
-
+        
         if (!m_IsGrounded)
+        {
             rb.drag = 0f;
+        }
         if (m_PreviouslyGrounded && !m_Jumping)
         {
             StickToGroundHelper();
         }
+
+        DropIfClimbingHeldObject();
     }
 
     void EnableControls()
@@ -102,7 +110,7 @@ public class AN_HeroController : MonoBehaviour
         RaycastHit hitInfo;
         if (Physics.SphereCast(transform.position, m_Capsule.radius, Vector3.down, out hitInfo,
                                 ((m_Capsule.height/2f) - m_Capsule.radius) +
-                                stickToGroundHelperDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+                                stickToGroundHelperDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore) && !IsHittingKinematic(hitInfo))
         {
             if (Mathf.Abs(Vector3.Angle(hitInfo.normal, Vector3.up)) < 85f)
             {
@@ -117,7 +125,7 @@ public class AN_HeroController : MonoBehaviour
         m_PreviouslyGrounded = m_IsGrounded;
         RaycastHit hitInfo;
         if (Physics.SphereCast(transform.position, m_Capsule.radius, Vector3.down, out hitInfo,
-                                ((m_Capsule.height/2f) - m_Capsule.radius) + groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+                                ((m_Capsule.height/2f) - m_Capsule.radius) + groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore) && !IsHittingKinematic(hitInfo))
         {
             m_IsGrounded = true;
             m_GroundContactNormal = hitInfo.normal;
@@ -133,4 +141,30 @@ public class AN_HeroController : MonoBehaviour
         }
     }
 
+    public void OnDestroy()
+    {
+        Settings.Locked -= EnableControls;
+        Settings.Unlocked -= DisableControls;
+    }
+
+    bool IsHittingKinematic(RaycastHit hitinfo)
+    {
+        if(hitinfo.rigidbody != null){
+            if(hitinfo.rigidbody.isKinematic){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void DropIfClimbingHeldObject()
+    {
+        if(!grabIt.m_holding)
+            return;
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, m_Capsule.radius * 0.9f, Vector3.down, ((m_Capsule.height/2f) - m_Capsule.radius) + groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore);
+        if(Array.FindIndex(hits, x => x.collider.gameObject == grabIt.m_targetRB.gameObject) != -1)
+        {
+            grabIt.Drop();
+        }
+    }
 }

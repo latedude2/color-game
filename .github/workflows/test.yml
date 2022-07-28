@@ -1,0 +1,35 @@
+name: Build project
+
+on: [push]
+
+jobs:
+  buildForAllSupportedPlatforms:
+    name: Automated test
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        testMode:
+            - playmode
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-${{ matrix.targetPlatform }}
+          restore-keys: Library-
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: Test results
+          path: artifacts
+      

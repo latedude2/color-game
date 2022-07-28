@@ -46,6 +46,12 @@ public class LevelManager : MonoBehaviour
 
     public void LoadNextLevel(float _time = 0f)
     {
+        if (!FMODUnity.RuntimeManager.HasBankLoaded("Master"))
+        {
+            Invoke(nameof(LoadNextLevel), 0.5f);
+            return;
+        }
+
         float time = _time;
         if (time == 0f)
             time = transitionTime;
@@ -57,10 +63,10 @@ public class LevelManager : MonoBehaviour
         }
         else 
         {
-            
             SceneManager.LoadScene(0);
             Settings.UnlockCursor();
         }
+        
     }
 
     private void SaveProgress(int levelIndex)
@@ -81,7 +87,7 @@ public class LevelManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
-    void ReloadScene()
+    public void ReloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

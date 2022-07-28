@@ -52,6 +52,12 @@ public class WireEditor : Editor
             Undo.RegisterCreatedObjectUndo(newWireSystem, "Created new wire system");
             wireBuilder.iterateGeneration(wireBuilder.treeLength, wireBuilder.branchCount, wireBuilder.randomizeBranchLength, newWireSystem);
         }
+        /* for debugging
+        if(GUILayout.Button("Check wall"))
+        {
+            wireBuilder.checkWallExists(wireBuilder.lineEnd, 0.2f);
+        }
+        */
 
         //wireBuilder.GetComponent<WireSurface>().SetLoadedColor();
 
