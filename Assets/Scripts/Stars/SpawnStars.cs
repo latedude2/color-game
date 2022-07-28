@@ -50,7 +50,7 @@ public class SpawnStars : MonoBehaviour
         system = GetComponent<ParticleSystem>();
         particles = new ParticleSystem.Particle[maxStarCount];
         system.Emit(points.Length);
-        InvokeRepeating(nameof(SetParticlePosition), 0f, 1f);
+        SetParticlePosition();
     }
 
     void SetParticlePosition()
