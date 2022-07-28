@@ -2,51 +2,69 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ParticleSystem))]
 public class SpawnStars : MonoBehaviour
-
 {
-    public float radius = 1;
-    public float displayHeight = 20;
-    public Vector3 areaSize = new Vector3(1,1,1);
+    [Tooltip("Minimum distance between points.")]
+    public float poissonRadius = 1;
     public int rejectionSamples = 10;
-    public float dispRadius = 1;
-    public float heightVariance = 1f;
+
+    [Tooltip("Gizmo display radius.")]
+    public float dispRadius = 0.1f;
     public int maxStarCount = 1500;
 
-    List<Vector3> points;
+    ParticleSystem.Particle[] particles;
+    ParticleSystem system;
+
+    Vector3[] points;
 
     // method called when values are changed in inspector
     void OnValidate()
     {
-        // calling the function from the other script to generate a list of points
-        points = StarGeneration.GeneratePoints(radius, areaSize, rejectionSamples, displayHeight, heightVariance, maxStarCount);
+        RegenerateStars();
+    }
 
+    public void RegenerateStars()
+    {
+        system = GetComponent<ParticleSystem>();
+        points = StarGeneration.GeneratePoints(poissonRadius, system.shape.scale, rejectionSamples, 0, system.shape.scale.y/2, maxStarCount);
     }
 
     // drawing spheres at the points
     // and drawing the generation area
     void OnDrawGizmos()
     {
-
         if (points != null)
         {
-            
             foreach (Vector3 point in points)
             { 
-                Gizmos.DrawSphere(point, dispRadius);
+                //convert point to world coordinates
+                Gizmos.DrawSphere(transform.TransformPoint(point), dispRadius);
+                //Gizmos.DrawSphere(point, dispRadius);
             }
         }
     }
 
-    void OnStart()
+    void Start()
     {
+        system = GetComponent<ParticleSystem>();
+        particles = new ParticleSystem.Particle[maxStarCount];
+        system.Emit(points.Length);
+        InvokeRepeating(nameof(SetParticlePosition), 0f, 1f);
+    }
+
+    void SetParticlePosition()
+    {
+        points = StarGeneration.GeneratePoints(poissonRadius, system.shape.scale, rejectionSamples, 0, system.shape.scale.y/2, maxStarCount);
+        Debug.Log("Generated " + points.Length + " points");
         if (points != null)
         {
-
-            foreach (Vector3 point in points)
+            system.GetParticles(particles);
+            for (int i = 0; i < points.Length; ++i)
             {
-                Gizmos.DrawSphere(point, dispRadius);
+                particles[i].position = points[i];            
             }
+            system.SetParticles(particles, points.Length);
         }
     }
 }

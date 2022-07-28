@@ -5,7 +5,7 @@ using UnityEngine;
 public static class StarGeneration
 {
     //generate a list of points for the stars
-    public static List<Vector3> GeneratePoints(float radius, Vector3 sampleAreaSize, int attemptBefReject, float dispHeight, float heightVarience, int maxCount)
+    public static Vector3[] GeneratePoints(float radius, Vector3 sampleAreaSize, int attemptBefReject, float dispHeight, float heightVarience, int maxCount)
     {
         // each cell has a diagonal equal to the radius, so we have to calculate the side lengths
         float cellSize = radius / Mathf.Sqrt(2);
@@ -21,7 +21,7 @@ public static class StarGeneration
         List<Vector3> spawnPoints = new List<Vector3>();
 
         // adding a starting point to start generating around (added in the center for simplicity)
-        Vector3 startPoint = new Vector3(sampleAreaSize.x / 2, dispHeight, sampleAreaSize.z / 2);
+        Vector3 startPoint = new Vector3(sampleAreaSize.x / 2, sampleAreaSize.y/2, sampleAreaSize.z / 2);
         spawnPoints.Add(startPoint);
 
         // looping through spawnpoints to try and generate new points
@@ -61,8 +61,13 @@ public static class StarGeneration
                 spawnPoints.RemoveAt(spawnIndex);
             }
         }
+        //Adjust point positions so that they are centered around the origin
+        for(int i = 0; i < points.Count; i++)
+        {
+            points[i] = points[i] - sampleAreaSize/2 + new Vector3(0, sampleAreaSize.y/2, 0);
+        }
         
-        return points;
+        return points.ToArray();
     }
 
     static bool isValid(Vector3 candidate, Vector3 sampleAreaSize, float cellSize, List<Vector3> points, int[,] grid, float radius)
